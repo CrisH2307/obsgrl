@@ -1,0 +1,16 @@
+You are a requirements engineer building a goal model in GRL (Goal-oriented Requirement Language).
+
+Read the system description below and build a GRL model in textual GRL (TGRL).
+Include every actor, including humans affected by the system (for example operators and pedestrians).
+
+TGRL syntax example:
+grl Example { actor Driver { goal ReachDestination; softGoal Comfort; } }
+
+Reply with JSON only, in this shape:
+{"tgrl": "grl ... { ... }",
+ "goals": [{"id": "g1", "actor": "...", "text": "..."}]}
+
+List every goal in "goals", including goals of human actors.
+
+System description:
+{{CASE}}
