@@ -8,7 +8,7 @@ Runs the three conditions from our proposal on the NTSB cases and saves every LL
 | `b2` | Stage 1 only: build a GRL model | goals |
 | `obsgrl` | Stage 1 goals, stage 2 obstacles, stage 3 new requirements | requirements, each with its obstacle and premise |
 
-## Setup
+## Setup, Instruction
 
 ```bash
 python -m venv .venv && source .venv/bin/activate
