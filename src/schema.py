@@ -28,7 +28,7 @@ class RunRecord:
     model: str
     model_id: str
     run: int
-    temperature: float
+    temperature: float | None   # None = model does not accept one (e.g. GPT-6 Luna)
     prompt_version: str
     started_at: str
     items: list[Item] = field(default_factory=list)

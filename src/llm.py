@@ -8,8 +8,6 @@ from . import config
 
 def _client(provider: str):
     from openai import OpenAI  # imported here so "fake" works without the package
-    if provider == "openai":
-        return OpenAI(api_key=os.environ["OPENAI_API_KEY"])
     if provider == "openrouter":
         return OpenAI(
             api_key=os.environ["OPENROUTER_API_KEY"],
@@ -26,7 +24,19 @@ def _extract_json(text: str):
     start = min([i for i in (text.find("{"), text.find("[")) if i != -1], default=-1)
     if start == -1:
         raise ValueError("no JSON found in reply")
-    return json.loads(text[start:])
+    obj, _ = json.JSONDecoder().raw_decode(text[start:])  # ignores text after the JSON
+    return obj
+
+
+def _request_args(model: str, model_id: str, prompt: str) -> dict:
+    """Build the API call, sending only the options this model accepts."""
+    args = {"model": model_id, "messages": [{"role": "user", "content": prompt}]}
+    temperature = config.temperature_for(model)
+    if temperature is not None:
+        args["temperature"] = temperature
+    if config.SUPPORTS[model]["json_mode"]:
+        args["response_format"] = {"type": "json_object"}
+    return args
 
 
 def ask(model: str, prompt: str, stage: str) -> tuple[str, dict]:
@@ -39,12 +49,7 @@ def ask(model: str, prompt: str, stage: str) -> tuple[str, dict]:
     client = _client(provider)
     last_error = None
     for _ in range(config.MAX_RETRIES + 1):
-        resp = client.chat.completions.create(
-            model=model_id,
-            temperature=config.TEMPERATURE,
-            messages=[{"role": "user", "content": prompt}],
-            response_format={"type": "json_object"},
-        )
+        resp = client.chat.completions.create(**_request_args(model, model_id, prompt))
         raw = resp.choices[0].message.content or ""
         try:
             return raw, _extract_json(raw)

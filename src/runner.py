@@ -1,6 +1,6 @@
 """Run experiments from the command line.
 
-  python -m src.runner --condition obsgrl --case uber_2018 --model gpt-4o --runs 1
+  python -m src.runner --condition obsgrl --case uber_2018 --model gpt-6-luna --runs 1
   python -m src.runner --all --model fake          # every condition x case, offline
 """
 import argparse
@@ -24,7 +24,7 @@ def run_one(condition: str, case: str, model: str, run: int) -> Path:
 
     rec = RunRecord(
         condition=condition, case=case, model=model, model_id=config.MODELS[model][1],
-        run=run, temperature=config.TEMPERATURE, prompt_version=config.PROMPT_VERSION,
+        run=run, temperature=config.temperature_for(model), prompt_version=config.PROMPT_VERSION,
         started_at=datetime.now(timezone.utc).isoformat(timespec="seconds"),
     )
     case_text = (ROOT / "cases" / f"{case}.md").read_text()
