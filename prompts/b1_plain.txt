@@ -1,7 +1,8 @@
 You are a requirements engineer reviewing a safety-critical system.
 
-Read the system description below. List the requirements that are missing from it:
+Read the system description below. List the 10 most important requirements that are missing from it:
 things the system should do or guarantee for safe operation that the description does not cover.
+Give at most 10, ranked from most to least important.
 
 Reply with JSON only, in this shape:
 {"requirements": [{"text": "The system shall ..."}]}
