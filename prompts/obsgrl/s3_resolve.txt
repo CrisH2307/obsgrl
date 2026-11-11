@@ -3,6 +3,8 @@ You are a requirements engineer. Each obstacle below shows a hidden premise in t
 For each obstacle, write ONE new requirement that makes the premise explicit and testable,
 so the system handles the case instead of assuming it away.
 
+Write one requirement for each obstacle, no more than 10 in total.
+
 Reply with JSON only, in this shape:
 {"requirements": [{"obstacle_id": "o1", "text": "The system shall ..."}]}
 

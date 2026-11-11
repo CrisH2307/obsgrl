@@ -10,7 +10,7 @@ Reply with JSON only, in this shape:
 {"tgrl": "grl ... { ... }",
  "goals": [{"id": "g1", "actor": "...", "text": "..."}]}
 
-List every goal in "goals", including goals of human actors.
+List the 10 most important goals in "goals", ranked from most to least important, including goals of human actors.
 
 System description:
 {{CASE}}

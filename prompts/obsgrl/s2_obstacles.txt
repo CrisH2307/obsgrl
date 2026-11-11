@@ -12,8 +12,15 @@ Also check these obstacle types:
 - inaccuracy: information is imprecise, unstable or out of date
 - unavailability: a needed agent or resource is missing or switched off
 
+Do not only think about sensor or hardware faults. Also think about what people and other road users
+actually do (for example a pedestrian in an unexpected place, an operator who looks away or relies too
+much on the system), how the system classifies and tracks objects, and what it does with uncertain
+detections (for example ignoring or suppressing them).
+
 For every obstacle, name the hidden premise it violates: the assumption that someone
 thought was too obvious to write down.
+
+Return at most 10 obstacles in total, ranked from most to least important for safety.
 
 Reply with JSON only, in this shape:
 {"obstacles": [{"id": "o1", "goal_id": "g1", "guide_word": "omission",

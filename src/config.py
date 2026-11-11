@@ -27,7 +27,7 @@ TEMPERATURE = 0.7   # >0 so the 5 runs can differ (RQ3); only sent where support
 RUNS_PER_CELL = 5
 MAX_RETRIES = 1     # retry once if the reply is not valid JSON
 
-PROMPT_VERSION = "v0-draft"  # bump to "v1" when you freeze prompts (task 11)
+PROMPT_VERSION = "v1"  # bump to "v1" when you freeze prompts (task 11)
 
 
 def temperature_for(model: str) -> float | None:
