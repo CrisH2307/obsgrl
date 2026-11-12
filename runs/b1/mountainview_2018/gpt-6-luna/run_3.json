@@ -1,0 +1,117 @@
+{
+  "condition": "b1",
+  "case": "mountainview_2018",
+  "model": "gpt-6-luna",
+  "model_id": "openai/gpt-6-luna",
+  "run": 3,
+  "temperature": null,
+  "prompt_version": "v1",
+  "started_at": "2026-11-11T15:41:36+00:00",
+  "items": [
+    {
+      "id": "r1",
+      "kind": "requirement",
+      "text": "The system shall monitor whether the driver is attentive and capable of resuming control, rather than relying solely on steering-wheel torque, and shall issue escalating warnings when driver engagement is inadequate.",
+      "context": ""
+    },
+    {
+      "id": "r2",
+      "kind": "requirement",
+      "text": "The system shall define and enforce its operational design domain, including supported roads and environmental conditions, and shall prevent or limit operation when those conditions are not met.",
+      "context": ""
+    },
+    {
+      "id": "r3",
+      "kind": "requirement",
+      "text": "The system shall detect relevant hazards in and near the vehicle’s path, including stationary vehicles, roadway obstacles, barriers, and crash attenuators, and shall respond safely when their presence or position is uncertain.",
+      "context": ""
+    },
+    {
+      "id": "r4",
+      "kind": "requirement",
+      "text": "The system shall detect lane splits, merges, exits, work zones, and ambiguous or degraded lane markings, and shall not steer into an unsafe path when lane guidance is uncertain.",
+      "context": ""
+    },
+    {
+      "id": "r5",
+      "kind": "requirement",
+      "text": "The system shall maintain a safe speed and following distance for current conditions, accounting for closing speed, stopped traffic, and vehicles cutting into the gap, and shall not accelerate toward a detected hazard.",
+      "context": ""
+    },
+    {
+      "id": "r6",
+      "kind": "requirement",
+      "text": "The system shall detect sensor, processing, and control faults or degraded performance, warn the driver promptly, and avoid continuing automated control when safe operation cannot be assured.",
+      "context": ""
+    },
+    {
+      "id": "r7",
+      "kind": "requirement",
+      "text": "The system shall provide a controlled transition out of automated control, with timely, unambiguous takeover alerts and sufficient time for the driver to respond.",
+      "context": ""
+    },
+    {
+      "id": "r8",
+      "kind": "requirement",
+      "text": "If the driver does not respond to a takeover request or becomes unable to control the vehicle, the system shall execute a defined minimal-risk response.",
+      "context": ""
+    },
+    {
+      "id": "r9",
+      "kind": "requirement",
+      "text": "The system shall clearly indicate which automated functions are active, their current operating limits, and any change in control responsibility or system capability.",
+      "context": ""
+    },
+    {
+      "id": "r10",
+      "kind": "requirement",
+      "text": "The forward collision warning and automatic emergency braking functions shall detect imminent collisions and provide warnings or braking in time to reduce the risk or severity of impact, including when Autopilot is active.",
+      "context": ""
+    }
+  ],
+  "stages": [
+    {
+      "stage": "b1",
+      "prompt": "You are a requirements engineer reviewing a safety-critical system.\n\nRead the system description below. List the 10 most important requirements that are missing from it:\nthings the system should do or guarantee for safe operation that the description does not cover.\nGive at most 10, ranked from most to least important.\n\nReply with JSON only, in this shape:\n{\"requirements\": [{\"text\": \"The system shall ...\"}]}\n\nSystem description:\n# Case: Tesla Model X with Autopilot (Mountain View, California, 2018)\n\nSource: NTSB Highway Accident Report HAR-20/01. This is a description of the system and its use before the crash. It does not include the investigation findings.\n\n## System\nA 2017 Tesla Model X has Autopilot, a SAE Level 2 partial driving automation feature. It combines Traffic-Aware Cruise Control (TACC) and Autosteer (lane keeping). The driver stays responsible for driving and monitoring the road.\n\n## Main parts\n- Sensors: a forward-facing camera, a forward-facing radar and ultrasonic sensors.\n- Vision processing: a camera-based system detects lane markings, vehicles and some objects ahead.\n- TACC: holds a speed set by the driver, follows a vehicle ahead at a chosen gap, and returns to the set speed when no vehicle is ahead.\n- Autosteer: keeps the vehicle in its lane using lane markings and the path of the vehicle ahead.\n- Forward collision warning and automatic emergency braking are available as separate features.\n- Driver monitoring: steering torque is used to check that the driver's hands are on the wheel, with visual and audible alerts if no hands are detected for a period of time.\n\n## People\n- The driver sets the cruising speed, turns Autopilot on, and is told to keep hands on the wheel and watch the road.\n- Other road users and road workers share the highway. Road agencies maintain road markings and safety hardware such as barriers and crash attenuators.\n\n## Operating context\nBusy multi-lane freeway with high-occupancy-vehicle (HOV) lanes, exits and interchanges, lane markings of different quality, and traffic that changes in speed.\n\n",
+      "raw_response": "{\"requirements\":[{\"text\":\"The system shall monitor whether the driver is attentive and capable of resuming control, rather than relying solely on steering-wheel torque, and shall issue escalating warnings when driver engagement is inadequate.\"},{\"text\":\"The system shall define and enforce its operational design domain, including supported roads and environmental conditions, and shall prevent or limit operation when those conditions are not met.\"},{\"text\":\"The system shall detect relevant hazards in and near the vehicle’s path, including stationary vehicles, roadway obstacles, barriers, and crash attenuators, and shall respond safely when their presence or position is uncertain.\"},{\"text\":\"The system shall detect lane splits, merges, exits, work zones, and ambiguous or degraded lane markings, and shall not steer into an unsafe path when lane guidance is uncertain.\"},{\"text\":\"The system shall maintain a safe speed and following distance for current conditions, accounting for closing speed, stopped traffic, and vehicles cutting into the gap, and shall not accelerate toward a detected hazard.\"},{\"text\":\"The system shall detect sensor, processing, and control faults or degraded performance, warn the driver promptly, and avoid continuing automated control when safe operation cannot be assured.\"},{\"text\":\"The system shall provide a controlled transition out of automated control, with timely, unambiguous takeover alerts and sufficient time for the driver to respond.\"},{\"text\":\"If the driver does not respond to a takeover request or becomes unable to control the vehicle, the system shall execute a defined minimal-risk response.\"},{\"text\":\"The system shall clearly indicate which automated functions are active, their current operating limits, and any change in control responsibility or system capability.\"},{\"text\":\"The forward collision warning and automatic emergency braking functions shall detect imminent collisions and provide warnings or braking in time to reduce the risk or severity of impact, including when Autopilot is active.\"}]}",
+      "parsed": {
+        "requirements": [
+          {
+            "text": "The system shall monitor whether the driver is attentive and capable of resuming control, rather than relying solely on steering-wheel torque, and shall issue escalating warnings when driver engagement is inadequate."
+          },
+          {
+            "text": "The system shall define and enforce its operational design domain, including supported roads and environmental conditions, and shall prevent or limit operation when those conditions are not met."
+          },
+          {
+            "text": "The system shall detect relevant hazards in and near the vehicle’s path, including stationary vehicles, roadway obstacles, barriers, and crash attenuators, and shall respond safely when their presence or position is uncertain."
+          },
+          {
+            "text": "The system shall detect lane splits, merges, exits, work zones, and ambiguous or degraded lane markings, and shall not steer into an unsafe path when lane guidance is uncertain."
+          },
+          {
+            "text": "The system shall maintain a safe speed and following distance for current conditions, accounting for closing speed, stopped traffic, and vehicles cutting into the gap, and shall not accelerate toward a detected hazard."
+          },
+          {
+            "text": "The system shall detect sensor, processing, and control faults or degraded performance, warn the driver promptly, and avoid continuing automated control when safe operation cannot be assured."
+          },
+          {
+            "text": "The system shall provide a controlled transition out of automated control, with timely, unambiguous takeover alerts and sufficient time for the driver to respond."
+          },
+          {
+            "text": "If the driver does not respond to a takeover request or becomes unable to control the vehicle, the system shall execute a defined minimal-risk response."
+          },
+          {
+            "text": "The system shall clearly indicate which automated functions are active, their current operating limits, and any change in control responsibility or system capability."
+          },
+          {
+            "text": "The forward collision warning and automatic emergency braking functions shall detect imminent collisions and provide warnings or braking in time to reduce the risk or severity of impact, including when Autopilot is active."
+          }
+        ]
+      },
+      "error": ""
+    }
+  ],
+  "tgrl": "",
+  "tgrl_valid": null,
+  "ok": true
+}

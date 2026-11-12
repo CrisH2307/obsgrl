@@ -1,0 +1,117 @@
+{
+  "condition": "b1",
+  "case": "williston_2016",
+  "model": "gpt-6-luna",
+  "model_id": "openai/gpt-6-luna",
+  "run": 1,
+  "temperature": null,
+  "prompt_version": "v1",
+  "started_at": "2026-11-11T15:40:01+00:00",
+  "items": [
+    {
+      "id": "r1",
+      "kind": "requirement",
+      "text": "The system shall detect vehicles and other hazards crossing, entering, or obstructing the vehicle’s path, and shall warn the driver or take appropriate action to prevent an imminent collision.",
+      "context": ""
+    },
+    {
+      "id": "r2",
+      "kind": "requirement",
+      "text": "The system shall determine whether the driver is attentive and able to take control, rather than relying only on steering-wheel torque, and shall escalate alerts when attention or availability is inadequate.",
+      "context": ""
+    },
+    {
+      "id": "r3",
+      "kind": "requirement",
+      "text": "If the driver does not respond to an urgent takeover request, the system shall transition to a defined safe state, such as controlled deceleration, while maintaining vehicle control as far as practicable.",
+      "context": ""
+    },
+    {
+      "id": "r4",
+      "kind": "requirement",
+      "text": "The system shall restrict activation and continued operation to a defined, validated operational design domain, and shall warn the driver or disengage when conditions fall outside it.",
+      "context": ""
+    },
+    {
+      "id": "r5",
+      "kind": "requirement",
+      "text": "The system shall detect sensor faults, obscuration, or materially conflicting sensor data, and shall not continue automated steering or speed control when reliable perception is unavailable.",
+      "context": ""
+    },
+    {
+      "id": "r6",
+      "kind": "requirement",
+      "text": "The system shall provide timely collision warnings and automatic emergency braking when an imminent collision is detected, including for hazards not following in the vehicle’s lane.",
+      "context": ""
+    },
+    {
+      "id": "r7",
+      "kind": "requirement",
+      "text": "The system shall clearly indicate when Autopilot is active, what functions it is controlling, and when it is unavailable, degraded, or requesting driver intervention.",
+      "context": ""
+    },
+    {
+      "id": "r8",
+      "kind": "requirement",
+      "text": "The system shall maintain a safe speed and following distance for the road, traffic, visibility, and other detected conditions, and shall not accelerate in a way that creates an unsafe approach to a hazard.",
+      "context": ""
+    },
+    {
+      "id": "r9",
+      "kind": "requirement",
+      "text": "The system shall allow the driver to override or disengage Autopilot immediately and predictably using the steering, brake, or other designated controls.",
+      "context": ""
+    },
+    {
+      "id": "r10",
+      "kind": "requirement",
+      "text": "The system shall verify that its sensors and control functions are operating correctly before activation and shall alert the driver and prevent or terminate operation when a safety-critical fault is detected.",
+      "context": ""
+    }
+  ],
+  "stages": [
+    {
+      "stage": "b1",
+      "prompt": "You are a requirements engineer reviewing a safety-critical system.\n\nRead the system description below. List the 10 most important requirements that are missing from it:\nthings the system should do or guarantee for safe operation that the description does not cover.\nGive at most 10, ranked from most to least important.\n\nReply with JSON only, in this shape:\n{\"requirements\": [{\"text\": \"The system shall ...\"}]}\n\nSystem description:\n# Case: Tesla Model S with Autopilot (Williston, Florida, 2016)\n\nSource: NTSB Highway Accident Report HAR-17/02. This is a description of the system and its use before the crash. It does not include the investigation findings.\n\n## System\nA 2015 Tesla Model S has Autopilot, a SAE Level 2 partial driving automation feature. It combines Traffic-Aware Cruise Control (TACC) and Autosteer (lane keeping). The driver stays responsible for driving and monitoring the road.\n\n## Main parts\n- Sensors: a forward-facing camera, a forward-facing radar and ultrasonic sensors.\n- Vision processing: a camera-based system detects lane markings and objects ahead.\n- TACC: holds a speed set by the driver, slows down for a vehicle ahead in the same lane, and speeds up again when the lane is clear.\n- Autosteer: keeps the vehicle centered in its lane using lane markings and the vehicle ahead.\n- Forward collision warning and automatic emergency braking are available as separate features.\n- Driver monitoring: the system checks that the driver's hands are on the steering wheel by sensing steering torque, and shows visual and audible alerts if no hands are detected for a period of time.\n\n## People\n- The driver sets the cruising speed, turns Autopilot on, and is told to keep hands on the wheel and watch the road.\n- Other road users include cars, large trucks crossing or joining the road, and motorcyclists.\n\n## Operating context\nAutopilot is intended mainly for highways with limited access, in good visibility. Drivers can also turn it on for other roads, such as divided highways with cross traffic at intersections.\n\n",
+      "raw_response": "{\"requirements\":[{\"text\":\"The system shall detect vehicles and other hazards crossing, entering, or obstructing the vehicle’s path, and shall warn the driver or take appropriate action to prevent an imminent collision.\"},{\"text\":\"The system shall determine whether the driver is attentive and able to take control, rather than relying only on steering-wheel torque, and shall escalate alerts when attention or availability is inadequate.\"},{\"text\":\"If the driver does not respond to an urgent takeover request, the system shall transition to a defined safe state, such as controlled deceleration, while maintaining vehicle control as far as practicable.\"},{\"text\":\"The system shall restrict activation and continued operation to a defined, validated operational design domain, and shall warn the driver or disengage when conditions fall outside it.\"},{\"text\":\"The system shall detect sensor faults, obscuration, or materially conflicting sensor data, and shall not continue automated steering or speed control when reliable perception is unavailable.\"},{\"text\":\"The system shall provide timely collision warnings and automatic emergency braking when an imminent collision is detected, including for hazards not following in the vehicle’s lane.\"},{\"text\":\"The system shall clearly indicate when Autopilot is active, what functions it is controlling, and when it is unavailable, degraded, or requesting driver intervention.\"},{\"text\":\"The system shall maintain a safe speed and following distance for the road, traffic, visibility, and other detected conditions, and shall not accelerate in a way that creates an unsafe approach to a hazard.\"},{\"text\":\"The system shall allow the driver to override or disengage Autopilot immediately and predictably using the steering, brake, or other designated controls.\"},{\"text\":\"The system shall verify that its sensors and control functions are operating correctly before activation and shall alert the driver and prevent or terminate operation when a safety-critical fault is detected.\"}]}",
+      "parsed": {
+        "requirements": [
+          {
+            "text": "The system shall detect vehicles and other hazards crossing, entering, or obstructing the vehicle’s path, and shall warn the driver or take appropriate action to prevent an imminent collision."
+          },
+          {
+            "text": "The system shall determine whether the driver is attentive and able to take control, rather than relying only on steering-wheel torque, and shall escalate alerts when attention or availability is inadequate."
+          },
+          {
+            "text": "If the driver does not respond to an urgent takeover request, the system shall transition to a defined safe state, such as controlled deceleration, while maintaining vehicle control as far as practicable."
+          },
+          {
+            "text": "The system shall restrict activation and continued operation to a defined, validated operational design domain, and shall warn the driver or disengage when conditions fall outside it."
+          },
+          {
+            "text": "The system shall detect sensor faults, obscuration, or materially conflicting sensor data, and shall not continue automated steering or speed control when reliable perception is unavailable."
+          },
+          {
+            "text": "The system shall provide timely collision warnings and automatic emergency braking when an imminent collision is detected, including for hazards not following in the vehicle’s lane."
+          },
+          {
+            "text": "The system shall clearly indicate when Autopilot is active, what functions it is controlling, and when it is unavailable, degraded, or requesting driver intervention."
+          },
+          {
+            "text": "The system shall maintain a safe speed and following distance for the road, traffic, visibility, and other detected conditions, and shall not accelerate in a way that creates an unsafe approach to a hazard."
+          },
+          {
+            "text": "The system shall allow the driver to override or disengage Autopilot immediately and predictably using the steering, brake, or other designated controls."
+          },
+          {
+            "text": "The system shall verify that its sensors and control functions are operating correctly before activation and shall alert the driver and prevent or terminate operation when a safety-critical fault is detected."
+          }
+        ]
+      },
+      "error": ""
+    }
+  ],
+  "tgrl": "",
+  "tgrl_valid": null,
+  "ok": true
+}

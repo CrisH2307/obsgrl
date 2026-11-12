@@ -1,0 +1,138 @@
+{
+  "condition": "b2",
+  "case": "uber_2018",
+  "model": "gpt-oss-120b",
+  "model_id": "openai/gpt-oss-120b",
+  "run": 5,
+  "temperature": 0.7,
+  "prompt_version": "v1",
+  "started_at": "2026-11-11T15:26:37+00:00",
+  "items": [
+    {
+      "id": "g1",
+      "kind": "goal",
+      "text": "ATG: Ensure safety of all road users",
+      "context": ""
+    },
+    {
+      "id": "g2",
+      "kind": "goal",
+      "text": "ATG: Avoid collisions with pedestrians, cyclists, and other vehicles",
+      "context": ""
+    },
+    {
+      "id": "g3",
+      "kind": "goal",
+      "text": "ATG: Comply with traffic regulations (speed limits, signals, crosswalks)",
+      "context": ""
+    },
+    {
+      "id": "g4",
+      "kind": "goal",
+      "text": "ATG: Provide accurate perception of the surrounding environment",
+      "context": ""
+    },
+    {
+      "id": "g5",
+      "kind": "goal",
+      "text": "Operator: Be ready to take over control when the ADS requires it",
+      "context": ""
+    },
+    {
+      "id": "g6",
+      "kind": "goal",
+      "text": "Pedestrian: Cross streets safely without being struck by the vehicle",
+      "context": ""
+    },
+    {
+      "id": "g7",
+      "kind": "goal",
+      "text": "ATG: Maintain smooth traffic flow and avoid abrupt braking",
+      "context": ""
+    },
+    {
+      "id": "g8",
+      "kind": "goal",
+      "text": "Operator: Minimize unnecessary interventions to allow automation",
+      "context": ""
+    },
+    {
+      "id": "g9",
+      "kind": "goal",
+      "text": "Operator: Maintain clear awareness of ADS status via the tablet interface",
+      "context": ""
+    },
+    {
+      "id": "g10",
+      "kind": "goal",
+      "text": "Pedestrian: Experience predictable vehicle behavior when approaching crossings",
+      "context": ""
+    }
+  ],
+  "stages": [
+    {
+      "stage": "s1_extract",
+      "prompt": "You are a requirements engineer building a goal model in GRL (Goal-oriented Requirement Language).\n\nRead the system description below and build a GRL model in textual GRL (TGRL).\nInclude every actor, including humans affected by the system (for example operators and pedestrians).\n\nTGRL syntax example:\ngrl Example { actor Driver { goal ReachDestination; softGoal Comfort; } }\n\nReply with JSON only, in this shape:\n{\"tgrl\": \"grl ... { ... }\",\n \"goals\": [{\"id\": \"g1\", \"actor\": \"...\", \"text\": \"...\"}]}\n\nList the 10 most important goals in \"goals\", ranked from most to least important, including goals of human actors.\n\nSystem description:\n# Case: Uber ATG automated test vehicle (Tempe, Arizona, 2018)\n\nSource: NTSB Highway Accident Report HAR-19/03. This is a description of the system and its use before the crash. It does not include the investigation findings.\n\n## System\nA modified Volvo XC90 SUV is used by Uber Advanced Technologies Group (ATG) to test an automated driving system (ADS) on public roads. The ADS is designed to drive the vehicle without human input in defined conditions, up to about 45 mph in this test program.\n\n## Main parts\n- Sensors: roof-mounted lidar, radar units and cameras covering the area around the vehicle.\n- Perception: detects objects around the vehicle, classifies each one (for example vehicle, pedestrian, bicycle, other), and tracks it over time.\n- Prediction: estimates where each tracked object will go next, using its class and recent movement.\n- Planning and control: chooses a path and speed, and controls steering, throttle and braking.\n- Vehicle: the Volvo factory driver-assistance features (such as forward collision warning and automatic emergency braking) are part of the base vehicle.\n\n## People\n- One vehicle operator sits in the driver seat. The operator is responsible for watching the road and taking over control when needed. The operator also uses a tablet-style interface to tag events and check system status.\n- Other road users share the road: pedestrians, cyclists and other drivers. They are not aware of the test program.\n\n## Operating context\nPublic multi-lane roads in an urban area, day and night, with posted speed limits, marked crosswalks, intersections and street lighting that varies by location.\n\n",
+      "raw_response": "{\n  \"tgrl\": \"grl UberATGModel {\\n  actor ATG {\\n    goal EnsureSafety;\\n    softGoal AvoidCollisions;\\n    softGoal ComplyWithTrafficRegulations;\\n    softGoal AccuratePerception;\\n    softGoal SmoothTrafficFlow;\\n  }\\n  actor Operator {\\n    goal MonitorRoad;\\n    softGoal TakeoverControl;\\n    softGoal ReduceIntervention;\\n    softGoal SystemStatusAwareness;\\n  }\\n  actor Pedestrian {\\n    goal SafeCrossing;\\n    softGoal PredictableVehicleBehavior;\\n  }\\n  actor Cyclist {\\n    goal SafeCycling;\\n  }\\n  actor OtherDriver {\\n    goal SafeDriving;\\n  }\\n}\",\n  \"goals\": [\n    { \"id\": \"g1\", \"actor\": \"ATG\", \"text\": \"Ensure safety of all road users\" },\n    { \"id\": \"g2\", \"actor\": \"ATG\", \"text\": \"Avoid collisions with pedestrians, cyclists, and other vehicles\" },\n    { \"id\": \"g3\", \"actor\": \"ATG\", \"text\": \"Comply with traffic regulations (speed limits, signals, crosswalks)\" },\n    { \"id\": \"g4\", \"actor\": \"ATG\", \"text\": \"Provide accurate perception of the surrounding environment\" },\n    { \"id\": \"g5\", \"actor\": \"Operator\", \"text\": \"Be ready to take over control when the ADS requires it\" },\n    { \"id\": \"g6\", \"actor\": \"Pedestrian\", \"text\": \"Cross streets safely without being struck by the vehicle\" },\n    { \"id\": \"g7\", \"actor\": \"ATG\", \"text\": \"Maintain smooth traffic flow and avoid abrupt braking\" },\n    { \"id\": \"g8\", \"actor\": \"Operator\", \"text\": \"Minimize unnecessary interventions to allow automation\" },\n    { \"id\": \"g9\", \"actor\": \"Operator\", \"text\": \"Maintain clear awareness of ADS status via the tablet interface\" },\n    { \"id\": \"g10\", \"actor\": \"Pedestrian\", \"text\": \"Experience predictable vehicle behavior when approaching crossings\" }\n  ]\n}",
+      "parsed": {
+        "tgrl": "grl UberATGModel {\n  actor ATG {\n    goal EnsureSafety;\n    softGoal AvoidCollisions;\n    softGoal ComplyWithTrafficRegulations;\n    softGoal AccuratePerception;\n    softGoal SmoothTrafficFlow;\n  }\n  actor Operator {\n    goal MonitorRoad;\n    softGoal TakeoverControl;\n    softGoal ReduceIntervention;\n    softGoal SystemStatusAwareness;\n  }\n  actor Pedestrian {\n    goal SafeCrossing;\n    softGoal PredictableVehicleBehavior;\n  }\n  actor Cyclist {\n    goal SafeCycling;\n  }\n  actor OtherDriver {\n    goal SafeDriving;\n  }\n}",
+        "goals": [
+          {
+            "id": "g1",
+            "actor": "ATG",
+            "text": "Ensure safety of all road users"
+          },
+          {
+            "id": "g2",
+            "actor": "ATG",
+            "text": "Avoid collisions with pedestrians, cyclists, and other vehicles"
+          },
+          {
+            "id": "g3",
+            "actor": "ATG",
+            "text": "Comply with traffic regulations (speed limits, signals, crosswalks)"
+          },
+          {
+            "id": "g4",
+            "actor": "ATG",
+            "text": "Provide accurate perception of the surrounding environment"
+          },
+          {
+            "id": "g5",
+            "actor": "Operator",
+            "text": "Be ready to take over control when the ADS requires it"
+          },
+          {
+            "id": "g6",
+            "actor": "Pedestrian",
+            "text": "Cross streets safely without being struck by the vehicle"
+          },
+          {
+            "id": "g7",
+            "actor": "ATG",
+            "text": "Maintain smooth traffic flow and avoid abrupt braking"
+          },
+          {
+            "id": "g8",
+            "actor": "Operator",
+            "text": "Minimize unnecessary interventions to allow automation"
+          },
+          {
+            "id": "g9",
+            "actor": "Operator",
+            "text": "Maintain clear awareness of ADS status via the tablet interface"
+          },
+          {
+            "id": "g10",
+            "actor": "Pedestrian",
+            "text": "Experience predictable vehicle behavior when approaching crossings"
+          }
+        ]
+      },
+      "error": ""
+    }
+  ],
+  "tgrl": "grl UberATGModel {\n  actor ATG {\n    goal EnsureSafety;\n    softGoal AvoidCollisions;\n    softGoal ComplyWithTrafficRegulations;\n    softGoal AccuratePerception;\n    softGoal SmoothTrafficFlow;\n  }\n  actor Operator {\n    goal MonitorRoad;\n    softGoal TakeoverControl;\n    softGoal ReduceIntervention;\n    softGoal SystemStatusAwareness;\n  }\n  actor Pedestrian {\n    goal SafeCrossing;\n    softGoal PredictableVehicleBehavior;\n  }\n  actor Cyclist {\n    goal SafeCycling;\n  }\n  actor OtherDriver {\n    goal SafeDriving;\n  }\n}",
+  "tgrl_valid": true,
+  "ok": true
+}

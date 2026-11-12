@@ -1,0 +1,117 @@
+{
+  "condition": "b1",
+  "case": "uber_2018",
+  "model": "gpt-6-luna",
+  "model_id": "openai/gpt-6-luna",
+  "run": 5,
+  "temperature": null,
+  "prompt_version": "v1",
+  "started_at": "2026-11-11T15:39:51+00:00",
+  "items": [
+    {
+      "id": "r1",
+      "kind": "requirement",
+      "text": "The ADS shall continuously assess collision risk and, when a collision cannot otherwise be avoided, apply braking or another safe maneuver in time to reduce the likelihood and severity of impact.",
+      "context": ""
+    },
+    {
+      "id": "r2",
+      "kind": "requirement",
+      "text": "The ADS shall detect and track pedestrians, cyclists, vehicles, and other relevant road users, including stationary or partially occluded road users, and shall respond conservatively when their presence or motion is uncertain.",
+      "context": ""
+    },
+    {
+      "id": "r3",
+      "kind": "requirement",
+      "text": "The vehicle shall operate autonomously only within a defined, validated operational design domain, and shall prevent or safely end autonomous operation when conditions fall outside that domain.",
+      "context": ""
+    },
+    {
+      "id": "r4",
+      "kind": "requirement",
+      "text": "On a system fault, loss of required sensor capability, or unsafe uncertainty, the ADS shall transition to a defined minimal-risk condition without relying solely on the operator to prevent an imminent collision.",
+      "context": ""
+    },
+    {
+      "id": "r5",
+      "kind": "requirement",
+      "text": "The ADS shall select speed and following distance that permit stopping or avoiding hazards within the available clear distance, accounting for visibility, road conditions, and vehicle braking capability.",
+      "context": ""
+    },
+    {
+      "id": "r6",
+      "kind": "requirement",
+      "text": "The system shall ensure the vehicle operator is attentive, fit to supervise, and able to take control; it shall provide clear, timely takeover requests and a safe interval for response.",
+      "context": ""
+    },
+    {
+      "id": "r7",
+      "kind": "requirement",
+      "text": "The system shall define and enforce safe behavior at crosswalks, intersections, and other locations where pedestrians or cyclists may enter the vehicle’s path, including when their intent is ambiguous.",
+      "context": ""
+    },
+    {
+      "id": "r8",
+      "kind": "requirement",
+      "text": "The ADS shall monitor the health and availability of safety-critical sensors, computation, communications, and vehicle actuators, and shall detect faults early enough to enter a safe state.",
+      "context": ""
+    },
+    {
+      "id": "r9",
+      "kind": "requirement",
+      "text": "The ADS and the Volvo’s driver-assistance and braking systems shall have a defined, verified allocation of control authority so that their actions do not conflict and emergency braking remains available when needed.",
+      "context": ""
+    },
+    {
+      "id": "r10",
+      "kind": "requirement",
+      "text": "Before deployment and after safety-relevant changes, the system shall be validated against defined hazard scenarios and acceptance criteria for its intended operating conditions, with unresolved safety-critical failures preventing release.",
+      "context": ""
+    }
+  ],
+  "stages": [
+    {
+      "stage": "b1",
+      "prompt": "You are a requirements engineer reviewing a safety-critical system.\n\nRead the system description below. List the 10 most important requirements that are missing from it:\nthings the system should do or guarantee for safe operation that the description does not cover.\nGive at most 10, ranked from most to least important.\n\nReply with JSON only, in this shape:\n{\"requirements\": [{\"text\": \"The system shall ...\"}]}\n\nSystem description:\n# Case: Uber ATG automated test vehicle (Tempe, Arizona, 2018)\n\nSource: NTSB Highway Accident Report HAR-19/03. This is a description of the system and its use before the crash. It does not include the investigation findings.\n\n## System\nA modified Volvo XC90 SUV is used by Uber Advanced Technologies Group (ATG) to test an automated driving system (ADS) on public roads. The ADS is designed to drive the vehicle without human input in defined conditions, up to about 45 mph in this test program.\n\n## Main parts\n- Sensors: roof-mounted lidar, radar units and cameras covering the area around the vehicle.\n- Perception: detects objects around the vehicle, classifies each one (for example vehicle, pedestrian, bicycle, other), and tracks it over time.\n- Prediction: estimates where each tracked object will go next, using its class and recent movement.\n- Planning and control: chooses a path and speed, and controls steering, throttle and braking.\n- Vehicle: the Volvo factory driver-assistance features (such as forward collision warning and automatic emergency braking) are part of the base vehicle.\n\n## People\n- One vehicle operator sits in the driver seat. The operator is responsible for watching the road and taking over control when needed. The operator also uses a tablet-style interface to tag events and check system status.\n- Other road users share the road: pedestrians, cyclists and other drivers. They are not aware of the test program.\n\n## Operating context\nPublic multi-lane roads in an urban area, day and night, with posted speed limits, marked crosswalks, intersections and street lighting that varies by location.\n\n",
+      "raw_response": "{\"requirements\":[{\"text\":\"The ADS shall continuously assess collision risk and, when a collision cannot otherwise be avoided, apply braking or another safe maneuver in time to reduce the likelihood and severity of impact.\"},{\"text\":\"The ADS shall detect and track pedestrians, cyclists, vehicles, and other relevant road users, including stationary or partially occluded road users, and shall respond conservatively when their presence or motion is uncertain.\"},{\"text\":\"The vehicle shall operate autonomously only within a defined, validated operational design domain, and shall prevent or safely end autonomous operation when conditions fall outside that domain.\"},{\"text\":\"On a system fault, loss of required sensor capability, or unsafe uncertainty, the ADS shall transition to a defined minimal-risk condition without relying solely on the operator to prevent an imminent collision.\"},{\"text\":\"The ADS shall select speed and following distance that permit stopping or avoiding hazards within the available clear distance, accounting for visibility, road conditions, and vehicle braking capability.\"},{\"text\":\"The system shall ensure the vehicle operator is attentive, fit to supervise, and able to take control; it shall provide clear, timely takeover requests and a safe interval for response.\"},{\"text\":\"The system shall define and enforce safe behavior at crosswalks, intersections, and other locations where pedestrians or cyclists may enter the vehicle’s path, including when their intent is ambiguous.\"},{\"text\":\"The ADS shall monitor the health and availability of safety-critical sensors, computation, communications, and vehicle actuators, and shall detect faults early enough to enter a safe state.\"},{\"text\":\"The ADS and the Volvo’s driver-assistance and braking systems shall have a defined, verified allocation of control authority so that their actions do not conflict and emergency braking remains available when needed.\"},{\"text\":\"Before deployment and after safety-relevant changes, the system shall be validated against defined hazard scenarios and acceptance criteria for its intended operating conditions, with unresolved safety-critical failures preventing release.\"}]}",
+      "parsed": {
+        "requirements": [
+          {
+            "text": "The ADS shall continuously assess collision risk and, when a collision cannot otherwise be avoided, apply braking or another safe maneuver in time to reduce the likelihood and severity of impact."
+          },
+          {
+            "text": "The ADS shall detect and track pedestrians, cyclists, vehicles, and other relevant road users, including stationary or partially occluded road users, and shall respond conservatively when their presence or motion is uncertain."
+          },
+          {
+            "text": "The vehicle shall operate autonomously only within a defined, validated operational design domain, and shall prevent or safely end autonomous operation when conditions fall outside that domain."
+          },
+          {
+            "text": "On a system fault, loss of required sensor capability, or unsafe uncertainty, the ADS shall transition to a defined minimal-risk condition without relying solely on the operator to prevent an imminent collision."
+          },
+          {
+            "text": "The ADS shall select speed and following distance that permit stopping or avoiding hazards within the available clear distance, accounting for visibility, road conditions, and vehicle braking capability."
+          },
+          {
+            "text": "The system shall ensure the vehicle operator is attentive, fit to supervise, and able to take control; it shall provide clear, timely takeover requests and a safe interval for response."
+          },
+          {
+            "text": "The system shall define and enforce safe behavior at crosswalks, intersections, and other locations where pedestrians or cyclists may enter the vehicle’s path, including when their intent is ambiguous."
+          },
+          {
+            "text": "The ADS shall monitor the health and availability of safety-critical sensors, computation, communications, and vehicle actuators, and shall detect faults early enough to enter a safe state."
+          },
+          {
+            "text": "The ADS and the Volvo’s driver-assistance and braking systems shall have a defined, verified allocation of control authority so that their actions do not conflict and emergency braking remains available when needed."
+          },
+          {
+            "text": "Before deployment and after safety-relevant changes, the system shall be validated against defined hazard scenarios and acceptance criteria for its intended operating conditions, with unresolved safety-critical failures preventing release."
+          }
+        ]
+      },
+      "error": ""
+    }
+  ],
+  "tgrl": "",
+  "tgrl_valid": null,
+  "ok": true
+}

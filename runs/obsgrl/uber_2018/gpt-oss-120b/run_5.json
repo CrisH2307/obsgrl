@@ -1,0 +1,313 @@
+{
+  "condition": "obsgrl",
+  "case": "uber_2018",
+  "model": "gpt-oss-120b",
+  "model_id": "openai/gpt-oss-120b",
+  "run": 5,
+  "temperature": 0.7,
+  "prompt_version": "v1",
+  "started_at": "2026-11-11T15:31:27+00:00",
+  "items": [
+    {
+      "id": "r1",
+      "kind": "requirement",
+      "text": "The system shall fuse lidar, radar, and camera data to detect pedestrians that may be occluded by stationary objects and shall generate a warning if occlusion prevents confident detection.",
+      "context": "Obstacle: The perception stack fails to detect a pedestrian crossing the street because the lidar returns are blocked by a parked car. | Premise: All road users within sensor range are always detected by the perception system."
+    },
+    {
+      "id": "r2",
+      "kind": "requirement",
+      "text": "The system shall produce a probability distribution for pedestrian future trajectories that includes possible lateral turns and shall provide uncertainty bounds that the planner must consider for safe path planning.",
+      "context": "Obstacle: The trajectory predictor estimates the pedestrian will continue straight, ignoring the possibility of a sudden turn into the vehicle’s lane. | Premise: Predicted trajectories based on recent motion are always accurate enough for safe planning."
+    },
+    {
+      "id": "r3",
+      "kind": "requirement",
+      "text": "The system shall monitor the operator’s gaze and issue an audible/visual alert if the driver’s eyes are not directed toward the forward roadway for more than 3 seconds, unless a takeover request is active.",
+      "context": "Obstacle: The operator looks away from the road for an extended period and does not monitor the environment. | Premise: The operator will continuously monitor the road unless a takeover is required."
+    },
+    {
+      "id": "r4",
+      "kind": "requirement",
+      "text": "The system shall allow the operator to achieve full manual control within 1.5 seconds of a takeover request and shall verify that the vehicle can stop before collision given that response time.",
+      "context": "Obstacle: When the pedestrian appears, the operator initiates manual control after the ADS has already begun braking, causing a delayed response that cannot avoid collision. | Premise: The operator can take over control instantly enough to prevent an imminent collision."
+    },
+    {
+      "id": "r5",
+      "kind": "requirement",
+      "text": "The system shall inhibit manual‑control inputs while executing a safety‑critical maneuver and shall release control to the operator only after the maneuver is completed or a takeover request is issued.",
+      "context": "Obstacle: The operator intervenes before the ADS has finished processing a safe maneuver, leading to abrupt steering that destabilizes the vehicle. | Premise: Operator takeover will only occur when the ADS is unable to handle the situation safely."
+    },
+    {
+      "id": "r6",
+      "kind": "requirement",
+      "text": "The system shall cross‑check detected speed‑limit signs with a high‑definition map and shall never command a speed exceeding the posted limit; ambiguous sign classifications shall default to the posted limit.",
+      "context": "Obstacle: The ADS exceeds the posted speed limit because the speed‑limit sign detection module misclassifies a sign as a speed‑increase advisory. | Premise: The ADS always respects posted speed limits as identified by perception."
+    },
+    {
+      "id": "r7",
+      "kind": "requirement",
+      "text": "The control module shall initiate emergency braking only when the computed time‑to‑collision is ≤ 1.5 seconds and no safe alternative maneuver (e.g., steering) exists.",
+      "context": "Obstacle: The control module applies emergency braking while the pedestrian is still several meters away, causing a rear‑end collision with a following vehicle. | Premise: Braking actions are only executed when a collision is imminent."
+    },
+    {
+      "id": "r8",
+      "kind": "requirement",
+      "text": "The system shall continuously monitor the health of all critical sensors and shall display a red fault indicator on the operator’s tablet if any sensor fails or degrades beyond defined thresholds.",
+      "context": "Obstacle: The operator believes the system health indicator is green, while a critical sensor has silently failed. | Premise: The system status display always reflects the true health of all critical components."
+    },
+    {
+      "id": "r9",
+      "kind": "requirement",
+      "text": "The system shall verify that every required sensor (e.g., front radar, side radar, lidar) is powered and reporting health status; if any required sensor is offline, the ADS shall transition to a safe‑stop state within 2 seconds.",
+      "context": "Obstacle: A radar unit is powered off due to a software bug, leaving the ADS without redundant distance measurement in the vehicle’s blind spot. | Premise: All sensors required for safe operation are always powered and functional."
+    },
+    {
+      "id": "r10",
+      "kind": "requirement",
+      "text": "The perception system shall provide at least 180° coverage around the vehicle, including sidewalks, using appropriately positioned sensors; if coverage gaps exist, the system shall flag reduced awareness and limit vehicle speed accordingly.",
+      "context": "Obstacle: The ADS never receives any data about a cyclist riding on the sidewalk because the camera’s field of view does not cover that area. | Premise: All relevant dynamic objects in the environment are always within the perception field of view."
+    }
+  ],
+  "stages": [
+    {
+      "stage": "s1_extract",
+      "prompt": "You are a requirements engineer building a goal model in GRL (Goal-oriented Requirement Language).\n\nRead the system description below and build a GRL model in textual GRL (TGRL).\nInclude every actor, including humans affected by the system (for example operators and pedestrians).\n\nTGRL syntax example:\ngrl Example { actor Driver { goal ReachDestination; softGoal Comfort; } }\n\nReply with JSON only, in this shape:\n{\"tgrl\": \"grl ... { ... }\",\n \"goals\": [{\"id\": \"g1\", \"actor\": \"...\", \"text\": \"...\"}]}\n\nList every goal in \"goals\", including goals of human actors.\n\nSystem description:\n# Case: Uber ATG automated test vehicle (Tempe, Arizona, 2018)\n\nSource: NTSB Highway Accident Report HAR-19/03. This is a description of the system and its use before the crash. It does not include the investigation findings.\n\n## System\nA modified Volvo XC90 SUV is used by Uber Advanced Technologies Group (ATG) to test an automated driving system (ADS) on public roads. The ADS is designed to drive the vehicle without human input in defined conditions, up to about 45 mph in this test program.\n\n## Main parts\n- Sensors: roof-mounted lidar, radar units and cameras covering the area around the vehicle.\n- Perception: detects objects around the vehicle, classifies each one (for example vehicle, pedestrian, bicycle, other), and tracks it over time.\n- Prediction: estimates where each tracked object will go next, using its class and recent movement.\n- Planning and control: chooses a path and speed, and controls steering, throttle and braking.\n- Vehicle: the Volvo factory driver-assistance features (such as forward collision warning and automatic emergency braking) are part of the base vehicle.\n\n## People\n- One vehicle operator sits in the driver seat. The operator is responsible for watching the road and taking over control when needed. The operator also uses a tablet-style interface to tag events and check system status.\n- Other road users share the road: pedestrians, cyclists and other drivers. They are not aware of the test program.\n\n## Operating context\nPublic multi-lane roads in an urban area, day and night, with posted speed limits, marked crosswalks, intersections and street lighting that varies by location.\n\n",
+      "raw_response": "{\n  \"tgrl\": \"grl UberATGTestVehicle {\\n    actor Operator {\\n        goal MonitorRoad;\\n        goal TakeOverControlWhenNeeded;\\n        goal TagEvents;\\n        goal CheckSystemStatus;\\n        softGoal OperatorSafety;\\n    }\\n    actor ADS {\\n        goal NavigateSafely;\\n        goal FollowSpeedLimits;\\n        goal DetectObjects;\\n        goal PredictTrajectories;\\n        goal PlanPath;\\n        goal ControlVehicle;\\n        softGoal SystemSafety;\\n        softGoal LegalCompliance;\\n    }\\n    actor Pedestrian {\\n        goal CrossSafely;\\n        softGoal PedestrianSafety;\\n    }\\n    actor Cyclist {\\n        goal RideSafely;\\n        softGoal CyclistSafety;\\n    }\\n    actor OtherDriver {\\n        goal DriveSafely;\\n        softGoal DriverSafety;\\n    }\\n}\",\n  \"goals\": [\n    { \"id\": \"g1\", \"actor\": \"Operator\", \"text\": \"MonitorRoad\" },\n    { \"id\": \"g2\", \"actor\": \"Operator\", \"text\": \"TakeOverControlWhenNeeded\" },\n    { \"id\": \"g3\", \"actor\": \"Operator\", \"text\": \"TagEvents\" },\n    { \"id\": \"g4\", \"actor\": \"Operator\", \"text\": \"CheckSystemStatus\" },\n    { \"id\": \"g5\", \"actor\": \"Operator\", \"text\": \"OperatorSafety (softGoal)\" },\n    { \"id\": \"g6\", \"actor\": \"ADS\", \"text\": \"NavigateSafely\" },\n    { \"id\": \"g7\", \"actor\": \"ADS\", \"text\": \"FollowSpeedLimits\" },\n    { \"id\": \"g8\", \"actor\": \"ADS\", \"text\": \"DetectObjects\" },\n    { \"id\": \"g9\", \"actor\": \"ADS\", \"text\": \"PredictTrajectories\" },\n    { \"id\": \"g10\", \"actor\": \"ADS\", \"text\": \"PlanPath\" },\n    { \"id\": \"g11\", \"actor\": \"ADS\", \"text\": \"ControlVehicle\" },\n    { \"id\": \"g12\", \"actor\": \"ADS\", \"text\": \"SystemSafety (softGoal)\" },\n    { \"id\": \"g13\", \"actor\": \"ADS\", \"text\": \"LegalCompliance (softGoal)\" },\n    { \"id\": \"g14\", \"actor\": \"Pedestrian\", \"text\": \"CrossSafely\" },\n    { \"id\": \"g15\", \"actor\": \"Pedestrian\", \"text\": \"PedestrianSafety (softGoal)\" },\n    { \"id\": \"g16\", \"actor\": \"Cyclist\", \"text\": \"RideSafely\" },\n    { \"id\": \"g17\", \"actor\": \"Cyclist\", \"text\": \"CyclistSafety (softGoal)\" },\n    { \"id\": \"g18\", \"actor\": \"OtherDriver\", \"text\": \"DriveSafely\" },\n    { \"id\": \"g19\", \"actor\": \"OtherDriver\", \"text\": \"DriverSafety (softGoal)\" }\n  ]\n}",
+      "parsed": {
+        "tgrl": "grl UberATGTestVehicle {\n    actor Operator {\n        goal MonitorRoad;\n        goal TakeOverControlWhenNeeded;\n        goal TagEvents;\n        goal CheckSystemStatus;\n        softGoal OperatorSafety;\n    }\n    actor ADS {\n        goal NavigateSafely;\n        goal FollowSpeedLimits;\n        goal DetectObjects;\n        goal PredictTrajectories;\n        goal PlanPath;\n        goal ControlVehicle;\n        softGoal SystemSafety;\n        softGoal LegalCompliance;\n    }\n    actor Pedestrian {\n        goal CrossSafely;\n        softGoal PedestrianSafety;\n    }\n    actor Cyclist {\n        goal RideSafely;\n        softGoal CyclistSafety;\n    }\n    actor OtherDriver {\n        goal DriveSafely;\n        softGoal DriverSafety;\n    }\n}",
+        "goals": [
+          {
+            "id": "g1",
+            "actor": "Operator",
+            "text": "MonitorRoad"
+          },
+          {
+            "id": "g2",
+            "actor": "Operator",
+            "text": "TakeOverControlWhenNeeded"
+          },
+          {
+            "id": "g3",
+            "actor": "Operator",
+            "text": "TagEvents"
+          },
+          {
+            "id": "g4",
+            "actor": "Operator",
+            "text": "CheckSystemStatus"
+          },
+          {
+            "id": "g5",
+            "actor": "Operator",
+            "text": "OperatorSafety (softGoal)"
+          },
+          {
+            "id": "g6",
+            "actor": "ADS",
+            "text": "NavigateSafely"
+          },
+          {
+            "id": "g7",
+            "actor": "ADS",
+            "text": "FollowSpeedLimits"
+          },
+          {
+            "id": "g8",
+            "actor": "ADS",
+            "text": "DetectObjects"
+          },
+          {
+            "id": "g9",
+            "actor": "ADS",
+            "text": "PredictTrajectories"
+          },
+          {
+            "id": "g10",
+            "actor": "ADS",
+            "text": "PlanPath"
+          },
+          {
+            "id": "g11",
+            "actor": "ADS",
+            "text": "ControlVehicle"
+          },
+          {
+            "id": "g12",
+            "actor": "ADS",
+            "text": "SystemSafety (softGoal)"
+          },
+          {
+            "id": "g13",
+            "actor": "ADS",
+            "text": "LegalCompliance (softGoal)"
+          },
+          {
+            "id": "g14",
+            "actor": "Pedestrian",
+            "text": "CrossSafely"
+          },
+          {
+            "id": "g15",
+            "actor": "Pedestrian",
+            "text": "PedestrianSafety (softGoal)"
+          },
+          {
+            "id": "g16",
+            "actor": "Cyclist",
+            "text": "RideSafely"
+          },
+          {
+            "id": "g17",
+            "actor": "Cyclist",
+            "text": "CyclistSafety (softGoal)"
+          },
+          {
+            "id": "g18",
+            "actor": "OtherDriver",
+            "text": "DriveSafely"
+          },
+          {
+            "id": "g19",
+            "actor": "OtherDriver",
+            "text": "DriverSafety (softGoal)"
+          }
+        ]
+      },
+      "error": ""
+    },
+    {
+      "stage": "s2_obstacles",
+      "prompt": "You are a safety analyst doing obstacle analysis on a goal model.\n\nAn obstacle is a condition that prevents a goal from being satisfied.\nFor EACH goal below, propose obstacles. Use these guide words to search:\n- omission: the system or an actor does not do something it should\n- commission: it does something it should not\n- too early / too late: it acts at the wrong time\n\nAlso check these obstacle types:\n- non-information: an actor never gets information it needs\n- wrong belief: an actor assumes something about the world that can be false\n- inaccuracy: information is imprecise, unstable or out of date\n- unavailability: a needed agent or resource is missing or switched off\n\nDo not only think about sensor or hardware faults. Also think about what people and other road users\nactually do (for example a pedestrian in an unexpected place, an operator who looks away or relies too\nmuch on the system), how the system classifies and tracks objects, and what it does with uncertain\ndetections (for example ignoring or suppressing them).\n\nFor every obstacle, name the hidden premise it violates: the assumption that someone\nthought was too obvious to write down.\n\nReturn at most 10 obstacles in total, ranked from most to least important for safety.\n\nReply with JSON only, in this shape:\n{\"obstacles\": [{\"id\": \"o1\", \"goal_id\": \"g1\", \"guide_word\": \"omission\",\n                \"text\": \"...\", \"violated_premise\": \"...\"}]}\n\nSystem description:\n# Case: Uber ATG automated test vehicle (Tempe, Arizona, 2018)\n\nSource: NTSB Highway Accident Report HAR-19/03. This is a description of the system and its use before the crash. It does not include the investigation findings.\n\n## System\nA modified Volvo XC90 SUV is used by Uber Advanced Technologies Group (ATG) to test an automated driving system (ADS) on public roads. The ADS is designed to drive the vehicle without human input in defined conditions, up to about 45 mph in this test program.\n\n## Main parts\n- Sensors: roof-mounted lidar, radar units and cameras covering the area around the vehicle.\n- Perception: detects objects around the vehicle, classifies each one (for example vehicle, pedestrian, bicycle, other), and tracks it over time.\n- Prediction: estimates where each tracked object will go next, using its class and recent movement.\n- Planning and control: chooses a path and speed, and controls steering, throttle and braking.\n- Vehicle: the Volvo factory driver-assistance features (such as forward collision warning and automatic emergency braking) are part of the base vehicle.\n\n## People\n- One vehicle operator sits in the driver seat. The operator is responsible for watching the road and taking over control when needed. The operator also uses a tablet-style interface to tag events and check system status.\n- Other road users share the road: pedestrians, cyclists and other drivers. They are not aware of the test program.\n\n## Operating context\nPublic multi-lane roads in an urban area, day and night, with posted speed limits, marked crosswalks, intersections and street lighting that varies by location.\n\n\nGoals:\n[\n  {\n    \"id\": \"g1\",\n    \"actor\": \"Operator\",\n    \"text\": \"MonitorRoad\"\n  },\n  {\n    \"id\": \"g2\",\n    \"actor\": \"Operator\",\n    \"text\": \"TakeOverControlWhenNeeded\"\n  },\n  {\n    \"id\": \"g3\",\n    \"actor\": \"Operator\",\n    \"text\": \"TagEvents\"\n  },\n  {\n    \"id\": \"g4\",\n    \"actor\": \"Operator\",\n    \"text\": \"CheckSystemStatus\"\n  },\n  {\n    \"id\": \"g5\",\n    \"actor\": \"Operator\",\n    \"text\": \"OperatorSafety (softGoal)\"\n  },\n  {\n    \"id\": \"g6\",\n    \"actor\": \"ADS\",\n    \"text\": \"NavigateSafely\"\n  },\n  {\n    \"id\": \"g7\",\n    \"actor\": \"ADS\",\n    \"text\": \"FollowSpeedLimits\"\n  },\n  {\n    \"id\": \"g8\",\n    \"actor\": \"ADS\",\n    \"text\": \"DetectObjects\"\n  },\n  {\n    \"id\": \"g9\",\n    \"actor\": \"ADS\",\n    \"text\": \"PredictTrajectories\"\n  },\n  {\n    \"id\": \"g10\",\n    \"actor\": \"ADS\",\n    \"text\": \"PlanPath\"\n  },\n  {\n    \"id\": \"g11\",\n    \"actor\": \"ADS\",\n    \"text\": \"ControlVehicle\"\n  },\n  {\n    \"id\": \"g12\",\n    \"actor\": \"ADS\",\n    \"text\": \"SystemSafety (softGoal)\"\n  },\n  {\n    \"id\": \"g13\",\n    \"actor\": \"ADS\",\n    \"text\": \"LegalCompliance (softGoal)\"\n  },\n  {\n    \"id\": \"g14\",\n    \"actor\": \"Pedestrian\",\n    \"text\": \"CrossSafely\"\n  },\n  {\n    \"id\": \"g15\",\n    \"actor\": \"Pedestrian\",\n    \"text\": \"PedestrianSafety (softGoal)\"\n  },\n  {\n    \"id\": \"g16\",\n    \"actor\": \"Cyclist\",\n    \"text\": \"RideSafely\"\n  },\n  {\n    \"id\": \"g17\",\n    \"actor\": \"Cyclist\",\n    \"text\": \"CyclistSafety (softGoal)\"\n  },\n  {\n    \"id\": \"g18\",\n    \"actor\": \"OtherDriver\",\n    \"text\": \"DriveSafely\"\n  },\n  {\n    \"id\": \"g19\",\n    \"actor\": \"OtherDriver\",\n    \"text\": \"DriverSafety (softGoal)\"\n  }\n]\n",
+      "raw_response": "{\n  \"obstacles\": [\n    {\n      \"id\": \"o1\",\n      \"goal_id\": \"g8\",\n      \"guide_word\": \"omission\",\n      \"text\": \"The perception stack fails to detect a pedestrian crossing the street because the lidar returns are blocked by a parked car.\",\n      \"violated_premise\": \"All road users within sensor range are always detected by the perception system.\"\n    },\n    {\n      \"id\": \"o2\",\n      \"goal_id\": \"g9\",\n      \"guide_word\": \"inaccuracy\",\n      \"text\": \"The trajectory predictor estimates the pedestrian will continue straight, ignoring the possibility of a sudden turn into the vehicle’s lane.\",\n      \"violated_premise\": \"Predicted trajectories based on recent motion are always accurate enough for safe planning.\"\n    },\n    {\n      \"id\": \"o3\",\n      \"goal_id\": \"g1\",\n      \"guide_word\": \"omission\",\n      \"text\": \"The operator looks away from the road for an extended period and does not monitor the environment.\",\n      \"violated_premise\": \"The operator will continuously monitor the road unless a takeover is required.\"\n    },\n    {\n      \"id\": \"o4\",\n      \"goal_id\": \"g2\",\n      \"guide_word\": \"too late\",\n      \"text\": \"When the pedestrian appears, the operator initiates manual control after the ADS has already begun braking, causing a delayed response that cannot avoid collision.\",\n      \"violated_premise\": \"The operator can take over control instantly enough to prevent an imminent collision.\"\n    },\n    {\n      \"id\": \"o5\",\n      \"goal_id\": \"g2\",\n      \"guide_word\": \"too early\",\n      \"text\": \"The operator intervenes before the ADS has finished processing a safe maneuver, leading to abrupt steering that destabilizes the vehicle.\",\n      \"violated_premise\": \"Operator takeover will only occur when the ADS is unable to handle the situation safely.\"\n    },\n    {\n      \"id\": \"o6\",\n      \"goal_id\": \"g7\",\n      \"guide_word\": \"omission\",\n      \"text\": \"The ADS exceeds the posted speed limit because the speed‑limit sign detection module misclassifies a sign as a speed‑increase advisory.\",\n      \"violated_premise\": \"The ADS always respects posted speed limits as identified by perception.\"\n    },\n    {\n      \"id\": \"o7\",\n      \"goal_id\": \"g11\",\n      \"guide_word\": \"commission\",\n      \"text\": \"The control module applies emergency braking while the pedestrian is still several meters away, causing a rear‑end collision with a following vehicle.\",\n      \"violated_premise\": \"Braking actions are only executed when a collision is imminent.\"\n    },\n    {\n      \"id\": \"o8\",\n      \"goal_id\": \"g4\",\n      \"guide_word\": \"wrong belief\",\n      \"text\": \"The operator believes the system health indicator is green, while a critical sensor has silently failed.\",\n      \"violated_premise\": \"The system status display always reflects the true health of all critical components.\"\n    },\n    {\n      \"id\": \"o9\",\n      \"goal_id\": \"g12\",\n      \"guide_word\": \"unavailability\",\n      \"text\": \"A radar unit is powered off due to a software bug, leaving the ADS without redundant distance measurement in the vehicle’s blind spot.\",\n      \"violated_premise\": \"All sensors required for safe operation are always powered and functional.\"\n    },\n    {\n      \"id\": \"o10\",\n      \"goal_id\": \"g8\",\n      \"guide_word\": \"non-information\",\n      \"text\": \"The ADS never receives any data about a cyclist riding on the sidewalk because the camera’s field of view does not cover that area.\",\n      \"violated_premise\": \"All relevant dynamic objects in the environment are always within the perception field of view.\"\n    }\n  ]\n}",
+      "parsed": {
+        "obstacles": [
+          {
+            "id": "o1",
+            "goal_id": "g8",
+            "guide_word": "omission",
+            "text": "The perception stack fails to detect a pedestrian crossing the street because the lidar returns are blocked by a parked car.",
+            "violated_premise": "All road users within sensor range are always detected by the perception system."
+          },
+          {
+            "id": "o2",
+            "goal_id": "g9",
+            "guide_word": "inaccuracy",
+            "text": "The trajectory predictor estimates the pedestrian will continue straight, ignoring the possibility of a sudden turn into the vehicle’s lane.",
+            "violated_premise": "Predicted trajectories based on recent motion are always accurate enough for safe planning."
+          },
+          {
+            "id": "o3",
+            "goal_id": "g1",
+            "guide_word": "omission",
+            "text": "The operator looks away from the road for an extended period and does not monitor the environment.",
+            "violated_premise": "The operator will continuously monitor the road unless a takeover is required."
+          },
+          {
+            "id": "o4",
+            "goal_id": "g2",
+            "guide_word": "too late",
+            "text": "When the pedestrian appears, the operator initiates manual control after the ADS has already begun braking, causing a delayed response that cannot avoid collision.",
+            "violated_premise": "The operator can take over control instantly enough to prevent an imminent collision."
+          },
+          {
+            "id": "o5",
+            "goal_id": "g2",
+            "guide_word": "too early",
+            "text": "The operator intervenes before the ADS has finished processing a safe maneuver, leading to abrupt steering that destabilizes the vehicle.",
+            "violated_premise": "Operator takeover will only occur when the ADS is unable to handle the situation safely."
+          },
+          {
+            "id": "o6",
+            "goal_id": "g7",
+            "guide_word": "omission",
+            "text": "The ADS exceeds the posted speed limit because the speed‑limit sign detection module misclassifies a sign as a speed‑increase advisory.",
+            "violated_premise": "The ADS always respects posted speed limits as identified by perception."
+          },
+          {
+            "id": "o7",
+            "goal_id": "g11",
+            "guide_word": "commission",
+            "text": "The control module applies emergency braking while the pedestrian is still several meters away, causing a rear‑end collision with a following vehicle.",
+            "violated_premise": "Braking actions are only executed when a collision is imminent."
+          },
+          {
+            "id": "o8",
+            "goal_id": "g4",
+            "guide_word": "wrong belief",
+            "text": "The operator believes the system health indicator is green, while a critical sensor has silently failed.",
+            "violated_premise": "The system status display always reflects the true health of all critical components."
+          },
+          {
+            "id": "o9",
+            "goal_id": "g12",
+            "guide_word": "unavailability",
+            "text": "A radar unit is powered off due to a software bug, leaving the ADS without redundant distance measurement in the vehicle’s blind spot.",
+            "violated_premise": "All sensors required for safe operation are always powered and functional."
+          },
+          {
+            "id": "o10",
+            "goal_id": "g8",
+            "guide_word": "non-information",
+            "text": "The ADS never receives any data about a cyclist riding on the sidewalk because the camera’s field of view does not cover that area.",
+            "violated_premise": "All relevant dynamic objects in the environment are always within the perception field of view."
+          }
+        ]
+      },
+      "error": ""
+    },
+    {
+      "stage": "s3_resolve",
+      "prompt": "You are a requirements engineer. Each obstacle below shows a hidden premise in the system.\n\nFor each obstacle, write ONE new requirement that makes the premise explicit and testable,\nso the system handles the case instead of assuming it away.\n\nWrite one requirement for each obstacle, no more than 10 in total.\n\nReply with JSON only, in this shape:\n{\"requirements\": [{\"obstacle_id\": \"o1\", \"text\": \"The system shall ...\"}]}\n\nSystem description:\n# Case: Uber ATG automated test vehicle (Tempe, Arizona, 2018)\n\nSource: NTSB Highway Accident Report HAR-19/03. This is a description of the system and its use before the crash. It does not include the investigation findings.\n\n## System\nA modified Volvo XC90 SUV is used by Uber Advanced Technologies Group (ATG) to test an automated driving system (ADS) on public roads. The ADS is designed to drive the vehicle without human input in defined conditions, up to about 45 mph in this test program.\n\n## Main parts\n- Sensors: roof-mounted lidar, radar units and cameras covering the area around the vehicle.\n- Perception: detects objects around the vehicle, classifies each one (for example vehicle, pedestrian, bicycle, other), and tracks it over time.\n- Prediction: estimates where each tracked object will go next, using its class and recent movement.\n- Planning and control: chooses a path and speed, and controls steering, throttle and braking.\n- Vehicle: the Volvo factory driver-assistance features (such as forward collision warning and automatic emergency braking) are part of the base vehicle.\n\n## People\n- One vehicle operator sits in the driver seat. The operator is responsible for watching the road and taking over control when needed. The operator also uses a tablet-style interface to tag events and check system status.\n- Other road users share the road: pedestrians, cyclists and other drivers. They are not aware of the test program.\n\n## Operating context\nPublic multi-lane roads in an urban area, day and night, with posted speed limits, marked crosswalks, intersections and street lighting that varies by location.\n\n\nObstacles:\n[\n  {\n    \"id\": \"o1\",\n    \"goal_id\": \"g8\",\n    \"guide_word\": \"omission\",\n    \"text\": \"The perception stack fails to detect a pedestrian crossing the street because the lidar returns are blocked by a parked car.\",\n    \"violated_premise\": \"All road users within sensor range are always detected by the perception system.\"\n  },\n  {\n    \"id\": \"o2\",\n    \"goal_id\": \"g9\",\n    \"guide_word\": \"inaccuracy\",\n    \"text\": \"The trajectory predictor estimates the pedestrian will continue straight, ignoring the possibility of a sudden turn into the vehicle\\u2019s lane.\",\n    \"violated_premise\": \"Predicted trajectories based on recent motion are always accurate enough for safe planning.\"\n  },\n  {\n    \"id\": \"o3\",\n    \"goal_id\": \"g1\",\n    \"guide_word\": \"omission\",\n    \"text\": \"The operator looks away from the road for an extended period and does not monitor the environment.\",\n    \"violated_premise\": \"The operator will continuously monitor the road unless a takeover is required.\"\n  },\n  {\n    \"id\": \"o4\",\n    \"goal_id\": \"g2\",\n    \"guide_word\": \"too late\",\n    \"text\": \"When the pedestrian appears, the operator initiates manual control after the ADS has already begun braking, causing a delayed response that cannot avoid collision.\",\n    \"violated_premise\": \"The operator can take over control instantly enough to prevent an imminent collision.\"\n  },\n  {\n    \"id\": \"o5\",\n    \"goal_id\": \"g2\",\n    \"guide_word\": \"too early\",\n    \"text\": \"The operator intervenes before the ADS has finished processing a safe maneuver, leading to abrupt steering that destabilizes the vehicle.\",\n    \"violated_premise\": \"Operator takeover will only occur when the ADS is unable to handle the situation safely.\"\n  },\n  {\n    \"id\": \"o6\",\n    \"goal_id\": \"g7\",\n    \"guide_word\": \"omission\",\n    \"text\": \"The ADS exceeds the posted speed limit because the speed\\u2011limit sign detection module misclassifies a sign as a speed\\u2011increase advisory.\",\n    \"violated_premise\": \"The ADS always respects posted speed limits as identified by perception.\"\n  },\n  {\n    \"id\": \"o7\",\n    \"goal_id\": \"g11\",\n    \"guide_word\": \"commission\",\n    \"text\": \"The control module applies emergency braking while the pedestrian is still several meters away, causing a rear\\u2011end collision with a following vehicle.\",\n    \"violated_premise\": \"Braking actions are only executed when a collision is imminent.\"\n  },\n  {\n    \"id\": \"o8\",\n    \"goal_id\": \"g4\",\n    \"guide_word\": \"wrong belief\",\n    \"text\": \"The operator believes the system health indicator is green, while a critical sensor has silently failed.\",\n    \"violated_premise\": \"The system status display always reflects the true health of all critical components.\"\n  },\n  {\n    \"id\": \"o9\",\n    \"goal_id\": \"g12\",\n    \"guide_word\": \"unavailability\",\n    \"text\": \"A radar unit is powered off due to a software bug, leaving the ADS without redundant distance measurement in the vehicle\\u2019s blind spot.\",\n    \"violated_premise\": \"All sensors required for safe operation are always powered and functional.\"\n  },\n  {\n    \"id\": \"o10\",\n    \"goal_id\": \"g8\",\n    \"guide_word\": \"non-information\",\n    \"text\": \"The ADS never receives any data about a cyclist riding on the sidewalk because the camera\\u2019s field of view does not cover that area.\",\n    \"violated_premise\": \"All relevant dynamic objects in the environment are always within the perception field of view.\"\n  }\n]\n",
+      "raw_response": "{\n  \"requirements\": [\n    {\n      \"obstacle_id\": \"o1\",\n      \"text\": \"The system shall fuse lidar, radar, and camera data to detect pedestrians that may be occluded by stationary objects and shall generate a warning if occlusion prevents confident detection.\"\n    },\n    {\n      \"obstacle_id\": \"o2\",\n      \"text\": \"The system shall produce a probability distribution for pedestrian future trajectories that includes possible lateral turns and shall provide uncertainty bounds that the planner must consider for safe path planning.\"\n    },\n    {\n      \"obstacle_id\": \"o3\",\n      \"text\": \"The system shall monitor the operator’s gaze and issue an audible/visual alert if the driver’s eyes are not directed toward the forward roadway for more than 3 seconds, unless a takeover request is active.\"\n    },\n    {\n      \"obstacle_id\": \"o4\",\n      \"text\": \"The system shall allow the operator to achieve full manual control within 1.5 seconds of a takeover request and shall verify that the vehicle can stop before collision given that response time.\"\n    },\n    {\n      \"obstacle_id\": \"o5\",\n      \"text\": \"The system shall inhibit manual‑control inputs while executing a safety‑critical maneuver and shall release control to the operator only after the maneuver is completed or a takeover request is issued.\"\n    },\n    {\n      \"obstacle_id\": \"o6\",\n      \"text\": \"The system shall cross‑check detected speed‑limit signs with a high‑definition map and shall never command a speed exceeding the posted limit; ambiguous sign classifications shall default to the posted limit.\"\n    },\n    {\n      \"obstacle_id\": \"o7\",\n      \"text\": \"The control module shall initiate emergency braking only when the computed time‑to‑collision is ≤ 1.5 seconds and no safe alternative maneuver (e.g., steering) exists.\"\n    },\n    {\n      \"obstacle_id\": \"o8\",\n      \"text\": \"The system shall continuously monitor the health of all critical sensors and shall display a red fault indicator on the operator’s tablet if any sensor fails or degrades beyond defined thresholds.\"\n    },\n    {\n      \"obstacle_id\": \"o9\",\n      \"text\": \"The system shall verify that every required sensor (e.g., front radar, side radar, lidar) is powered and reporting health status; if any required sensor is offline, the ADS shall transition to a safe‑stop state within 2 seconds.\"\n    },\n    {\n      \"obstacle_id\": \"o10\",\n      \"text\": \"The perception system shall provide at least 180° coverage around the vehicle, including sidewalks, using appropriately positioned sensors; if coverage gaps exist, the system shall flag reduced awareness and limit vehicle speed accordingly.\"\n    }\n  ]\n}",
+      "parsed": {
+        "requirements": [
+          {
+            "obstacle_id": "o1",
+            "text": "The system shall fuse lidar, radar, and camera data to detect pedestrians that may be occluded by stationary objects and shall generate a warning if occlusion prevents confident detection."
+          },
+          {
+            "obstacle_id": "o2",
+            "text": "The system shall produce a probability distribution for pedestrian future trajectories that includes possible lateral turns and shall provide uncertainty bounds that the planner must consider for safe path planning."
+          },
+          {
+            "obstacle_id": "o3",
+            "text": "The system shall monitor the operator’s gaze and issue an audible/visual alert if the driver’s eyes are not directed toward the forward roadway for more than 3 seconds, unless a takeover request is active."
+          },
+          {
+            "obstacle_id": "o4",
+            "text": "The system shall allow the operator to achieve full manual control within 1.5 seconds of a takeover request and shall verify that the vehicle can stop before collision given that response time."
+          },
+          {
+            "obstacle_id": "o5",
+            "text": "The system shall inhibit manual‑control inputs while executing a safety‑critical maneuver and shall release control to the operator only after the maneuver is completed or a takeover request is issued."
+          },
+          {
+            "obstacle_id": "o6",
+            "text": "The system shall cross‑check detected speed‑limit signs with a high‑definition map and shall never command a speed exceeding the posted limit; ambiguous sign classifications shall default to the posted limit."
+          },
+          {
+            "obstacle_id": "o7",
+            "text": "The control module shall initiate emergency braking only when the computed time‑to‑collision is ≤ 1.5 seconds and no safe alternative maneuver (e.g., steering) exists."
+          },
+          {
+            "obstacle_id": "o8",
+            "text": "The system shall continuously monitor the health of all critical sensors and shall display a red fault indicator on the operator’s tablet if any sensor fails or degrades beyond defined thresholds."
+          },
+          {
+            "obstacle_id": "o9",
+            "text": "The system shall verify that every required sensor (e.g., front radar, side radar, lidar) is powered and reporting health status; if any required sensor is offline, the ADS shall transition to a safe‑stop state within 2 seconds."
+          },
+          {
+            "obstacle_id": "o10",
+            "text": "The perception system shall provide at least 180° coverage around the vehicle, including sidewalks, using appropriately positioned sensors; if coverage gaps exist, the system shall flag reduced awareness and limit vehicle speed accordingly."
+          }
+        ]
+      },
+      "error": ""
+    }
+  ],
+  "tgrl": "grl UberATGTestVehicle {\n    actor Operator {\n        goal MonitorRoad;\n        goal TakeOverControlWhenNeeded;\n        goal TagEvents;\n        goal CheckSystemStatus;\n        softGoal OperatorSafety;\n    }\n    actor ADS {\n        goal NavigateSafely;\n        goal FollowSpeedLimits;\n        goal DetectObjects;\n        goal PredictTrajectories;\n        goal PlanPath;\n        goal ControlVehicle;\n        softGoal SystemSafety;\n        softGoal LegalCompliance;\n    }\n    actor Pedestrian {\n        goal CrossSafely;\n        softGoal PedestrianSafety;\n    }\n    actor Cyclist {\n        goal RideSafely;\n        softGoal CyclistSafety;\n    }\n    actor OtherDriver {\n        goal DriveSafely;\n        softGoal DriverSafety;\n    }\n}",
+  "tgrl_valid": true,
+  "ok": true
+}

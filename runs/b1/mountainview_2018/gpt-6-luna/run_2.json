@@ -1,0 +1,117 @@
+{
+  "condition": "b1",
+  "case": "mountainview_2018",
+  "model": "gpt-6-luna",
+  "model_id": "openai/gpt-6-luna",
+  "run": 2,
+  "temperature": null,
+  "prompt_version": "v1",
+  "started_at": "2026-11-11T15:41:24+00:00",
+  "items": [
+    {
+      "id": "r1",
+      "kind": "requirement",
+      "text": "The system shall detect obstacles in the vehicle’s intended path, including stationary vehicles, crash attenuators, barriers, and roadwork hazards, and shall not treat the absence or movement of a lead vehicle as evidence that the path is clear.",
+      "context": ""
+    },
+    {
+      "id": "r2",
+      "kind": "requirement",
+      "text": "The system shall limit acceleration and maintain a safe speed and stopping distance in view of detected hazards, road geometry, and sensor uncertainty, and shall brake or alert the driver when a collision risk is detected.",
+      "context": ""
+    },
+    {
+      "id": "r3",
+      "kind": "requirement",
+      "text": "The system shall monitor whether the driver is attentive to the roadway, not merely whether steering torque is applied, and shall issue escalating alerts and disengage or initiate a safe response if the driver does not respond.",
+      "context": ""
+    },
+    {
+      "id": "r4",
+      "kind": "requirement",
+      "text": "When the system cannot reliably control the vehicle because of uncertain lane geometry, sensor degradation, or another fault, it shall alert the driver and transition to a defined safe state without abrupt or hazardous vehicle behavior.",
+      "context": ""
+    },
+    {
+      "id": "r5",
+      "kind": "requirement",
+      "text": "The system shall define and enforce its operational limits, including road types, speeds, visibility, lane-marking conditions, and roadway configurations, and shall prevent or restrict use outside those limits.",
+      "context": ""
+    },
+    {
+      "id": "r6",
+      "kind": "requirement",
+      "text": "The system shall provide clear, timely warnings when Autopilot is unavailable, disengaging, or requiring immediate driver control, and shall allow the driver sufficient time and a clear means to take over.",
+      "context": ""
+    },
+    {
+      "id": "r7",
+      "kind": "requirement",
+      "text": "The system shall recognize lane splits, exits, merges, HOV-lane boundaries, and changes or loss of lane markings, and shall avoid unintended lane departures or steering toward an uncertain path.",
+      "context": ""
+    },
+    {
+      "id": "r8",
+      "kind": "requirement",
+      "text": "Forward collision warning and automatic emergency braking shall detect relevant hazards in the vehicle’s path and provide warning or braking in time to reduce collision risk, including when cruise control or Autosteer is active.",
+      "context": ""
+    },
+    {
+      "id": "r9",
+      "kind": "requirement",
+      "text": "The system shall continuously check the availability and plausibility of its sensors and processing, identify degraded or conflicting inputs, and prevent unsafe control based on unreliable data.",
+      "context": ""
+    },
+    {
+      "id": "r10",
+      "kind": "requirement",
+      "text": "The system shall clearly communicate Autopilot’s capabilities, limitations, active status, and the driver’s responsibilities, and shall prevent accidental activation or ambiguous transfer of control.",
+      "context": ""
+    }
+  ],
+  "stages": [
+    {
+      "stage": "b1",
+      "prompt": "You are a requirements engineer reviewing a safety-critical system.\n\nRead the system description below. List the 10 most important requirements that are missing from it:\nthings the system should do or guarantee for safe operation that the description does not cover.\nGive at most 10, ranked from most to least important.\n\nReply with JSON only, in this shape:\n{\"requirements\": [{\"text\": \"The system shall ...\"}]}\n\nSystem description:\n# Case: Tesla Model X with Autopilot (Mountain View, California, 2018)\n\nSource: NTSB Highway Accident Report HAR-20/01. This is a description of the system and its use before the crash. It does not include the investigation findings.\n\n## System\nA 2017 Tesla Model X has Autopilot, a SAE Level 2 partial driving automation feature. It combines Traffic-Aware Cruise Control (TACC) and Autosteer (lane keeping). The driver stays responsible for driving and monitoring the road.\n\n## Main parts\n- Sensors: a forward-facing camera, a forward-facing radar and ultrasonic sensors.\n- Vision processing: a camera-based system detects lane markings, vehicles and some objects ahead.\n- TACC: holds a speed set by the driver, follows a vehicle ahead at a chosen gap, and returns to the set speed when no vehicle is ahead.\n- Autosteer: keeps the vehicle in its lane using lane markings and the path of the vehicle ahead.\n- Forward collision warning and automatic emergency braking are available as separate features.\n- Driver monitoring: steering torque is used to check that the driver's hands are on the wheel, with visual and audible alerts if no hands are detected for a period of time.\n\n## People\n- The driver sets the cruising speed, turns Autopilot on, and is told to keep hands on the wheel and watch the road.\n- Other road users and road workers share the highway. Road agencies maintain road markings and safety hardware such as barriers and crash attenuators.\n\n## Operating context\nBusy multi-lane freeway with high-occupancy-vehicle (HOV) lanes, exits and interchanges, lane markings of different quality, and traffic that changes in speed.\n\n",
+      "raw_response": "{\"requirements\":[{\"text\":\"The system shall detect obstacles in the vehicle’s intended path, including stationary vehicles, crash attenuators, barriers, and roadwork hazards, and shall not treat the absence or movement of a lead vehicle as evidence that the path is clear.\"},{\"text\":\"The system shall limit acceleration and maintain a safe speed and stopping distance in view of detected hazards, road geometry, and sensor uncertainty, and shall brake or alert the driver when a collision risk is detected.\"},{\"text\":\"The system shall monitor whether the driver is attentive to the roadway, not merely whether steering torque is applied, and shall issue escalating alerts and disengage or initiate a safe response if the driver does not respond.\"},{\"text\":\"When the system cannot reliably control the vehicle because of uncertain lane geometry, sensor degradation, or another fault, it shall alert the driver and transition to a defined safe state without abrupt or hazardous vehicle behavior.\"},{\"text\":\"The system shall define and enforce its operational limits, including road types, speeds, visibility, lane-marking conditions, and roadway configurations, and shall prevent or restrict use outside those limits.\"},{\"text\":\"The system shall provide clear, timely warnings when Autopilot is unavailable, disengaging, or requiring immediate driver control, and shall allow the driver sufficient time and a clear means to take over.\"},{\"text\":\"The system shall recognize lane splits, exits, merges, HOV-lane boundaries, and changes or loss of lane markings, and shall avoid unintended lane departures or steering toward an uncertain path.\"},{\"text\":\"Forward collision warning and automatic emergency braking shall detect relevant hazards in the vehicle’s path and provide warning or braking in time to reduce collision risk, including when cruise control or Autosteer is active.\"},{\"text\":\"The system shall continuously check the availability and plausibility of its sensors and processing, identify degraded or conflicting inputs, and prevent unsafe control based on unreliable data.\"},{\"text\":\"The system shall clearly communicate Autopilot’s capabilities, limitations, active status, and the driver’s responsibilities, and shall prevent accidental activation or ambiguous transfer of control.\"}]}",
+      "parsed": {
+        "requirements": [
+          {
+            "text": "The system shall detect obstacles in the vehicle’s intended path, including stationary vehicles, crash attenuators, barriers, and roadwork hazards, and shall not treat the absence or movement of a lead vehicle as evidence that the path is clear."
+          },
+          {
+            "text": "The system shall limit acceleration and maintain a safe speed and stopping distance in view of detected hazards, road geometry, and sensor uncertainty, and shall brake or alert the driver when a collision risk is detected."
+          },
+          {
+            "text": "The system shall monitor whether the driver is attentive to the roadway, not merely whether steering torque is applied, and shall issue escalating alerts and disengage or initiate a safe response if the driver does not respond."
+          },
+          {
+            "text": "When the system cannot reliably control the vehicle because of uncertain lane geometry, sensor degradation, or another fault, it shall alert the driver and transition to a defined safe state without abrupt or hazardous vehicle behavior."
+          },
+          {
+            "text": "The system shall define and enforce its operational limits, including road types, speeds, visibility, lane-marking conditions, and roadway configurations, and shall prevent or restrict use outside those limits."
+          },
+          {
+            "text": "The system shall provide clear, timely warnings when Autopilot is unavailable, disengaging, or requiring immediate driver control, and shall allow the driver sufficient time and a clear means to take over."
+          },
+          {
+            "text": "The system shall recognize lane splits, exits, merges, HOV-lane boundaries, and changes or loss of lane markings, and shall avoid unintended lane departures or steering toward an uncertain path."
+          },
+          {
+            "text": "Forward collision warning and automatic emergency braking shall detect relevant hazards in the vehicle’s path and provide warning or braking in time to reduce collision risk, including when cruise control or Autosteer is active."
+          },
+          {
+            "text": "The system shall continuously check the availability and plausibility of its sensors and processing, identify degraded or conflicting inputs, and prevent unsafe control based on unreliable data."
+          },
+          {
+            "text": "The system shall clearly communicate Autopilot’s capabilities, limitations, active status, and the driver’s responsibilities, and shall prevent accidental activation or ambiguous transfer of control."
+          }
+        ]
+      },
+      "error": ""
+    }
+  ],
+  "tgrl": "",
+  "tgrl_valid": null,
+  "ok": true
+}

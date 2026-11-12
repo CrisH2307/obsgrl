@@ -1,0 +1,138 @@
+{
+  "condition": "b2",
+  "case": "williston_2016",
+  "model": "gpt-oss-120b",
+  "model_id": "openai/gpt-oss-120b",
+  "run": 3,
+  "temperature": 0.7,
+  "prompt_version": "v1",
+  "started_at": "2026-11-11T15:27:15+00:00",
+  "items": [
+    {
+      "id": "g1",
+      "kind": "goal",
+      "text": "Autopilot: Maintain safety of vehicle and occupants",
+      "context": ""
+    },
+    {
+      "id": "g2",
+      "kind": "goal",
+      "text": "Autopilot: Avoid collisions with other road users",
+      "context": ""
+    },
+    {
+      "id": "g3",
+      "kind": "goal",
+      "text": "Autopilot: Keep vehicle centered in its lane",
+      "context": ""
+    },
+    {
+      "id": "g4",
+      "kind": "goal",
+      "text": "Autopilot: Adjust speed according to driver setting and traffic",
+      "context": ""
+    },
+    {
+      "id": "g5",
+      "kind": "goal",
+      "text": "Driver: Keep hands on the steering wheel while Autopilot is active",
+      "context": ""
+    },
+    {
+      "id": "g6",
+      "kind": "goal",
+      "text": "Autopilot: Provide timely alerts when driver inattention is detected",
+      "context": ""
+    },
+    {
+      "id": "g7",
+      "kind": "goal",
+      "text": "Driver: Monitor road conditions while Autopilot is engaged",
+      "context": ""
+    },
+    {
+      "id": "g8",
+      "kind": "goal",
+      "text": "Driver: Set appropriate cruising speed",
+      "context": ""
+    },
+    {
+      "id": "g9",
+      "kind": "goal",
+      "text": "OtherRoadUser: Interact safely with autonomous vehicle",
+      "context": ""
+    },
+    {
+      "id": "g10",
+      "kind": "goal",
+      "text": "Pedestrian: Cross road safely without collision",
+      "context": ""
+    }
+  ],
+  "stages": [
+    {
+      "stage": "s1_extract",
+      "prompt": "You are a requirements engineer building a goal model in GRL (Goal-oriented Requirement Language).\n\nRead the system description below and build a GRL model in textual GRL (TGRL).\nInclude every actor, including humans affected by the system (for example operators and pedestrians).\n\nTGRL syntax example:\ngrl Example { actor Driver { goal ReachDestination; softGoal Comfort; } }\n\nReply with JSON only, in this shape:\n{\"tgrl\": \"grl ... { ... }\",\n \"goals\": [{\"id\": \"g1\", \"actor\": \"...\", \"text\": \"...\"}]}\n\nList the 10 most important goals in \"goals\", ranked from most to least important, including goals of human actors.\n\nSystem description:\n# Case: Tesla Model S with Autopilot (Williston, Florida, 2016)\n\nSource: NTSB Highway Accident Report HAR-17/02. This is a description of the system and its use before the crash. It does not include the investigation findings.\n\n## System\nA 2015 Tesla Model S has Autopilot, a SAE Level 2 partial driving automation feature. It combines Traffic-Aware Cruise Control (TACC) and Autosteer (lane keeping). The driver stays responsible for driving and monitoring the road.\n\n## Main parts\n- Sensors: a forward-facing camera, a forward-facing radar and ultrasonic sensors.\n- Vision processing: a camera-based system detects lane markings and objects ahead.\n- TACC: holds a speed set by the driver, slows down for a vehicle ahead in the same lane, and speeds up again when the lane is clear.\n- Autosteer: keeps the vehicle centered in its lane using lane markings and the vehicle ahead.\n- Forward collision warning and automatic emergency braking are available as separate features.\n- Driver monitoring: the system checks that the driver's hands are on the steering wheel by sensing steering torque, and shows visual and audible alerts if no hands are detected for a period of time.\n\n## People\n- The driver sets the cruising speed, turns Autopilot on, and is told to keep hands on the wheel and watch the road.\n- Other road users include cars, large trucks crossing or joining the road, and motorcyclists.\n\n## Operating context\nAutopilot is intended mainly for highways with limited access, in good visibility. Drivers can also turn it on for other roads, such as divided highways with cross traffic at intersections.\n\n",
+      "raw_response": "{\n  \"tgrl\": \"grl TeslaAutopilotModel {\\n  actor Driver {\\n    goal SetCruisingSpeed;\\n    softGoal MonitorRoad;\\n    softGoal KeepHandsOnWheel;\\n    softGoal MaintainSafety;\\n  }\\n  actor Autopilot {\\n    goal KeepLane;\\n    goal AdjustSpeed;\\n    goal DetectObstacles;\\n    goal ProvideDriverAlerts;\\n    softGoal ReduceDriverWorkload;\\n    softGoal MaintainSafety;\\n  }\\n  actor Vehicle {\\n    softGoal SystemReliability;\\n    softGoal Comfort;\\n  }\\n  actor OtherRoadUser {\\n    softGoal SafeInteraction;\\n  }\\n  actor Pedestrian {\\n    softGoal SafeCrossing;\\n  }\\n}\",\n  \"goals\": [\n    { \"id\": \"g1\", \"actor\": \"Autopilot\", \"text\": \"Maintain safety of vehicle and occupants\" },\n    { \"id\": \"g2\", \"actor\": \"Autopilot\", \"text\": \"Avoid collisions with other road users\" },\n    { \"id\": \"g3\", \"actor\": \"Autopilot\", \"text\": \"Keep vehicle centered in its lane\" },\n    { \"id\": \"g4\", \"actor\": \"Autopilot\", \"text\": \"Adjust speed according to driver setting and traffic\" },\n    { \"id\": \"g5\", \"actor\": \"Driver\", \"text\": \"Keep hands on the steering wheel while Autopilot is active\" },\n    { \"id\": \"g6\", \"actor\": \"Autopilot\", \"text\": \"Provide timely alerts when driver inattention is detected\" },\n    { \"id\": \"g7\", \"actor\": \"Driver\", \"text\": \"Monitor road conditions while Autopilot is engaged\" },\n    { \"id\": \"g8\", \"actor\": \"Driver\", \"text\": \"Set appropriate cruising speed\" },\n    { \"id\": \"g9\", \"actor\": \"OtherRoadUser\", \"text\": \"Interact safely with autonomous vehicle\" },\n    { \"id\": \"g10\", \"actor\": \"Pedestrian\", \"text\": \"Cross road safely without collision\" }\n  ]\n}",
+      "parsed": {
+        "tgrl": "grl TeslaAutopilotModel {\n  actor Driver {\n    goal SetCruisingSpeed;\n    softGoal MonitorRoad;\n    softGoal KeepHandsOnWheel;\n    softGoal MaintainSafety;\n  }\n  actor Autopilot {\n    goal KeepLane;\n    goal AdjustSpeed;\n    goal DetectObstacles;\n    goal ProvideDriverAlerts;\n    softGoal ReduceDriverWorkload;\n    softGoal MaintainSafety;\n  }\n  actor Vehicle {\n    softGoal SystemReliability;\n    softGoal Comfort;\n  }\n  actor OtherRoadUser {\n    softGoal SafeInteraction;\n  }\n  actor Pedestrian {\n    softGoal SafeCrossing;\n  }\n}",
+        "goals": [
+          {
+            "id": "g1",
+            "actor": "Autopilot",
+            "text": "Maintain safety of vehicle and occupants"
+          },
+          {
+            "id": "g2",
+            "actor": "Autopilot",
+            "text": "Avoid collisions with other road users"
+          },
+          {
+            "id": "g3",
+            "actor": "Autopilot",
+            "text": "Keep vehicle centered in its lane"
+          },
+          {
+            "id": "g4",
+            "actor": "Autopilot",
+            "text": "Adjust speed according to driver setting and traffic"
+          },
+          {
+            "id": "g5",
+            "actor": "Driver",
+            "text": "Keep hands on the steering wheel while Autopilot is active"
+          },
+          {
+            "id": "g6",
+            "actor": "Autopilot",
+            "text": "Provide timely alerts when driver inattention is detected"
+          },
+          {
+            "id": "g7",
+            "actor": "Driver",
+            "text": "Monitor road conditions while Autopilot is engaged"
+          },
+          {
+            "id": "g8",
+            "actor": "Driver",
+            "text": "Set appropriate cruising speed"
+          },
+          {
+            "id": "g9",
+            "actor": "OtherRoadUser",
+            "text": "Interact safely with autonomous vehicle"
+          },
+          {
+            "id": "g10",
+            "actor": "Pedestrian",
+            "text": "Cross road safely without collision"
+          }
+        ]
+      },
+      "error": ""
+    }
+  ],
+  "tgrl": "grl TeslaAutopilotModel {\n  actor Driver {\n    goal SetCruisingSpeed;\n    softGoal MonitorRoad;\n    softGoal KeepHandsOnWheel;\n    softGoal MaintainSafety;\n  }\n  actor Autopilot {\n    goal KeepLane;\n    goal AdjustSpeed;\n    goal DetectObstacles;\n    goal ProvideDriverAlerts;\n    softGoal ReduceDriverWorkload;\n    softGoal MaintainSafety;\n  }\n  actor Vehicle {\n    softGoal SystemReliability;\n    softGoal Comfort;\n  }\n  actor OtherRoadUser {\n    softGoal SafeInteraction;\n  }\n  actor Pedestrian {\n    softGoal SafeCrossing;\n  }\n}",
+  "tgrl_valid": true,
+  "ok": true
+}

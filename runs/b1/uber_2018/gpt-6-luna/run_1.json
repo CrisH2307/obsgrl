@@ -1,0 +1,117 @@
+{
+  "condition": "b1",
+  "case": "uber_2018",
+  "model": "gpt-6-luna",
+  "model_id": "openai/gpt-6-luna",
+  "run": 1,
+  "temperature": null,
+  "prompt_version": "v1",
+  "started_at": "2026-11-11T15:38:56+00:00",
+  "items": [
+    {
+      "id": "r1",
+      "kind": "requirement",
+      "text": "The system shall detect and track pedestrians, cyclists, and other road users in its intended operating area, including at night and under expected lighting, occlusion, and sensor-noise conditions, and shall represent uncertainty in those detections.",
+      "context": ""
+    },
+    {
+      "id": "r2",
+      "kind": "requirement",
+      "text": "The system shall assess whether the vehicle's path and stopping distance create a collision risk with any detected or potentially occluded road user, and shall take timely evasive or braking action; uncertain classifications or predictions shall not suppress a safety response.",
+      "context": ""
+    },
+    {
+      "id": "r3",
+      "kind": "requirement",
+      "text": "The system shall limit vehicle speed to a level that permits stopping or avoiding hazards within the distance it can reliably perceive, accounting for visibility, road conditions, traffic, and the vehicle's braking capability.",
+      "context": ""
+    },
+    {
+      "id": "r4",
+      "kind": "requirement",
+      "text": "The system shall define and enforce its operational design domain, and shall not begin or continue automated driving when conditions are outside that domain; it shall transition safely when conditions leave it.",
+      "context": ""
+    },
+    {
+      "id": "r5",
+      "kind": "requirement",
+      "text": "The system shall monitor the health and plausibility of sensors, perception, prediction, planning, control, and vehicle actuation, and shall detect faults or degraded performance that could compromise safe operation.",
+      "context": ""
+    },
+    {
+      "id": "r6",
+      "kind": "requirement",
+      "text": "When safe automated operation cannot be assured, the system shall execute a defined minimal-risk maneuver, such as controlled braking to a safe stop, without depending on a timely human response.",
+      "context": ""
+    },
+    {
+      "id": "r7",
+      "kind": "requirement",
+      "text": "The system shall alert the vehicle operator to hazards, faults, and requests to take over with sufficient time and clear, unambiguous indications, and shall ensure that automated-to-manual control transitions are safe.",
+      "context": ""
+    },
+    {
+      "id": "r8",
+      "kind": "requirement",
+      "text": "The system shall verify that the operator is attentive and able to take control before and during automated operation, and shall prevent or safely end operation if the operator is unavailable or unresponsive.",
+      "context": ""
+    },
+    {
+      "id": "r9",
+      "kind": "requirement",
+      "text": "The system shall monitor commanded steering, throttle, and braking against actual vehicle response, and shall use an independent safety mechanism to mitigate imminent collisions or stop the vehicle if control performance is inadequate.",
+      "context": ""
+    },
+    {
+      "id": "r10",
+      "kind": "requirement",
+      "text": "The system shall be validated against representative and challenging scenarios, including pedestrian crossings, intersections, low-light conditions, and perception uncertainty, and shall not be deployed unless safety performance meets defined acceptance criteria.",
+      "context": ""
+    }
+  ],
+  "stages": [
+    {
+      "stage": "b1",
+      "prompt": "You are a requirements engineer reviewing a safety-critical system.\n\nRead the system description below. List the 10 most important requirements that are missing from it:\nthings the system should do or guarantee for safe operation that the description does not cover.\nGive at most 10, ranked from most to least important.\n\nReply with JSON only, in this shape:\n{\"requirements\": [{\"text\": \"The system shall ...\"}]}\n\nSystem description:\n# Case: Uber ATG automated test vehicle (Tempe, Arizona, 2018)\n\nSource: NTSB Highway Accident Report HAR-19/03. This is a description of the system and its use before the crash. It does not include the investigation findings.\n\n## System\nA modified Volvo XC90 SUV is used by Uber Advanced Technologies Group (ATG) to test an automated driving system (ADS) on public roads. The ADS is designed to drive the vehicle without human input in defined conditions, up to about 45 mph in this test program.\n\n## Main parts\n- Sensors: roof-mounted lidar, radar units and cameras covering the area around the vehicle.\n- Perception: detects objects around the vehicle, classifies each one (for example vehicle, pedestrian, bicycle, other), and tracks it over time.\n- Prediction: estimates where each tracked object will go next, using its class and recent movement.\n- Planning and control: chooses a path and speed, and controls steering, throttle and braking.\n- Vehicle: the Volvo factory driver-assistance features (such as forward collision warning and automatic emergency braking) are part of the base vehicle.\n\n## People\n- One vehicle operator sits in the driver seat. The operator is responsible for watching the road and taking over control when needed. The operator also uses a tablet-style interface to tag events and check system status.\n- Other road users share the road: pedestrians, cyclists and other drivers. They are not aware of the test program.\n\n## Operating context\nPublic multi-lane roads in an urban area, day and night, with posted speed limits, marked crosswalks, intersections and street lighting that varies by location.\n\n",
+      "raw_response": "{\"requirements\":[{\"text\":\"The system shall detect and track pedestrians, cyclists, and other road users in its intended operating area, including at night and under expected lighting, occlusion, and sensor-noise conditions, and shall represent uncertainty in those detections.\"},{\"text\":\"The system shall assess whether the vehicle's path and stopping distance create a collision risk with any detected or potentially occluded road user, and shall take timely evasive or braking action; uncertain classifications or predictions shall not suppress a safety response.\"},{\"text\":\"The system shall limit vehicle speed to a level that permits stopping or avoiding hazards within the distance it can reliably perceive, accounting for visibility, road conditions, traffic, and the vehicle's braking capability.\"},{\"text\":\"The system shall define and enforce its operational design domain, and shall not begin or continue automated driving when conditions are outside that domain; it shall transition safely when conditions leave it.\"},{\"text\":\"The system shall monitor the health and plausibility of sensors, perception, prediction, planning, control, and vehicle actuation, and shall detect faults or degraded performance that could compromise safe operation.\"},{\"text\":\"When safe automated operation cannot be assured, the system shall execute a defined minimal-risk maneuver, such as controlled braking to a safe stop, without depending on a timely human response.\"},{\"text\":\"The system shall alert the vehicle operator to hazards, faults, and requests to take over with sufficient time and clear, unambiguous indications, and shall ensure that automated-to-manual control transitions are safe.\"},{\"text\":\"The system shall verify that the operator is attentive and able to take control before and during automated operation, and shall prevent or safely end operation if the operator is unavailable or unresponsive.\"},{\"text\":\"The system shall monitor commanded steering, throttle, and braking against actual vehicle response, and shall use an independent safety mechanism to mitigate imminent collisions or stop the vehicle if control performance is inadequate.\"},{\"text\":\"The system shall be validated against representative and challenging scenarios, including pedestrian crossings, intersections, low-light conditions, and perception uncertainty, and shall not be deployed unless safety performance meets defined acceptance criteria.\"}]}",
+      "parsed": {
+        "requirements": [
+          {
+            "text": "The system shall detect and track pedestrians, cyclists, and other road users in its intended operating area, including at night and under expected lighting, occlusion, and sensor-noise conditions, and shall represent uncertainty in those detections."
+          },
+          {
+            "text": "The system shall assess whether the vehicle's path and stopping distance create a collision risk with any detected or potentially occluded road user, and shall take timely evasive or braking action; uncertain classifications or predictions shall not suppress a safety response."
+          },
+          {
+            "text": "The system shall limit vehicle speed to a level that permits stopping or avoiding hazards within the distance it can reliably perceive, accounting for visibility, road conditions, traffic, and the vehicle's braking capability."
+          },
+          {
+            "text": "The system shall define and enforce its operational design domain, and shall not begin or continue automated driving when conditions are outside that domain; it shall transition safely when conditions leave it."
+          },
+          {
+            "text": "The system shall monitor the health and plausibility of sensors, perception, prediction, planning, control, and vehicle actuation, and shall detect faults or degraded performance that could compromise safe operation."
+          },
+          {
+            "text": "When safe automated operation cannot be assured, the system shall execute a defined minimal-risk maneuver, such as controlled braking to a safe stop, without depending on a timely human response."
+          },
+          {
+            "text": "The system shall alert the vehicle operator to hazards, faults, and requests to take over with sufficient time and clear, unambiguous indications, and shall ensure that automated-to-manual control transitions are safe."
+          },
+          {
+            "text": "The system shall verify that the operator is attentive and able to take control before and during automated operation, and shall prevent or safely end operation if the operator is unavailable or unresponsive."
+          },
+          {
+            "text": "The system shall monitor commanded steering, throttle, and braking against actual vehicle response, and shall use an independent safety mechanism to mitigate imminent collisions or stop the vehicle if control performance is inadequate."
+          },
+          {
+            "text": "The system shall be validated against representative and challenging scenarios, including pedestrian crossings, intersections, low-light conditions, and perception uncertainty, and shall not be deployed unless safety performance meets defined acceptance criteria."
+          }
+        ]
+      },
+      "error": ""
+    }
+  ],
+  "tgrl": "",
+  "tgrl_valid": null,
+  "ok": true
+}

@@ -1,0 +1,117 @@
+{
+  "condition": "b1",
+  "case": "williston_2016",
+  "model": "gpt-oss-120b",
+  "model_id": "openai/gpt-oss-120b",
+  "run": 2,
+  "temperature": 0.7,
+  "prompt_version": "v1",
+  "started_at": "2026-11-11T15:24:35+00:00",
+  "items": [
+    {
+      "id": "r1",
+      "kind": "requirement",
+      "text": "The system shall automatically disengage Autopilot and return control to the driver when lane markings become ambiguous, occluded, or unavailable for a configurable safety margin.",
+      "context": ""
+    },
+    {
+      "id": "r2",
+      "kind": "requirement",
+      "text": "The system shall continuously monitor driver attentiveness using multiple modalities (e.g., steering torque, eye‑gaze, facial pose) and issue an escalating series of alerts, culminating in immediate Autopilot disengagement if the driver fails to re‑engage within a defined time window.",
+      "context": ""
+    },
+    {
+      "id": "r3",
+      "kind": "requirement",
+      "text": "The system shall perform a safe‑stop maneuver (controlled deceleration to a complete stop) if a forward collision warning transitions to an imminent‑collision state and the driver does not apply braking within a prescribed reaction time.",
+      "context": ""
+    },
+    {
+      "id": "r4",
+      "kind": "requirement",
+      "text": "The system shall limit maximum permissible cruising speed and enforce lower speed thresholds when operating on road types not explicitly approved for Autopilot (e.g., roads with frequent cross‑traffic, intersections, or limited visibility conditions).",
+      "context": ""
+    },
+    {
+      "id": "r5",
+      "kind": "requirement",
+      "text": "The system shall provide an unambiguous, continuously visible status indicator (e.g., dashboard icon and audible tone) that clearly shows whether Autopilot is engaged, disengaged, or in a fault state.",
+      "context": ""
+    },
+    {
+      "id": "r6",
+      "kind": "requirement",
+      "text": "The system shall detect degradation or failure of any primary sensor (camera, radar, ultrasonic) and transition to a safe‑degraded mode or full disengagement, ensuring that the vehicle remains controllable by the driver.",
+      "context": ""
+    },
+    {
+      "id": "r7",
+      "kind": "requirement",
+      "text": "The system shall incorporate functional safety mechanisms (e.g., redundancy, diversity, fault detection) that meet ISO 26262 ASIL D for all safety‑critical functions such as lane keeping and adaptive cruise control.",
+      "context": ""
+    },
+    {
+      "id": "r8",
+      "kind": "requirement",
+      "text": "The system shall prohibit activation of Autopilot in environments that exceed its validated operational design domain (ODD), including adverse weather (rain, fog, snow), low‑visibility conditions, and road surfaces lacking clear lane markings.",
+      "context": ""
+    },
+    {
+      "id": "r9",
+      "kind": "requirement",
+      "text": "The system shall securely log all Autopilot activation, disengagement, sensor status, driver‑monitoring events, and any safety‑critical interventions to non‑volatile storage for post‑incident analysis.",
+      "context": ""
+    },
+    {
+      "id": "r10",
+      "kind": "requirement",
+      "text": "The system shall verify the integrity and authenticity of any over‑the‑air (OTA) software updates using cryptographic signatures before installation, and shall not apply updates that could compromise safety‑critical functions without a validated rollback mechanism.",
+      "context": ""
+    }
+  ],
+  "stages": [
+    {
+      "stage": "b1",
+      "prompt": "You are a requirements engineer reviewing a safety-critical system.\n\nRead the system description below. List the 10 most important requirements that are missing from it:\nthings the system should do or guarantee for safe operation that the description does not cover.\nGive at most 10, ranked from most to least important.\n\nReply with JSON only, in this shape:\n{\"requirements\": [{\"text\": \"The system shall ...\"}]}\n\nSystem description:\n# Case: Tesla Model S with Autopilot (Williston, Florida, 2016)\n\nSource: NTSB Highway Accident Report HAR-17/02. This is a description of the system and its use before the crash. It does not include the investigation findings.\n\n## System\nA 2015 Tesla Model S has Autopilot, a SAE Level 2 partial driving automation feature. It combines Traffic-Aware Cruise Control (TACC) and Autosteer (lane keeping). The driver stays responsible for driving and monitoring the road.\n\n## Main parts\n- Sensors: a forward-facing camera, a forward-facing radar and ultrasonic sensors.\n- Vision processing: a camera-based system detects lane markings and objects ahead.\n- TACC: holds a speed set by the driver, slows down for a vehicle ahead in the same lane, and speeds up again when the lane is clear.\n- Autosteer: keeps the vehicle centered in its lane using lane markings and the vehicle ahead.\n- Forward collision warning and automatic emergency braking are available as separate features.\n- Driver monitoring: the system checks that the driver's hands are on the steering wheel by sensing steering torque, and shows visual and audible alerts if no hands are detected for a period of time.\n\n## People\n- The driver sets the cruising speed, turns Autopilot on, and is told to keep hands on the wheel and watch the road.\n- Other road users include cars, large trucks crossing or joining the road, and motorcyclists.\n\n## Operating context\nAutopilot is intended mainly for highways with limited access, in good visibility. Drivers can also turn it on for other roads, such as divided highways with cross traffic at intersections.\n\n",
+      "raw_response": "{\n  \"requirements\": [\n    {\n      \"text\": \"The system shall automatically disengage Autopilot and return control to the driver when lane markings become ambiguous, occluded, or unavailable for a configurable safety margin.\"\n    },\n    {\n      \"text\": \"The system shall continuously monitor driver attentiveness using multiple modalities (e.g., steering torque, eye‑gaze, facial pose) and issue an escalating series of alerts, culminating in immediate Autopilot disengagement if the driver fails to re‑engage within a defined time window.\"\n    },\n    {\n      \"text\": \"The system shall perform a safe‑stop maneuver (controlled deceleration to a complete stop) if a forward collision warning transitions to an imminent‑collision state and the driver does not apply braking within a prescribed reaction time.\"\n    },\n    {\n      \"text\": \"The system shall limit maximum permissible cruising speed and enforce lower speed thresholds when operating on road types not explicitly approved for Autopilot (e.g., roads with frequent cross‑traffic, intersections, or limited visibility conditions).\"\n    },\n    {\n      \"text\": \"The system shall provide an unambiguous, continuously visible status indicator (e.g., dashboard icon and audible tone) that clearly shows whether Autopilot is engaged, disengaged, or in a fault state.\"\n    },\n    {\n      \"text\": \"The system shall detect degradation or failure of any primary sensor (camera, radar, ultrasonic) and transition to a safe‑degraded mode or full disengagement, ensuring that the vehicle remains controllable by the driver.\"\n    },\n    {\n      \"text\": \"The system shall incorporate functional safety mechanisms (e.g., redundancy, diversity, fault detection) that meet ISO 26262 ASIL D for all safety‑critical functions such as lane keeping and adaptive cruise control.\"\n    },\n    {\n      \"text\": \"The system shall prohibit activation of Autopilot in environments that exceed its validated operational design domain (ODD), including adverse weather (rain, fog, snow), low‑visibility conditions, and road surfaces lacking clear lane markings.\"\n    },\n    {\n      \"text\": \"The system shall securely log all Autopilot activation, disengagement, sensor status, driver‑monitoring events, and any safety‑critical interventions to non‑volatile storage for post‑incident analysis.\"\n    },\n    {\n      \"text\": \"The system shall verify the integrity and authenticity of any over‑the‑air (OTA) software updates using cryptographic signatures before installation, and shall not apply updates that could compromise safety‑critical functions without a validated rollback mechanism.\"\n    }\n  ]\n}",
+      "parsed": {
+        "requirements": [
+          {
+            "text": "The system shall automatically disengage Autopilot and return control to the driver when lane markings become ambiguous, occluded, or unavailable for a configurable safety margin."
+          },
+          {
+            "text": "The system shall continuously monitor driver attentiveness using multiple modalities (e.g., steering torque, eye‑gaze, facial pose) and issue an escalating series of alerts, culminating in immediate Autopilot disengagement if the driver fails to re‑engage within a defined time window."
+          },
+          {
+            "text": "The system shall perform a safe‑stop maneuver (controlled deceleration to a complete stop) if a forward collision warning transitions to an imminent‑collision state and the driver does not apply braking within a prescribed reaction time."
+          },
+          {
+            "text": "The system shall limit maximum permissible cruising speed and enforce lower speed thresholds when operating on road types not explicitly approved for Autopilot (e.g., roads with frequent cross‑traffic, intersections, or limited visibility conditions)."
+          },
+          {
+            "text": "The system shall provide an unambiguous, continuously visible status indicator (e.g., dashboard icon and audible tone) that clearly shows whether Autopilot is engaged, disengaged, or in a fault state."
+          },
+          {
+            "text": "The system shall detect degradation or failure of any primary sensor (camera, radar, ultrasonic) and transition to a safe‑degraded mode or full disengagement, ensuring that the vehicle remains controllable by the driver."
+          },
+          {
+            "text": "The system shall incorporate functional safety mechanisms (e.g., redundancy, diversity, fault detection) that meet ISO 26262 ASIL D for all safety‑critical functions such as lane keeping and adaptive cruise control."
+          },
+          {
+            "text": "The system shall prohibit activation of Autopilot in environments that exceed its validated operational design domain (ODD), including adverse weather (rain, fog, snow), low‑visibility conditions, and road surfaces lacking clear lane markings."
+          },
+          {
+            "text": "The system shall securely log all Autopilot activation, disengagement, sensor status, driver‑monitoring events, and any safety‑critical interventions to non‑volatile storage for post‑incident analysis."
+          },
+          {
+            "text": "The system shall verify the integrity and authenticity of any over‑the‑air (OTA) software updates using cryptographic signatures before installation, and shall not apply updates that could compromise safety‑critical functions without a validated rollback mechanism."
+          }
+        ]
+      },
+      "error": ""
+    }
+  ],
+  "tgrl": "",
+  "tgrl_valid": null,
+  "ok": true
+}

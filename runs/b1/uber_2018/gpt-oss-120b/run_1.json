@@ -1,0 +1,117 @@
+{
+  "condition": "b1",
+  "case": "uber_2018",
+  "model": "gpt-oss-120b",
+  "model_id": "openai/gpt-oss-120b",
+  "run": 1,
+  "temperature": 0.7,
+  "prompt_version": "v1",
+  "started_at": "2026-11-11T15:23:23+00:00",
+  "items": [
+    {
+      "id": "r1",
+      "kind": "requirement",
+      "text": "The system shall continuously monitor the health and integrity of all sensors and actuators, and if any component degrades beyond predefined thresholds, the system shall immediately transition to a safe state (e.g., controlled stop) without requiring operator intervention.",
+      "context": ""
+    },
+    {
+      "id": "r2",
+      "kind": "requirement",
+      "text": "The system shall provide a reliable, multimodal driver‑takeover request (visual, audible, and haptic) whenever the automated driving system cannot guarantee safe operation, and shall require explicit driver acknowledgment within a bounded time (e.g., 2 seconds) before resuming autonomous control.",
+      "context": ""
+    },
+    {
+      "id": "r3",
+      "kind": "requirement",
+      "text": "The system shall be developed and validated in accordance with ISO 26262 (ASIL D for safety‑critical functions) and shall include documented safety cases, hazard analyses, and verification/validation evidence for all safety‑related software and hardware.",
+      "context": ""
+    },
+    {
+      "id": "r4",
+      "kind": "requirement",
+      "text": "The system shall implement redundant braking actuation such that loss of the primary brake command does not prevent the vehicle from achieving a required stopping distance (e.g., 30 ft at 45 mph) under any single‑point failure condition.",
+      "context": ""
+    },
+    {
+      "id": "r5",
+      "kind": "requirement",
+      "text": "The system shall enforce geofencing and speed‑limit compliance, ensuring the vehicle never exceeds the posted speed limit by more than 5 mph and automatically reduces speed or disengages autonomous mode when approaching restricted zones.",
+      "context": ""
+    },
+    {
+      "id": "r6",
+      "kind": "requirement",
+      "text": "The system shall perform continuous runtime verification of perception, prediction, and planning outputs against a set of safety rules (e.g., no‑collision trajectory, minimum time‑to‑collision thresholds) and shall abort autonomous control and request driver takeover if any rule violation is detected.",
+      "context": ""
+    },
+    {
+      "id": "r7",
+      "kind": "requirement",
+      "text": "The system shall provide an emergency‑stop capability that can be activated by the vehicle operator, a remote safety monitor, or automatically by the system, bringing the vehicle to a complete stop within a defined distance (e.g., 15 ft) regardless of current speed.",
+      "context": ""
+    },
+    {
+      "id": "r8",
+      "kind": "requirement",
+      "text": "The system shall record all raw sensor data, perception results, planning decisions, control commands, and operator interventions with precise timestamps, store logs securely to prevent tampering, and retain them for post‑incident analysis.",
+      "context": ""
+    },
+    {
+      "id": "r9",
+      "kind": "requirement",
+      "text": "The system shall display a clear, unambiguous status indicator (e.g., green/yellow/red) of ADS readiness on the operator’s tablet and shall prohibit autonomous driving unless the status is green.",
+      "context": ""
+    },
+    {
+      "id": "r10",
+      "kind": "requirement",
+      "text": "The system shall be validated for operation under all environmental conditions expected in the test area (e.g., rain, glare, low‑light, dust) and shall automatically disengage autonomous mode if environmental factors exceed the validated operational envelope.",
+      "context": ""
+    }
+  ],
+  "stages": [
+    {
+      "stage": "b1",
+      "prompt": "You are a requirements engineer reviewing a safety-critical system.\n\nRead the system description below. List the 10 most important requirements that are missing from it:\nthings the system should do or guarantee for safe operation that the description does not cover.\nGive at most 10, ranked from most to least important.\n\nReply with JSON only, in this shape:\n{\"requirements\": [{\"text\": \"The system shall ...\"}]}\n\nSystem description:\n# Case: Uber ATG automated test vehicle (Tempe, Arizona, 2018)\n\nSource: NTSB Highway Accident Report HAR-19/03. This is a description of the system and its use before the crash. It does not include the investigation findings.\n\n## System\nA modified Volvo XC90 SUV is used by Uber Advanced Technologies Group (ATG) to test an automated driving system (ADS) on public roads. The ADS is designed to drive the vehicle without human input in defined conditions, up to about 45 mph in this test program.\n\n## Main parts\n- Sensors: roof-mounted lidar, radar units and cameras covering the area around the vehicle.\n- Perception: detects objects around the vehicle, classifies each one (for example vehicle, pedestrian, bicycle, other), and tracks it over time.\n- Prediction: estimates where each tracked object will go next, using its class and recent movement.\n- Planning and control: chooses a path and speed, and controls steering, throttle and braking.\n- Vehicle: the Volvo factory driver-assistance features (such as forward collision warning and automatic emergency braking) are part of the base vehicle.\n\n## People\n- One vehicle operator sits in the driver seat. The operator is responsible for watching the road and taking over control when needed. The operator also uses a tablet-style interface to tag events and check system status.\n- Other road users share the road: pedestrians, cyclists and other drivers. They are not aware of the test program.\n\n## Operating context\nPublic multi-lane roads in an urban area, day and night, with posted speed limits, marked crosswalks, intersections and street lighting that varies by location.\n\n",
+      "raw_response": "{\n  \"requirements\": [\n    {\n      \"text\": \"The system shall continuously monitor the health and integrity of all sensors and actuators, and if any component degrades beyond predefined thresholds, the system shall immediately transition to a safe state (e.g., controlled stop) without requiring operator intervention.\"\n    },\n    {\n      \"text\": \"The system shall provide a reliable, multimodal driver‑takeover request (visual, audible, and haptic) whenever the automated driving system cannot guarantee safe operation, and shall require explicit driver acknowledgment within a bounded time (e.g., 2 seconds) before resuming autonomous control.\"\n    },\n    {\n      \"text\": \"The system shall be developed and validated in accordance with ISO 26262 (ASIL D for safety‑critical functions) and shall include documented safety cases, hazard analyses, and verification/validation evidence for all safety‑related software and hardware.\"\n    },\n    {\n      \"text\": \"The system shall implement redundant braking actuation such that loss of the primary brake command does not prevent the vehicle from achieving a required stopping distance (e.g., 30 ft at 45 mph) under any single‑point failure condition.\"\n    },\n    {\n      \"text\": \"The system shall enforce geofencing and speed‑limit compliance, ensuring the vehicle never exceeds the posted speed limit by more than 5 mph and automatically reduces speed or disengages autonomous mode when approaching restricted zones.\"\n    },\n    {\n      \"text\": \"The system shall perform continuous runtime verification of perception, prediction, and planning outputs against a set of safety rules (e.g., no‑collision trajectory, minimum time‑to‑collision thresholds) and shall abort autonomous control and request driver takeover if any rule violation is detected.\"\n    },\n    {\n      \"text\": \"The system shall provide an emergency‑stop capability that can be activated by the vehicle operator, a remote safety monitor, or automatically by the system, bringing the vehicle to a complete stop within a defined distance (e.g., 15 ft) regardless of current speed.\"\n    },\n    {\n      \"text\": \"The system shall record all raw sensor data, perception results, planning decisions, control commands, and operator interventions with precise timestamps, store logs securely to prevent tampering, and retain them for post‑incident analysis.\"\n    },\n    {\n      \"text\": \"The system shall display a clear, unambiguous status indicator (e.g., green/yellow/red) of ADS readiness on the operator’s tablet and shall prohibit autonomous driving unless the status is green.\"\n    },\n    {\n      \"text\": \"The system shall be validated for operation under all environmental conditions expected in the test area (e.g., rain, glare, low‑light, dust) and shall automatically disengage autonomous mode if environmental factors exceed the validated operational envelope.\"\n    }\n  ]\n}",
+      "parsed": {
+        "requirements": [
+          {
+            "text": "The system shall continuously monitor the health and integrity of all sensors and actuators, and if any component degrades beyond predefined thresholds, the system shall immediately transition to a safe state (e.g., controlled stop) without requiring operator intervention."
+          },
+          {
+            "text": "The system shall provide a reliable, multimodal driver‑takeover request (visual, audible, and haptic) whenever the automated driving system cannot guarantee safe operation, and shall require explicit driver acknowledgment within a bounded time (e.g., 2 seconds) before resuming autonomous control."
+          },
+          {
+            "text": "The system shall be developed and validated in accordance with ISO 26262 (ASIL D for safety‑critical functions) and shall include documented safety cases, hazard analyses, and verification/validation evidence for all safety‑related software and hardware."
+          },
+          {
+            "text": "The system shall implement redundant braking actuation such that loss of the primary brake command does not prevent the vehicle from achieving a required stopping distance (e.g., 30 ft at 45 mph) under any single‑point failure condition."
+          },
+          {
+            "text": "The system shall enforce geofencing and speed‑limit compliance, ensuring the vehicle never exceeds the posted speed limit by more than 5 mph and automatically reduces speed or disengages autonomous mode when approaching restricted zones."
+          },
+          {
+            "text": "The system shall perform continuous runtime verification of perception, prediction, and planning outputs against a set of safety rules (e.g., no‑collision trajectory, minimum time‑to‑collision thresholds) and shall abort autonomous control and request driver takeover if any rule violation is detected."
+          },
+          {
+            "text": "The system shall provide an emergency‑stop capability that can be activated by the vehicle operator, a remote safety monitor, or automatically by the system, bringing the vehicle to a complete stop within a defined distance (e.g., 15 ft) regardless of current speed."
+          },
+          {
+            "text": "The system shall record all raw sensor data, perception results, planning decisions, control commands, and operator interventions with precise timestamps, store logs securely to prevent tampering, and retain them for post‑incident analysis."
+          },
+          {
+            "text": "The system shall display a clear, unambiguous status indicator (e.g., green/yellow/red) of ADS readiness on the operator’s tablet and shall prohibit autonomous driving unless the status is green."
+          },
+          {
+            "text": "The system shall be validated for operation under all environmental conditions expected in the test area (e.g., rain, glare, low‑light, dust) and shall automatically disengage autonomous mode if environmental factors exceed the validated operational envelope."
+          }
+        ]
+      },
+      "error": ""
+    }
+  ],
+  "tgrl": "",
+  "tgrl_valid": null,
+  "ok": true
+}

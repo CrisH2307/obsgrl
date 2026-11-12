@@ -1,0 +1,117 @@
+{
+  "condition": "b1",
+  "case": "mountainview_2018",
+  "model": "gpt-oss-120b",
+  "model_id": "openai/gpt-oss-120b",
+  "run": 3,
+  "temperature": 0.7,
+  "prompt_version": "v1",
+  "started_at": "2026-11-11T15:25:05+00:00",
+  "items": [
+    {
+      "id": "r1",
+      "kind": "requirement",
+      "text": "The system shall continuously monitor the health and diagnostic status of all primary sensors (forward‑facing camera, radar, ultrasonic) and, upon detection of a fault or degradation beyond defined thresholds, immediately transition to a safe state and notify the driver.",
+      "context": ""
+    },
+    {
+      "id": "r2",
+      "kind": "requirement",
+      "text": "The system shall employ a multimodal driver‑engagement monitor (steering torque, hands‑on‑wheel detection, and driver‑facing camera or eye‑tracking) and shall disengage Autopilot within 0.5 seconds if the driver is not actively supervising the vehicle.",
+      "context": ""
+    },
+    {
+      "id": "r3",
+      "kind": "requirement",
+      "text": "The system shall guarantee that control is transferred back to the driver within 0.5 seconds of Autopilot disengagement, with an audible and visual alert that persists until driver control is confirmed.",
+      "context": ""
+    },
+    {
+      "id": "r4",
+      "kind": "requirement",
+      "text": "The system shall only engage Autosteer when lane‑marking detection confidence exceeds a predefined safety threshold; if confidence drops, Autosteer shall automatically disengage and alert the driver.",
+      "context": ""
+    },
+    {
+      "id": "r5",
+      "kind": "requirement",
+      "text": "The system shall limit the maximum speed while Autopilot is active based on road type, weather conditions, and current sensor confidence levels, and shall reduce speed automatically when any of these factors degrade.",
+      "context": ""
+    },
+    {
+      "id": "r6",
+      "kind": "requirement",
+      "text": "The system shall integrate Forward Collision Warning and Automatic Emergency Braking with Autosteer so that, if Autosteer fails to avoid an imminent collision, emergency braking is applied without driver input.",
+      "context": ""
+    },
+    {
+      "id": "r7",
+      "kind": "requirement",
+      "text": "The system shall provide redundant lane‑keeping logic using at least two independent sensor modalities (e.g., camera and radar) and shall cross‑validate their outputs before applying steering commands.",
+      "context": ""
+    },
+    {
+      "id": "r8",
+      "kind": "requirement",
+      "text": "The system shall detect operation outside its Operational Design Domain (e.g., heavy rain, fog, low visibility, poorly marked roads) and shall immediately alert the driver and deactivate Autopilot functions.",
+      "context": ""
+    },
+    {
+      "id": "r9",
+      "kind": "requirement",
+      "text": "The system shall implement authenticated, integrity‑checked software update mechanisms and protect all internal communications against unauthorized access or tampering.",
+      "context": ""
+    },
+    {
+      "id": "r10",
+      "kind": "requirement",
+      "text": "The system shall record, in a tamper‑evident log, all sensor data, driver inputs, system states, and control commands for at least 30 seconds before and after any Autopilot disengagement or collision event.",
+      "context": ""
+    }
+  ],
+  "stages": [
+    {
+      "stage": "b1",
+      "prompt": "You are a requirements engineer reviewing a safety-critical system.\n\nRead the system description below. List the 10 most important requirements that are missing from it:\nthings the system should do or guarantee for safe operation that the description does not cover.\nGive at most 10, ranked from most to least important.\n\nReply with JSON only, in this shape:\n{\"requirements\": [{\"text\": \"The system shall ...\"}]}\n\nSystem description:\n# Case: Tesla Model X with Autopilot (Mountain View, California, 2018)\n\nSource: NTSB Highway Accident Report HAR-20/01. This is a description of the system and its use before the crash. It does not include the investigation findings.\n\n## System\nA 2017 Tesla Model X has Autopilot, a SAE Level 2 partial driving automation feature. It combines Traffic-Aware Cruise Control (TACC) and Autosteer (lane keeping). The driver stays responsible for driving and monitoring the road.\n\n## Main parts\n- Sensors: a forward-facing camera, a forward-facing radar and ultrasonic sensors.\n- Vision processing: a camera-based system detects lane markings, vehicles and some objects ahead.\n- TACC: holds a speed set by the driver, follows a vehicle ahead at a chosen gap, and returns to the set speed when no vehicle is ahead.\n- Autosteer: keeps the vehicle in its lane using lane markings and the path of the vehicle ahead.\n- Forward collision warning and automatic emergency braking are available as separate features.\n- Driver monitoring: steering torque is used to check that the driver's hands are on the wheel, with visual and audible alerts if no hands are detected for a period of time.\n\n## People\n- The driver sets the cruising speed, turns Autopilot on, and is told to keep hands on the wheel and watch the road.\n- Other road users and road workers share the highway. Road agencies maintain road markings and safety hardware such as barriers and crash attenuators.\n\n## Operating context\nBusy multi-lane freeway with high-occupancy-vehicle (HOV) lanes, exits and interchanges, lane markings of different quality, and traffic that changes in speed.\n\n",
+      "raw_response": "{\n  \"requirements\": [\n    {\n      \"text\": \"The system shall continuously monitor the health and diagnostic status of all primary sensors (forward‑facing camera, radar, ultrasonic) and, upon detection of a fault or degradation beyond defined thresholds, immediately transition to a safe state and notify the driver.\"\n    },\n    {\n      \"text\": \"The system shall employ a multimodal driver‑engagement monitor (steering torque, hands‑on‑wheel detection, and driver‑facing camera or eye‑tracking) and shall disengage Autopilot within 0.5 seconds if the driver is not actively supervising the vehicle.\"\n    },\n    {\n      \"text\": \"The system shall guarantee that control is transferred back to the driver within 0.5 seconds of Autopilot disengagement, with an audible and visual alert that persists until driver control is confirmed.\"\n    },\n    {\n      \"text\": \"The system shall only engage Autosteer when lane‑marking detection confidence exceeds a predefined safety threshold; if confidence drops, Autosteer shall automatically disengage and alert the driver.\"\n    },\n    {\n      \"text\": \"The system shall limit the maximum speed while Autopilot is active based on road type, weather conditions, and current sensor confidence levels, and shall reduce speed automatically when any of these factors degrade.\"\n    },\n    {\n      \"text\": \"The system shall integrate Forward Collision Warning and Automatic Emergency Braking with Autosteer so that, if Autosteer fails to avoid an imminent collision, emergency braking is applied without driver input.\"\n    },\n    {\n      \"text\": \"The system shall provide redundant lane‑keeping logic using at least two independent sensor modalities (e.g., camera and radar) and shall cross‑validate their outputs before applying steering commands.\"\n    },\n    {\n      \"text\": \"The system shall detect operation outside its Operational Design Domain (e.g., heavy rain, fog, low visibility, poorly marked roads) and shall immediately alert the driver and deactivate Autopilot functions.\"\n    },\n    {\n      \"text\": \"The system shall implement authenticated, integrity‑checked software update mechanisms and protect all internal communications against unauthorized access or tampering.\"\n    },\n    {\n      \"text\": \"The system shall record, in a tamper‑evident log, all sensor data, driver inputs, system states, and control commands for at least 30 seconds before and after any Autopilot disengagement or collision event.\"\n    }\n  ]\n}",
+      "parsed": {
+        "requirements": [
+          {
+            "text": "The system shall continuously monitor the health and diagnostic status of all primary sensors (forward‑facing camera, radar, ultrasonic) and, upon detection of a fault or degradation beyond defined thresholds, immediately transition to a safe state and notify the driver."
+          },
+          {
+            "text": "The system shall employ a multimodal driver‑engagement monitor (steering torque, hands‑on‑wheel detection, and driver‑facing camera or eye‑tracking) and shall disengage Autopilot within 0.5 seconds if the driver is not actively supervising the vehicle."
+          },
+          {
+            "text": "The system shall guarantee that control is transferred back to the driver within 0.5 seconds of Autopilot disengagement, with an audible and visual alert that persists until driver control is confirmed."
+          },
+          {
+            "text": "The system shall only engage Autosteer when lane‑marking detection confidence exceeds a predefined safety threshold; if confidence drops, Autosteer shall automatically disengage and alert the driver."
+          },
+          {
+            "text": "The system shall limit the maximum speed while Autopilot is active based on road type, weather conditions, and current sensor confidence levels, and shall reduce speed automatically when any of these factors degrade."
+          },
+          {
+            "text": "The system shall integrate Forward Collision Warning and Automatic Emergency Braking with Autosteer so that, if Autosteer fails to avoid an imminent collision, emergency braking is applied without driver input."
+          },
+          {
+            "text": "The system shall provide redundant lane‑keeping logic using at least two independent sensor modalities (e.g., camera and radar) and shall cross‑validate their outputs before applying steering commands."
+          },
+          {
+            "text": "The system shall detect operation outside its Operational Design Domain (e.g., heavy rain, fog, low visibility, poorly marked roads) and shall immediately alert the driver and deactivate Autopilot functions."
+          },
+          {
+            "text": "The system shall implement authenticated, integrity‑checked software update mechanisms and protect all internal communications against unauthorized access or tampering."
+          },
+          {
+            "text": "The system shall record, in a tamper‑evident log, all sensor data, driver inputs, system states, and control commands for at least 30 seconds before and after any Autopilot disengagement or collision event."
+          }
+        ]
+      },
+      "error": ""
+    }
+  ],
+  "tgrl": "",
+  "tgrl_valid": null,
+  "ok": true
+}

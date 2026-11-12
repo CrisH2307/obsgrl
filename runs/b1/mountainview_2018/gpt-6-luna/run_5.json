@@ -1,0 +1,117 @@
+{
+  "condition": "b1",
+  "case": "mountainview_2018",
+  "model": "gpt-6-luna",
+  "model_id": "openai/gpt-6-luna",
+  "run": 5,
+  "temperature": null,
+  "prompt_version": "v1",
+  "started_at": "2026-11-11T15:42:14+00:00",
+  "items": [
+    {
+      "id": "r1",
+      "kind": "requirement",
+      "text": "The system shall keep its commanded path within a verified drivable lane and shall not steer toward a gore area, barrier, crash attenuator, or other non-traversable area; when the path is ambiguous, it shall warn the driver and refrain from continuing the uncertain maneuver.",
+      "context": ""
+    },
+    {
+      "id": "r2",
+      "kind": "requirement",
+      "text": "The system shall define and enforce an operational design domain, including roadway, lane-marking, visibility, and traffic conditions in which Autosteer and TACC are supported, and shall prevent or end operation when those conditions are not met.",
+      "context": ""
+    },
+    {
+      "id": "r3",
+      "kind": "requirement",
+      "text": "The system shall determine whether the driver is attentive and responsive, rather than relying solely on steering-wheel torque, and shall issue escalating alerts when the driver is not monitoring the roadway.",
+      "context": ""
+    },
+    {
+      "id": "r4",
+      "kind": "requirement",
+      "text": "Before requiring the driver to resume control, the system shall provide a clear, timely warning; if the driver does not respond, it shall take a defined safe fallback action appropriate to the system’s capabilities.",
+      "context": ""
+    },
+    {
+      "id": "r5",
+      "kind": "requirement",
+      "text": "Forward collision warning and automatic emergency braking shall detect and respond to imminent collisions, including with relevant stationary and moving hazards, and shall remain available when Autopilot is engaged.",
+      "context": ""
+    },
+    {
+      "id": "r6",
+      "kind": "requirement",
+      "text": "The system shall detect sensor, processing, and communication faults or degraded performance that could affect safe operation, alert the driver, and disable or limit affected functions as needed.",
+      "context": ""
+    },
+    {
+      "id": "r7",
+      "kind": "requirement",
+      "text": "The system shall clearly indicate when Autopilot and each constituent feature are active, their limitations, and any transition or fault requiring driver action.",
+      "context": ""
+    },
+    {
+      "id": "r8",
+      "kind": "requirement",
+      "text": "TACC shall maintain a safe following distance under changing speeds and traffic conditions, including when vehicles cut in, and shall not accelerate toward a detected hazard when the forward path is uncertain.",
+      "context": ""
+    },
+    {
+      "id": "r9",
+      "kind": "requirement",
+      "text": "The driver shall be able to override automated steering and speed control immediately through a clearly defined action, and the system shall promptly yield to that override.",
+      "context": ""
+    },
+    {
+      "id": "r10",
+      "kind": "requirement",
+      "text": "The system shall distinguish the vehicle’s intended lane from adjacent lanes and roadway branches, and shall not follow a lead vehicle across a lane boundary or into an exit or other diverging path unless the driver has clearly commanded that maneuver.",
+      "context": ""
+    }
+  ],
+  "stages": [
+    {
+      "stage": "b1",
+      "prompt": "You are a requirements engineer reviewing a safety-critical system.\n\nRead the system description below. List the 10 most important requirements that are missing from it:\nthings the system should do or guarantee for safe operation that the description does not cover.\nGive at most 10, ranked from most to least important.\n\nReply with JSON only, in this shape:\n{\"requirements\": [{\"text\": \"The system shall ...\"}]}\n\nSystem description:\n# Case: Tesla Model X with Autopilot (Mountain View, California, 2018)\n\nSource: NTSB Highway Accident Report HAR-20/01. This is a description of the system and its use before the crash. It does not include the investigation findings.\n\n## System\nA 2017 Tesla Model X has Autopilot, a SAE Level 2 partial driving automation feature. It combines Traffic-Aware Cruise Control (TACC) and Autosteer (lane keeping). The driver stays responsible for driving and monitoring the road.\n\n## Main parts\n- Sensors: a forward-facing camera, a forward-facing radar and ultrasonic sensors.\n- Vision processing: a camera-based system detects lane markings, vehicles and some objects ahead.\n- TACC: holds a speed set by the driver, follows a vehicle ahead at a chosen gap, and returns to the set speed when no vehicle is ahead.\n- Autosteer: keeps the vehicle in its lane using lane markings and the path of the vehicle ahead.\n- Forward collision warning and automatic emergency braking are available as separate features.\n- Driver monitoring: steering torque is used to check that the driver's hands are on the wheel, with visual and audible alerts if no hands are detected for a period of time.\n\n## People\n- The driver sets the cruising speed, turns Autopilot on, and is told to keep hands on the wheel and watch the road.\n- Other road users and road workers share the highway. Road agencies maintain road markings and safety hardware such as barriers and crash attenuators.\n\n## Operating context\nBusy multi-lane freeway with high-occupancy-vehicle (HOV) lanes, exits and interchanges, lane markings of different quality, and traffic that changes in speed.\n\n",
+      "raw_response": "{\"requirements\":[{\"text\":\"The system shall keep its commanded path within a verified drivable lane and shall not steer toward a gore area, barrier, crash attenuator, or other non-traversable area; when the path is ambiguous, it shall warn the driver and refrain from continuing the uncertain maneuver.\"},{\"text\":\"The system shall define and enforce an operational design domain, including roadway, lane-marking, visibility, and traffic conditions in which Autosteer and TACC are supported, and shall prevent or end operation when those conditions are not met.\"},{\"text\":\"The system shall determine whether the driver is attentive and responsive, rather than relying solely on steering-wheel torque, and shall issue escalating alerts when the driver is not monitoring the roadway.\"},{\"text\":\"Before requiring the driver to resume control, the system shall provide a clear, timely warning; if the driver does not respond, it shall take a defined safe fallback action appropriate to the system’s capabilities.\"},{\"text\":\"Forward collision warning and automatic emergency braking shall detect and respond to imminent collisions, including with relevant stationary and moving hazards, and shall remain available when Autopilot is engaged.\"},{\"text\":\"The system shall detect sensor, processing, and communication faults or degraded performance that could affect safe operation, alert the driver, and disable or limit affected functions as needed.\"},{\"text\":\"The system shall clearly indicate when Autopilot and each constituent feature are active, their limitations, and any transition or fault requiring driver action.\"},{\"text\":\"TACC shall maintain a safe following distance under changing speeds and traffic conditions, including when vehicles cut in, and shall not accelerate toward a detected hazard when the forward path is uncertain.\"},{\"text\":\"The driver shall be able to override automated steering and speed control immediately through a clearly defined action, and the system shall promptly yield to that override.\"},{\"text\":\"The system shall distinguish the vehicle’s intended lane from adjacent lanes and roadway branches, and shall not follow a lead vehicle across a lane boundary or into an exit or other diverging path unless the driver has clearly commanded that maneuver.\"}]}",
+      "parsed": {
+        "requirements": [
+          {
+            "text": "The system shall keep its commanded path within a verified drivable lane and shall not steer toward a gore area, barrier, crash attenuator, or other non-traversable area; when the path is ambiguous, it shall warn the driver and refrain from continuing the uncertain maneuver."
+          },
+          {
+            "text": "The system shall define and enforce an operational design domain, including roadway, lane-marking, visibility, and traffic conditions in which Autosteer and TACC are supported, and shall prevent or end operation when those conditions are not met."
+          },
+          {
+            "text": "The system shall determine whether the driver is attentive and responsive, rather than relying solely on steering-wheel torque, and shall issue escalating alerts when the driver is not monitoring the roadway."
+          },
+          {
+            "text": "Before requiring the driver to resume control, the system shall provide a clear, timely warning; if the driver does not respond, it shall take a defined safe fallback action appropriate to the system’s capabilities."
+          },
+          {
+            "text": "Forward collision warning and automatic emergency braking shall detect and respond to imminent collisions, including with relevant stationary and moving hazards, and shall remain available when Autopilot is engaged."
+          },
+          {
+            "text": "The system shall detect sensor, processing, and communication faults or degraded performance that could affect safe operation, alert the driver, and disable or limit affected functions as needed."
+          },
+          {
+            "text": "The system shall clearly indicate when Autopilot and each constituent feature are active, their limitations, and any transition or fault requiring driver action."
+          },
+          {
+            "text": "TACC shall maintain a safe following distance under changing speeds and traffic conditions, including when vehicles cut in, and shall not accelerate toward a detected hazard when the forward path is uncertain."
+          },
+          {
+            "text": "The driver shall be able to override automated steering and speed control immediately through a clearly defined action, and the system shall promptly yield to that override."
+          },
+          {
+            "text": "The system shall distinguish the vehicle’s intended lane from adjacent lanes and roadway branches, and shall not follow a lead vehicle across a lane boundary or into an exit or other diverging path unless the driver has clearly commanded that maneuver."
+          }
+        ]
+      },
+      "error": ""
+    }
+  ],
+  "tgrl": "",
+  "tgrl_valid": null,
+  "ok": true
+}

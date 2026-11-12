@@ -1,0 +1,117 @@
+{
+  "condition": "b1",
+  "case": "williston_2016",
+  "model": "gpt-oss-120b",
+  "model_id": "openai/gpt-oss-120b",
+  "run": 3,
+  "temperature": 0.7,
+  "prompt_version": "v1",
+  "started_at": "2026-11-11T15:24:39+00:00",
+  "items": [
+    {
+      "id": "r1",
+      "kind": "requirement",
+      "text": "The system shall disengage Autopilot and request immediate driver control if the driver fails to respond to visual or audible alerts within 3 seconds after a hands‑off or inattentiveness detection event.",
+      "context": ""
+    },
+    {
+      "id": "r2",
+      "kind": "requirement",
+      "text": "The system shall limit the maximum speed at which Autopilot can be engaged to 85 mph (or the posted speed limit, whichever is lower) and shall automatically deactivate if the vehicle exceeds this limit.",
+      "context": ""
+    },
+    {
+      "id": "r3",
+      "kind": "requirement",
+      "text": "The system shall continuously perform health‑monitoring of all primary sensors (camera, radar, ultrasonic) and shall prevent Autopilot activation or automatically disengage if any sensor is degraded, obstructed, or provides inconsistent data.",
+      "context": ""
+    },
+    {
+      "id": "r4",
+      "kind": "requirement",
+      "text": "The system shall provide redundant, cross‑checked perception pathways (e.g., radar‑camera fusion) to maintain lane‑keeping and collision‑avoidance capabilities in the event of a single‑sensor failure.",
+      "context": ""
+    },
+    {
+      "id": "r5",
+      "kind": "requirement",
+      "text": "The system shall detect and correctly handle missing, faded, or ambiguous lane markings by either alerting the driver and disengaging Autosteer or by safely transitioning to a minimal‑assistance mode.",
+      "context": ""
+    },
+    {
+      "id": "r6",
+      "kind": "requirement",
+      "text": "The system shall monitor driver attention using an eye‑tracking or head‑pose sensor and shall issue escalating warnings, followed by Autopilot disengagement, if driver gaze is not directed toward the forward roadway for more than 2 seconds.",
+      "context": ""
+    },
+    {
+      "id": "r7",
+      "kind": "requirement",
+      "text": "The system shall ensure that Forward Collision Warning (FCW) and Automatic Emergency Braking (AEB) remain fully functional and can override Autosteer commands to apply maximum safe braking when an imminent collision is detected.",
+      "context": ""
+    },
+    {
+      "id": "r8",
+      "kind": "requirement",
+      "text": "The system shall only allow activation of Autopilot on roadways that meet predefined criteria (e.g., limited‑access highway, clear lane markings, visibility > 500 m) and shall refuse activation on roads that do not satisfy these conditions.",
+      "context": ""
+    },
+    {
+      "id": "r9",
+      "kind": "requirement",
+      "text": "The system shall record a secure, tamper‑evident log of all sensor inputs, system decisions, driver interventions, and disengagement events, and retain this data for at least 30 days for post‑incident analysis.",
+      "context": ""
+    },
+    {
+      "id": "r10",
+      "kind": "requirement",
+      "text": "The system shall perform a self‑test on power‑up and before each Autopilot activation, verifying that all critical software modules, sensor calibrations, and communication links are within nominal parameters, and shall abort activation if any test fails.",
+      "context": ""
+    }
+  ],
+  "stages": [
+    {
+      "stage": "b1",
+      "prompt": "You are a requirements engineer reviewing a safety-critical system.\n\nRead the system description below. List the 10 most important requirements that are missing from it:\nthings the system should do or guarantee for safe operation that the description does not cover.\nGive at most 10, ranked from most to least important.\n\nReply with JSON only, in this shape:\n{\"requirements\": [{\"text\": \"The system shall ...\"}]}\n\nSystem description:\n# Case: Tesla Model S with Autopilot (Williston, Florida, 2016)\n\nSource: NTSB Highway Accident Report HAR-17/02. This is a description of the system and its use before the crash. It does not include the investigation findings.\n\n## System\nA 2015 Tesla Model S has Autopilot, a SAE Level 2 partial driving automation feature. It combines Traffic-Aware Cruise Control (TACC) and Autosteer (lane keeping). The driver stays responsible for driving and monitoring the road.\n\n## Main parts\n- Sensors: a forward-facing camera, a forward-facing radar and ultrasonic sensors.\n- Vision processing: a camera-based system detects lane markings and objects ahead.\n- TACC: holds a speed set by the driver, slows down for a vehicle ahead in the same lane, and speeds up again when the lane is clear.\n- Autosteer: keeps the vehicle centered in its lane using lane markings and the vehicle ahead.\n- Forward collision warning and automatic emergency braking are available as separate features.\n- Driver monitoring: the system checks that the driver's hands are on the steering wheel by sensing steering torque, and shows visual and audible alerts if no hands are detected for a period of time.\n\n## People\n- The driver sets the cruising speed, turns Autopilot on, and is told to keep hands on the wheel and watch the road.\n- Other road users include cars, large trucks crossing or joining the road, and motorcyclists.\n\n## Operating context\nAutopilot is intended mainly for highways with limited access, in good visibility. Drivers can also turn it on for other roads, such as divided highways with cross traffic at intersections.\n\n",
+      "raw_response": "{\n  \"requirements\": [\n    {\n      \"text\": \"The system shall disengage Autopilot and request immediate driver control if the driver fails to respond to visual or audible alerts within 3 seconds after a hands‑off or inattentiveness detection event.\"\n    },\n    {\n      \"text\": \"The system shall limit the maximum speed at which Autopilot can be engaged to 85 mph (or the posted speed limit, whichever is lower) and shall automatically deactivate if the vehicle exceeds this limit.\"\n    },\n    {\n      \"text\": \"The system shall continuously perform health‑monitoring of all primary sensors (camera, radar, ultrasonic) and shall prevent Autopilot activation or automatically disengage if any sensor is degraded, obstructed, or provides inconsistent data.\"\n    },\n    {\n      \"text\": \"The system shall provide redundant, cross‑checked perception pathways (e.g., radar‑camera fusion) to maintain lane‑keeping and collision‑avoidance capabilities in the event of a single‑sensor failure.\"\n    },\n    {\n      \"text\": \"The system shall detect and correctly handle missing, faded, or ambiguous lane markings by either alerting the driver and disengaging Autosteer or by safely transitioning to a minimal‑assistance mode.\"\n    },\n    {\n      \"text\": \"The system shall monitor driver attention using an eye‑tracking or head‑pose sensor and shall issue escalating warnings, followed by Autopilot disengagement, if driver gaze is not directed toward the forward roadway for more than 2 seconds.\"\n    },\n    {\n      \"text\": \"The system shall ensure that Forward Collision Warning (FCW) and Automatic Emergency Braking (AEB) remain fully functional and can override Autosteer commands to apply maximum safe braking when an imminent collision is detected.\"\n    },\n    {\n      \"text\": \"The system shall only allow activation of Autopilot on roadways that meet predefined criteria (e.g., limited‑access highway, clear lane markings, visibility > 500 m) and shall refuse activation on roads that do not satisfy these conditions.\"\n    },\n    {\n      \"text\": \"The system shall record a secure, tamper‑evident log of all sensor inputs, system decisions, driver interventions, and disengagement events, and retain this data for at least 30 days for post‑incident analysis.\"\n    },\n    {\n      \"text\": \"The system shall perform a self‑test on power‑up and before each Autopilot activation, verifying that all critical software modules, sensor calibrations, and communication links are within nominal parameters, and shall abort activation if any test fails.\"\n    }\n  ]\n}",
+      "parsed": {
+        "requirements": [
+          {
+            "text": "The system shall disengage Autopilot and request immediate driver control if the driver fails to respond to visual or audible alerts within 3 seconds after a hands‑off or inattentiveness detection event."
+          },
+          {
+            "text": "The system shall limit the maximum speed at which Autopilot can be engaged to 85 mph (or the posted speed limit, whichever is lower) and shall automatically deactivate if the vehicle exceeds this limit."
+          },
+          {
+            "text": "The system shall continuously perform health‑monitoring of all primary sensors (camera, radar, ultrasonic) and shall prevent Autopilot activation or automatically disengage if any sensor is degraded, obstructed, or provides inconsistent data."
+          },
+          {
+            "text": "The system shall provide redundant, cross‑checked perception pathways (e.g., radar‑camera fusion) to maintain lane‑keeping and collision‑avoidance capabilities in the event of a single‑sensor failure."
+          },
+          {
+            "text": "The system shall detect and correctly handle missing, faded, or ambiguous lane markings by either alerting the driver and disengaging Autosteer or by safely transitioning to a minimal‑assistance mode."
+          },
+          {
+            "text": "The system shall monitor driver attention using an eye‑tracking or head‑pose sensor and shall issue escalating warnings, followed by Autopilot disengagement, if driver gaze is not directed toward the forward roadway for more than 2 seconds."
+          },
+          {
+            "text": "The system shall ensure that Forward Collision Warning (FCW) and Automatic Emergency Braking (AEB) remain fully functional and can override Autosteer commands to apply maximum safe braking when an imminent collision is detected."
+          },
+          {
+            "text": "The system shall only allow activation of Autopilot on roadways that meet predefined criteria (e.g., limited‑access highway, clear lane markings, visibility > 500 m) and shall refuse activation on roads that do not satisfy these conditions."
+          },
+          {
+            "text": "The system shall record a secure, tamper‑evident log of all sensor inputs, system decisions, driver interventions, and disengagement events, and retain this data for at least 30 days for post‑incident analysis."
+          },
+          {
+            "text": "The system shall perform a self‑test on power‑up and before each Autopilot activation, verifying that all critical software modules, sensor calibrations, and communication links are within nominal parameters, and shall abort activation if any test fails."
+          }
+        ]
+      },
+      "error": ""
+    }
+  ],
+  "tgrl": "",
+  "tgrl_valid": null,
+  "ok": true
+}

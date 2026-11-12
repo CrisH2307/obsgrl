@@ -1,0 +1,138 @@
+{
+  "condition": "b2",
+  "case": "uber_2018",
+  "model": "gpt-oss-120b",
+  "model_id": "openai/gpt-oss-120b",
+  "run": 2,
+  "temperature": 0.7,
+  "prompt_version": "v1",
+  "started_at": "2026-11-11T15:26:05+00:00",
+  "items": [
+    {
+      "id": "g1",
+      "kind": "goal",
+      "text": "Operator: Ensure vehicle safety for all road users",
+      "context": ""
+    },
+    {
+      "id": "g2",
+      "kind": "goal",
+      "text": "Operator: Maintain situational awareness while ADS is engaged",
+      "context": ""
+    },
+    {
+      "id": "g3",
+      "kind": "goal",
+      "text": "Operator: Take over control promptly when ADS performance degrades",
+      "context": ""
+    },
+    {
+      "id": "g4",
+      "kind": "goal",
+      "text": "UberATG: Deploy an automated driving system that operates safely under defined conditions",
+      "context": ""
+    },
+    {
+      "id": "g5",
+      "kind": "goal",
+      "text": "Pedestrian: Remain safe while crossing or walking near the test vehicle",
+      "context": ""
+    },
+    {
+      "id": "g6",
+      "kind": "goal",
+      "text": "Cyclist: Remain safe while sharing the road with the test vehicle",
+      "context": ""
+    },
+    {
+      "id": "g7",
+      "kind": "goal",
+      "text": "OtherDriver: Remain safe while interacting with the test vehicle",
+      "context": ""
+    },
+    {
+      "id": "g8",
+      "kind": "goal",
+      "text": "UberATG: Collect high‑quality data to improve the ADS",
+      "context": ""
+    },
+    {
+      "id": "g9",
+      "kind": "goal",
+      "text": "UberATG: Maintain public trust in autonomous vehicle testing",
+      "context": ""
+    },
+    {
+      "id": "g10",
+      "kind": "goal",
+      "text": "UberATG: Achieve sufficient test coverage to validate system performance",
+      "context": ""
+    }
+  ],
+  "stages": [
+    {
+      "stage": "s1_extract",
+      "prompt": "You are a requirements engineer building a goal model in GRL (Goal-oriented Requirement Language).\n\nRead the system description below and build a GRL model in textual GRL (TGRL).\nInclude every actor, including humans affected by the system (for example operators and pedestrians).\n\nTGRL syntax example:\ngrl Example { actor Driver { goal ReachDestination; softGoal Comfort; } }\n\nReply with JSON only, in this shape:\n{\"tgrl\": \"grl ... { ... }\",\n \"goals\": [{\"id\": \"g1\", \"actor\": \"...\", \"text\": \"...\"}]}\n\nList the 10 most important goals in \"goals\", ranked from most to least important, including goals of human actors.\n\nSystem description:\n# Case: Uber ATG automated test vehicle (Tempe, Arizona, 2018)\n\nSource: NTSB Highway Accident Report HAR-19/03. This is a description of the system and its use before the crash. It does not include the investigation findings.\n\n## System\nA modified Volvo XC90 SUV is used by Uber Advanced Technologies Group (ATG) to test an automated driving system (ADS) on public roads. The ADS is designed to drive the vehicle without human input in defined conditions, up to about 45 mph in this test program.\n\n## Main parts\n- Sensors: roof-mounted lidar, radar units and cameras covering the area around the vehicle.\n- Perception: detects objects around the vehicle, classifies each one (for example vehicle, pedestrian, bicycle, other), and tracks it over time.\n- Prediction: estimates where each tracked object will go next, using its class and recent movement.\n- Planning and control: chooses a path and speed, and controls steering, throttle and braking.\n- Vehicle: the Volvo factory driver-assistance features (such as forward collision warning and automatic emergency braking) are part of the base vehicle.\n\n## People\n- One vehicle operator sits in the driver seat. The operator is responsible for watching the road and taking over control when needed. The operator also uses a tablet-style interface to tag events and check system status.\n- Other road users share the road: pedestrians, cyclists and other drivers. They are not aware of the test program.\n\n## Operating context\nPublic multi-lane roads in an urban area, day and night, with posted speed limits, marked crosswalks, intersections and street lighting that varies by location.\n\n",
+      "raw_response": "{\n  \"tgrl\": \"grl UberATG_TestVehicle {\\n  actor Operator {\\n    goal EnsureVehicleSafety;\\n    softGoal MaintainSituationalAwareness;\\n    goal TakeoverControlWhenNeeded;\\n    goal TagEventsAccurately;\\n  }\\n  actor UberATG {\\n    goal DeploySafeADS;\\n    softGoal CollectHighQualityData;\\n    softGoal MaintainPublicTrust;\\n    softGoal AchieveTestCoverage;\\n  }\\n  actor Pedestrian {\\n    goal RemainSafe;\\n  }\\n  actor Cyclist {\\n    goal RemainSafe;\\n  }\\n  actor OtherDriver {\\n    goal RemainSafe;\\n  }\\n  // Contribution links (illustrative)\\n  EnsureVehicleSafety -> [AND] DeploySafeADS;\\n  DeploySafeADS -> [AND] EnsureVehicleSafety;\\n  MaintainSituationalAwareness -> [AND] TakeoverControlWhenNeeded;\\n  CollectHighQualityData -> [AND] DeploySafeADS;\\n  MaintainPublicTrust -> [AND] EnsureVehicleSafety;\\n}\",\n  \"goals\": [\n    {\n      \"id\": \"g1\",\n      \"actor\": \"Operator\",\n      \"text\": \"Ensure vehicle safety for all road users\"\n    },\n    {\n      \"id\": \"g2\",\n      \"actor\": \"Operator\",\n      \"text\": \"Maintain situational awareness while ADS is engaged\"\n    },\n    {\n      \"id\": \"g3\",\n      \"actor\": \"Operator\",\n      \"text\": \"Take over control promptly when ADS performance degrades\"\n    },\n    {\n      \"id\": \"g4\",\n      \"actor\": \"UberATG\",\n      \"text\": \"Deploy an automated driving system that operates safely under defined conditions\"\n    },\n    {\n      \"id\": \"g5\",\n      \"actor\": \"Pedestrian\",\n      \"text\": \"Remain safe while crossing or walking near the test vehicle\"\n    },\n    {\n      \"id\": \"g6\",\n      \"actor\": \"Cyclist\",\n      \"text\": \"Remain safe while sharing the road with the test vehicle\"\n    },\n    {\n      \"id\": \"g7\",\n      \"actor\": \"OtherDriver\",\n      \"text\": \"Remain safe while interacting with the test vehicle\"\n    },\n    {\n      \"id\": \"g8\",\n      \"actor\": \"UberATG\",\n      \"text\": \"Collect high‑quality data to improve the ADS\"\n    },\n    {\n      \"id\": \"g9\",\n      \"actor\": \"UberATG\",\n      \"text\": \"Maintain public trust in autonomous vehicle testing\"\n    },\n    {\n      \"id\": \"g10\",\n      \"actor\": \"UberATG\",\n      \"text\": \"Achieve sufficient test coverage to validate system performance\"\n    }\n  ]\n}",
+      "parsed": {
+        "tgrl": "grl UberATG_TestVehicle {\n  actor Operator {\n    goal EnsureVehicleSafety;\n    softGoal MaintainSituationalAwareness;\n    goal TakeoverControlWhenNeeded;\n    goal TagEventsAccurately;\n  }\n  actor UberATG {\n    goal DeploySafeADS;\n    softGoal CollectHighQualityData;\n    softGoal MaintainPublicTrust;\n    softGoal AchieveTestCoverage;\n  }\n  actor Pedestrian {\n    goal RemainSafe;\n  }\n  actor Cyclist {\n    goal RemainSafe;\n  }\n  actor OtherDriver {\n    goal RemainSafe;\n  }\n  // Contribution links (illustrative)\n  EnsureVehicleSafety -> [AND] DeploySafeADS;\n  DeploySafeADS -> [AND] EnsureVehicleSafety;\n  MaintainSituationalAwareness -> [AND] TakeoverControlWhenNeeded;\n  CollectHighQualityData -> [AND] DeploySafeADS;\n  MaintainPublicTrust -> [AND] EnsureVehicleSafety;\n}",
+        "goals": [
+          {
+            "id": "g1",
+            "actor": "Operator",
+            "text": "Ensure vehicle safety for all road users"
+          },
+          {
+            "id": "g2",
+            "actor": "Operator",
+            "text": "Maintain situational awareness while ADS is engaged"
+          },
+          {
+            "id": "g3",
+            "actor": "Operator",
+            "text": "Take over control promptly when ADS performance degrades"
+          },
+          {
+            "id": "g4",
+            "actor": "UberATG",
+            "text": "Deploy an automated driving system that operates safely under defined conditions"
+          },
+          {
+            "id": "g5",
+            "actor": "Pedestrian",
+            "text": "Remain safe while crossing or walking near the test vehicle"
+          },
+          {
+            "id": "g6",
+            "actor": "Cyclist",
+            "text": "Remain safe while sharing the road with the test vehicle"
+          },
+          {
+            "id": "g7",
+            "actor": "OtherDriver",
+            "text": "Remain safe while interacting with the test vehicle"
+          },
+          {
+            "id": "g8",
+            "actor": "UberATG",
+            "text": "Collect high‑quality data to improve the ADS"
+          },
+          {
+            "id": "g9",
+            "actor": "UberATG",
+            "text": "Maintain public trust in autonomous vehicle testing"
+          },
+          {
+            "id": "g10",
+            "actor": "UberATG",
+            "text": "Achieve sufficient test coverage to validate system performance"
+          }
+        ]
+      },
+      "error": ""
+    }
+  ],
+  "tgrl": "grl UberATG_TestVehicle {\n  actor Operator {\n    goal EnsureVehicleSafety;\n    softGoal MaintainSituationalAwareness;\n    goal TakeoverControlWhenNeeded;\n    goal TagEventsAccurately;\n  }\n  actor UberATG {\n    goal DeploySafeADS;\n    softGoal CollectHighQualityData;\n    softGoal MaintainPublicTrust;\n    softGoal AchieveTestCoverage;\n  }\n  actor Pedestrian {\n    goal RemainSafe;\n  }\n  actor Cyclist {\n    goal RemainSafe;\n  }\n  actor OtherDriver {\n    goal RemainSafe;\n  }\n  // Contribution links (illustrative)\n  EnsureVehicleSafety -> [AND] DeploySafeADS;\n  DeploySafeADS -> [AND] EnsureVehicleSafety;\n  MaintainSituationalAwareness -> [AND] TakeoverControlWhenNeeded;\n  CollectHighQualityData -> [AND] DeploySafeADS;\n  MaintainPublicTrust -> [AND] EnsureVehicleSafety;\n}",
+  "tgrl_valid": true,
+  "ok": true
+}

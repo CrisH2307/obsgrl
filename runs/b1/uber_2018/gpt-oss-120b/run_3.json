@@ -1,0 +1,117 @@
+{
+  "condition": "b1",
+  "case": "uber_2018",
+  "model": "gpt-oss-120b",
+  "model_id": "openai/gpt-oss-120b",
+  "run": 3,
+  "temperature": 0.7,
+  "prompt_version": "v1",
+  "started_at": "2026-11-11T15:23:43+00:00",
+  "items": [
+    {
+      "id": "r1",
+      "kind": "requirement",
+      "text": "The system shall continuously monitor the health and integrity of all sensors and actuators, and automatically transition to a safe‑stop state if any sensor degrades beyond predefined fault thresholds.",
+      "context": ""
+    },
+    {
+      "id": "r2",
+      "kind": "requirement",
+      "text": "The system shall provide the human operator with an unambiguous takeover request (visual, audible, and haptic) at least three seconds before a manual intervention is required, and shall repeat the request until acknowledged.",
+      "context": ""
+    },
+    {
+      "id": "r3",
+      "kind": "requirement",
+      "text": "If the operator does not acknowledge the takeover request within the allotted time, the system shall execute an immediate controlled stop that brings the vehicle to a safe halt while avoiding obstacles.",
+      "context": ""
+    },
+    {
+      "id": "r4",
+      "kind": "requirement",
+      "text": "The system shall operate only within a clearly defined Operational Design Domain (ODD) – including weather, lighting, road‑marking quality, speed limits, and lane‑type – and shall automatically disengage and transition to safe stop when any ODD condition is violated.",
+      "context": ""
+    },
+    {
+      "id": "r5",
+      "kind": "requirement",
+      "text": "The system shall provide functional redundancy for all critical perception, prediction, and planning functions such that a single‑point failure (e.g., loss of a lidar unit) does not compromise safe vehicle control.",
+      "context": ""
+    },
+    {
+      "id": "r6",
+      "kind": "requirement",
+      "text": "The system shall perform real‑time validation of object classifications and motion predictions, and shall reject or flag uncertain data to prevent unsafe planning decisions.",
+      "context": ""
+    },
+    {
+      "id": "r7",
+      "kind": "requirement",
+      "text": "The system shall incorporate cybersecurity safeguards, including authenticated software updates, encrypted communication, and protection against unauthorized remote access or tampering.",
+      "context": ""
+    },
+    {
+      "id": "r8",
+      "kind": "requirement",
+      "text": "The system shall record, with precise timestamps, all sensor inputs, perception outputs, planning decisions, control commands, and operator interactions, and securely store these logs for at least one year for post‑incident analysis.",
+      "context": ""
+    },
+    {
+      "id": "r9",
+      "kind": "requirement",
+      "text": "The system shall enforce a maximum vehicle speed that never exceeds the posted speed limit and shall not exceed a configurable ceiling (e.g., 45 mph) without explicit operator authorization.",
+      "context": ""
+    },
+    {
+      "id": "r10",
+      "kind": "requirement",
+      "text": "The system shall be validated and verified against an established functional‑safety standard (e.g., ISO 26262 ASIL D), with documented safety audits and periodic testing to ensure continued compliance.",
+      "context": ""
+    }
+  ],
+  "stages": [
+    {
+      "stage": "b1",
+      "prompt": "You are a requirements engineer reviewing a safety-critical system.\n\nRead the system description below. List the 10 most important requirements that are missing from it:\nthings the system should do or guarantee for safe operation that the description does not cover.\nGive at most 10, ranked from most to least important.\n\nReply with JSON only, in this shape:\n{\"requirements\": [{\"text\": \"The system shall ...\"}]}\n\nSystem description:\n# Case: Uber ATG automated test vehicle (Tempe, Arizona, 2018)\n\nSource: NTSB Highway Accident Report HAR-19/03. This is a description of the system and its use before the crash. It does not include the investigation findings.\n\n## System\nA modified Volvo XC90 SUV is used by Uber Advanced Technologies Group (ATG) to test an automated driving system (ADS) on public roads. The ADS is designed to drive the vehicle without human input in defined conditions, up to about 45 mph in this test program.\n\n## Main parts\n- Sensors: roof-mounted lidar, radar units and cameras covering the area around the vehicle.\n- Perception: detects objects around the vehicle, classifies each one (for example vehicle, pedestrian, bicycle, other), and tracks it over time.\n- Prediction: estimates where each tracked object will go next, using its class and recent movement.\n- Planning and control: chooses a path and speed, and controls steering, throttle and braking.\n- Vehicle: the Volvo factory driver-assistance features (such as forward collision warning and automatic emergency braking) are part of the base vehicle.\n\n## People\n- One vehicle operator sits in the driver seat. The operator is responsible for watching the road and taking over control when needed. The operator also uses a tablet-style interface to tag events and check system status.\n- Other road users share the road: pedestrians, cyclists and other drivers. They are not aware of the test program.\n\n## Operating context\nPublic multi-lane roads in an urban area, day and night, with posted speed limits, marked crosswalks, intersections and street lighting that varies by location.\n\n",
+      "raw_response": "{\n  \"requirements\": [\n    {\n      \"text\": \"The system shall continuously monitor the health and integrity of all sensors and actuators, and automatically transition to a safe‑stop state if any sensor degrades beyond predefined fault thresholds.\"\n    },\n    {\n      \"text\": \"The system shall provide the human operator with an unambiguous takeover request (visual, audible, and haptic) at least three seconds before a manual intervention is required, and shall repeat the request until acknowledged.\"\n    },\n    {\n      \"text\": \"If the operator does not acknowledge the takeover request within the allotted time, the system shall execute an immediate controlled stop that brings the vehicle to a safe halt while avoiding obstacles.\"\n    },\n    {\n      \"text\": \"The system shall operate only within a clearly defined Operational Design Domain (ODD) – including weather, lighting, road‑marking quality, speed limits, and lane‑type – and shall automatically disengage and transition to safe stop when any ODD condition is violated.\"\n    },\n    {\n      \"text\": \"The system shall provide functional redundancy for all critical perception, prediction, and planning functions such that a single‑point failure (e.g., loss of a lidar unit) does not compromise safe vehicle control.\"\n    },\n    {\n      \"text\": \"The system shall perform real‑time validation of object classifications and motion predictions, and shall reject or flag uncertain data to prevent unsafe planning decisions.\"\n    },\n    {\n      \"text\": \"The system shall incorporate cybersecurity safeguards, including authenticated software updates, encrypted communication, and protection against unauthorized remote access or tampering.\"\n    },\n    {\n      \"text\": \"The system shall record, with precise timestamps, all sensor inputs, perception outputs, planning decisions, control commands, and operator interactions, and securely store these logs for at least one year for post‑incident analysis.\"\n    },\n    {\n      \"text\": \"The system shall enforce a maximum vehicle speed that never exceeds the posted speed limit and shall not exceed a configurable ceiling (e.g., 45 mph) without explicit operator authorization.\"\n    },\n    {\n      \"text\": \"The system shall be validated and verified against an established functional‑safety standard (e.g., ISO 26262 ASIL D), with documented safety audits and periodic testing to ensure continued compliance.\"\n    }\n  ]\n}",
+      "parsed": {
+        "requirements": [
+          {
+            "text": "The system shall continuously monitor the health and integrity of all sensors and actuators, and automatically transition to a safe‑stop state if any sensor degrades beyond predefined fault thresholds."
+          },
+          {
+            "text": "The system shall provide the human operator with an unambiguous takeover request (visual, audible, and haptic) at least three seconds before a manual intervention is required, and shall repeat the request until acknowledged."
+          },
+          {
+            "text": "If the operator does not acknowledge the takeover request within the allotted time, the system shall execute an immediate controlled stop that brings the vehicle to a safe halt while avoiding obstacles."
+          },
+          {
+            "text": "The system shall operate only within a clearly defined Operational Design Domain (ODD) – including weather, lighting, road‑marking quality, speed limits, and lane‑type – and shall automatically disengage and transition to safe stop when any ODD condition is violated."
+          },
+          {
+            "text": "The system shall provide functional redundancy for all critical perception, prediction, and planning functions such that a single‑point failure (e.g., loss of a lidar unit) does not compromise safe vehicle control."
+          },
+          {
+            "text": "The system shall perform real‑time validation of object classifications and motion predictions, and shall reject or flag uncertain data to prevent unsafe planning decisions."
+          },
+          {
+            "text": "The system shall incorporate cybersecurity safeguards, including authenticated software updates, encrypted communication, and protection against unauthorized remote access or tampering."
+          },
+          {
+            "text": "The system shall record, with precise timestamps, all sensor inputs, perception outputs, planning decisions, control commands, and operator interactions, and securely store these logs for at least one year for post‑incident analysis."
+          },
+          {
+            "text": "The system shall enforce a maximum vehicle speed that never exceeds the posted speed limit and shall not exceed a configurable ceiling (e.g., 45 mph) without explicit operator authorization."
+          },
+          {
+            "text": "The system shall be validated and verified against an established functional‑safety standard (e.g., ISO 26262 ASIL D), with documented safety audits and periodic testing to ensure continued compliance."
+          }
+        ]
+      },
+      "error": ""
+    }
+  ],
+  "tgrl": "",
+  "tgrl_valid": null,
+  "ok": true
+}

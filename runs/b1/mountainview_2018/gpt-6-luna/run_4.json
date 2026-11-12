@@ -1,0 +1,117 @@
+{
+  "condition": "b1",
+  "case": "mountainview_2018",
+  "model": "gpt-6-luna",
+  "model_id": "openai/gpt-6-luna",
+  "run": 4,
+  "temperature": null,
+  "prompt_version": "v1",
+  "started_at": "2026-11-11T15:41:55+00:00",
+  "items": [
+    {
+      "id": "r1",
+      "kind": "requirement",
+      "text": "The system shall define its operational design domain and shall prevent or safely limit Autopilot operation when road, weather, visibility, lane-marking, or traffic conditions are outside that domain.",
+      "context": ""
+    },
+    {
+      "id": "r2",
+      "kind": "requirement",
+      "text": "The system shall monitor whether the driver is attentive and able to take over, rather than relying solely on steering torque as evidence of driver engagement.",
+      "context": ""
+    },
+    {
+      "id": "r3",
+      "kind": "requirement",
+      "text": "The system shall provide timely takeover warnings and, if the driver does not respond, maintain safe control while reducing risk through a controlled deceleration or other minimum-risk action.",
+      "context": ""
+    },
+    {
+      "id": "r4",
+      "kind": "requirement",
+      "text": "The system shall detect lane boundaries, roadway geometry, and relevant road hazards—including lane splits, exits, work zones, barriers, and crash attenuators—and shall avoid steering into hazards when the scene is ambiguous.",
+      "context": ""
+    },
+    {
+      "id": "r5",
+      "kind": "requirement",
+      "text": "The system shall detect imminent collisions with stationary and moving obstacles and apply collision warnings and braking when needed, including when Autopilot is active.",
+      "context": ""
+    },
+    {
+      "id": "r6",
+      "kind": "requirement",
+      "text": "The system shall maintain safe speeds and following distances for current conditions, including curves, changing traffic, cut-ins, and stopped or slowing vehicles, and shall not accelerate toward an obstructed path when traffic ahead clears or changes.",
+      "context": ""
+    },
+    {
+      "id": "r7",
+      "kind": "requirement",
+      "text": "The system shall detect and report failures or degradation of sensors, processing, or control, and shall transition to a safe state without making unsupported steering or speed-control decisions.",
+      "context": ""
+    },
+    {
+      "id": "r8",
+      "kind": "requirement",
+      "text": "The system shall clearly indicate when each automation feature is available, active, limited, or disengaged, and shall communicate system limitations and takeover requests in time for the driver to respond.",
+      "context": ""
+    },
+    {
+      "id": "r9",
+      "kind": "requirement",
+      "text": "The system shall allow the driver to override or disengage automated steering and speed control promptly and predictably at any time.",
+      "context": ""
+    },
+    {
+      "id": "r10",
+      "kind": "requirement",
+      "text": "The system shall prevent unintended lateral movement across lane boundaries or into adjacent lanes unless that movement is explicitly commanded by the driver.",
+      "context": ""
+    }
+  ],
+  "stages": [
+    {
+      "stage": "b1",
+      "prompt": "You are a requirements engineer reviewing a safety-critical system.\n\nRead the system description below. List the 10 most important requirements that are missing from it:\nthings the system should do or guarantee for safe operation that the description does not cover.\nGive at most 10, ranked from most to least important.\n\nReply with JSON only, in this shape:\n{\"requirements\": [{\"text\": \"The system shall ...\"}]}\n\nSystem description:\n# Case: Tesla Model X with Autopilot (Mountain View, California, 2018)\n\nSource: NTSB Highway Accident Report HAR-20/01. This is a description of the system and its use before the crash. It does not include the investigation findings.\n\n## System\nA 2017 Tesla Model X has Autopilot, a SAE Level 2 partial driving automation feature. It combines Traffic-Aware Cruise Control (TACC) and Autosteer (lane keeping). The driver stays responsible for driving and monitoring the road.\n\n## Main parts\n- Sensors: a forward-facing camera, a forward-facing radar and ultrasonic sensors.\n- Vision processing: a camera-based system detects lane markings, vehicles and some objects ahead.\n- TACC: holds a speed set by the driver, follows a vehicle ahead at a chosen gap, and returns to the set speed when no vehicle is ahead.\n- Autosteer: keeps the vehicle in its lane using lane markings and the path of the vehicle ahead.\n- Forward collision warning and automatic emergency braking are available as separate features.\n- Driver monitoring: steering torque is used to check that the driver's hands are on the wheel, with visual and audible alerts if no hands are detected for a period of time.\n\n## People\n- The driver sets the cruising speed, turns Autopilot on, and is told to keep hands on the wheel and watch the road.\n- Other road users and road workers share the highway. Road agencies maintain road markings and safety hardware such as barriers and crash attenuators.\n\n## Operating context\nBusy multi-lane freeway with high-occupancy-vehicle (HOV) lanes, exits and interchanges, lane markings of different quality, and traffic that changes in speed.\n\n",
+      "raw_response": "{\"requirements\":[{\"text\":\"The system shall define its operational design domain and shall prevent or safely limit Autopilot operation when road, weather, visibility, lane-marking, or traffic conditions are outside that domain.\"},{\"text\":\"The system shall monitor whether the driver is attentive and able to take over, rather than relying solely on steering torque as evidence of driver engagement.\"},{\"text\":\"The system shall provide timely takeover warnings and, if the driver does not respond, maintain safe control while reducing risk through a controlled deceleration or other minimum-risk action.\"},{\"text\":\"The system shall detect lane boundaries, roadway geometry, and relevant road hazards—including lane splits, exits, work zones, barriers, and crash attenuators—and shall avoid steering into hazards when the scene is ambiguous.\"},{\"text\":\"The system shall detect imminent collisions with stationary and moving obstacles and apply collision warnings and braking when needed, including when Autopilot is active.\"},{\"text\":\"The system shall maintain safe speeds and following distances for current conditions, including curves, changing traffic, cut-ins, and stopped or slowing vehicles, and shall not accelerate toward an obstructed path when traffic ahead clears or changes.\"},{\"text\":\"The system shall detect and report failures or degradation of sensors, processing, or control, and shall transition to a safe state without making unsupported steering or speed-control decisions.\"},{\"text\":\"The system shall clearly indicate when each automation feature is available, active, limited, or disengaged, and shall communicate system limitations and takeover requests in time for the driver to respond.\"},{\"text\":\"The system shall allow the driver to override or disengage automated steering and speed control promptly and predictably at any time.\"},{\"text\":\"The system shall prevent unintended lateral movement across lane boundaries or into adjacent lanes unless that movement is explicitly commanded by the driver.\"}]}",
+      "parsed": {
+        "requirements": [
+          {
+            "text": "The system shall define its operational design domain and shall prevent or safely limit Autopilot operation when road, weather, visibility, lane-marking, or traffic conditions are outside that domain."
+          },
+          {
+            "text": "The system shall monitor whether the driver is attentive and able to take over, rather than relying solely on steering torque as evidence of driver engagement."
+          },
+          {
+            "text": "The system shall provide timely takeover warnings and, if the driver does not respond, maintain safe control while reducing risk through a controlled deceleration or other minimum-risk action."
+          },
+          {
+            "text": "The system shall detect lane boundaries, roadway geometry, and relevant road hazards—including lane splits, exits, work zones, barriers, and crash attenuators—and shall avoid steering into hazards when the scene is ambiguous."
+          },
+          {
+            "text": "The system shall detect imminent collisions with stationary and moving obstacles and apply collision warnings and braking when needed, including when Autopilot is active."
+          },
+          {
+            "text": "The system shall maintain safe speeds and following distances for current conditions, including curves, changing traffic, cut-ins, and stopped or slowing vehicles, and shall not accelerate toward an obstructed path when traffic ahead clears or changes."
+          },
+          {
+            "text": "The system shall detect and report failures or degradation of sensors, processing, or control, and shall transition to a safe state without making unsupported steering or speed-control decisions."
+          },
+          {
+            "text": "The system shall clearly indicate when each automation feature is available, active, limited, or disengaged, and shall communicate system limitations and takeover requests in time for the driver to respond."
+          },
+          {
+            "text": "The system shall allow the driver to override or disengage automated steering and speed control promptly and predictably at any time."
+          },
+          {
+            "text": "The system shall prevent unintended lateral movement across lane boundaries or into adjacent lanes unless that movement is explicitly commanded by the driver."
+          }
+        ]
+      },
+      "error": ""
+    }
+  ],
+  "tgrl": "",
+  "tgrl_valid": null,
+  "ok": true
+}

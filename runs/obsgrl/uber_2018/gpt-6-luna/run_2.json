@@ -1,0 +1,303 @@
+{
+  "condition": "obsgrl",
+  "case": "uber_2018",
+  "model": "gpt-6-luna",
+  "model_id": "openai/gpt-6-luna",
+  "run": 2,
+  "temperature": null,
+  "prompt_version": "v1",
+  "started_at": "2026-11-11T15:48:50+00:00",
+  "items": [
+    {
+      "id": "r1",
+      "kind": "requirement",
+      "text": "The system shall retain every sensor detection in or near the vehicle's projected path as a potential hazard until it is resolved, and shall reduce speed or stop when the detection's uncertainty prevents safe classification or tracking.",
+      "context": "Obstacle: Perception suppresses or ignores a low-confidence object instead of retaining it as a possible hazard, so the object is not detected for downstream use. | Premise: Any hazard that matters will be detected confidently; an uncertain detection can safely be discarded."
+    },
+    {
+      "id": "r2",
+      "kind": "requirement",
+      "text": "The system shall monitor operator readiness and, if the operator is not road-attentive or fails to acknowledge a takeover request within the validated takeover time, initiate a minimum-risk stop without relying on operator intervention.",
+      "context": "Obstacle: The operator notices a developing hazard only after there is too little time or distance to take control and avoid it, for example after attention has shifted to the tablet or away from the road. | Premise: The operator will remain continuously attentive and will have enough time to recognize a hazard and intervene."
+    },
+    {
+      "id": "r3",
+      "kind": "requirement",
+      "text": "For every tracked pedestrian, the prediction component shall include in its predicted reachable paths any movement into the vehicle's path, regardless of whether that movement follows a sidewalk, crosswalk, or traffic rule; planning shall respond to any resulting collision risk.",
+      "context": "Obstacle: Prediction assumes a pedestrian will stay on a sidewalk, use a crosswalk, or otherwise follow an expected path, when the pedestrian instead enters the vehicle's path. | Premise: Pedestrians will behave predictably and cross only where the system expects them to."
+    },
+    {
+      "id": "r4",
+      "kind": "requirement",
+      "text": "The system shall determine when occlusion, darkness, glare, or sensor faults prevent usable coverage of the vehicle's stopping path and shall reduce speed or stop before entering an area it cannot safely observe.",
+      "context": "Obstacle: Occlusion, darkness, glare, or other conditions leave the sensors without usable information about a road user in or near the vehicle's path. | Premise: The sensor suite will have a clear view and provide usable coverage of every relevant hazard in the operating area."
+    },
+    {
+      "id": "r5",
+      "kind": "requirement",
+      "text": "The planner shall select a speed and path such that, under the detected visibility, road, and hazard conditions, the vehicle can stop within the distance it can reliably observe and keep clear.",
+      "context": "Obstacle: Planning selects a speed or path that leaves inadequate stopping distance for the visibility, road layout, or hazards actually present. | Premise: A speed permitted by the test program or posted limit is safe regardless of local conditions."
+    },
+    {
+      "id": "r6",
+      "kind": "requirement",
+      "text": "The system shall monitor each object's track age, continuity, and state uncertainty; when a track is stale, lost, or inconsistent beyond validated limits, it shall treat the object's location as uncertain and take a safe action before proceeding.",
+      "context": "Obstacle: An object's tracked position or velocity becomes stale or unstable, or its track is lost or confused with another object, so downstream components act on an inaccurate history. | Premise: Once an object is tracked, its identity and motion estimate remain sufficiently accurate and continuous."
+    },
+    {
+      "id": "r7",
+      "kind": "requirement",
+      "text": "Before each test drive, the system shall verify that factory automatic emergency braking is available, and it shall not rely on that feature as the sole means of avoiding a hazard the ADS may fail to handle.",
+      "context": "Obstacle: Automatic emergency braking is unavailable or does not intervene for a hazard the ADS fails to handle, leaving no effective independent braking backup. | Premise: The factory emergency-braking feature will be available and effective for hazards the ADS misses."
+    },
+    {
+      "id": "r8",
+      "kind": "requirement",
+      "text": "The system shall bound and verify the time from receipt of hazard information to brake command such that, at every permitted test speed, the vehicle can stop within the remaining clear distance; otherwise it shall reduce speed or stop.",
+      "context": "Obstacle: The control system applies braking only after delayed or uncertain hazard information has left insufficient distance to stop before the obstacle. | Premise: The information and control path will respond quickly enough for braking to remain effective."
+    },
+    {
+      "id": "r9",
+      "kind": "requirement",
+      "text": "The system shall detect and respond to pedestrians entering the vehicle's path at marked or unmarked locations and at unexpected times by braking or steering to avoid collision whenever a safe maneuver remains possible.",
+      "context": "Obstacle: A pedestrian enters the vehicle's path at an unexpected location or time, creating a collision risk despite the vehicle's planned path. | Premise: Pedestrians will remain out of the vehicle's path unless they are crossing at a marked crossing and can be anticipated."
+    },
+    {
+      "id": "r10",
+      "kind": "requirement",
+      "text": "The system shall detect sudden maneuvers by other road users that create a conflict with the vehicle's path and shall brake or steer to avoid collision whenever a safe maneuver remains possible.",
+      "context": "Obstacle: Another driver makes a sudden unsafe maneuver, such as turning or changing lanes into the vehicle's path, creating a hazard that cannot be avoided in time. | Premise: Other drivers will follow predictable, safe road behavior and leave the test vehicle adequate space."
+    }
+  ],
+  "stages": [
+    {
+      "stage": "s1_extract",
+      "prompt": "You are a requirements engineer building a goal model in GRL (Goal-oriented Requirement Language).\n\nRead the system description below and build a GRL model in textual GRL (TGRL).\nInclude every actor, including humans affected by the system (for example operators and pedestrians).\n\nTGRL syntax example:\ngrl Example { actor Driver { goal ReachDestination; softGoal Comfort; } }\n\nReply with JSON only, in this shape:\n{\"tgrl\": \"grl ... { ... }\",\n \"goals\": [{\"id\": \"g1\", \"actor\": \"...\", \"text\": \"...\"}]}\n\nList every goal in \"goals\", including goals of human actors.\n\nSystem description:\n# Case: Uber ATG automated test vehicle (Tempe, Arizona, 2018)\n\nSource: NTSB Highway Accident Report HAR-19/03. This is a description of the system and its use before the crash. It does not include the investigation findings.\n\n## System\nA modified Volvo XC90 SUV is used by Uber Advanced Technologies Group (ATG) to test an automated driving system (ADS) on public roads. The ADS is designed to drive the vehicle without human input in defined conditions, up to about 45 mph in this test program.\n\n## Main parts\n- Sensors: roof-mounted lidar, radar units and cameras covering the area around the vehicle.\n- Perception: detects objects around the vehicle, classifies each one (for example vehicle, pedestrian, bicycle, other), and tracks it over time.\n- Prediction: estimates where each tracked object will go next, using its class and recent movement.\n- Planning and control: chooses a path and speed, and controls steering, throttle and braking.\n- Vehicle: the Volvo factory driver-assistance features (such as forward collision warning and automatic emergency braking) are part of the base vehicle.\n\n## People\n- One vehicle operator sits in the driver seat. The operator is responsible for watching the road and taking over control when needed. The operator also uses a tablet-style interface to tag events and check system status.\n- Other road users share the road: pedestrians, cyclists and other drivers. They are not aware of the test program.\n\n## Operating context\nPublic multi-lane roads in an urban area, day and night, with posted speed limits, marked crosswalks, intersections and street lighting that varies by location.\n\n",
+      "raw_response": "{\"tgrl\":\"grl UberATGTestVehicle {\\n  actor UberATG {\\n    goal g1;\\n  }\\n  actor ADS {\\n    goal g2;\\n  }\\n  actor Sensors {\\n    goal g3;\\n  }\\n  actor Perception {\\n    goal g4;\\n    goal g5;\\n    goal g6;\\n  }\\n  actor Prediction {\\n    goal g7;\\n  }\\n  actor PlanningControl {\\n    goal g8;\\n    goal g9;\\n  }\\n  actor VolvoVehicle {\\n    goal g10;\\n    goal g11;\\n  }\\n  actor Operator {\\n    goal g12;\\n    goal g13;\\n    goal g14;\\n  }\\n  actor Pedestrian {\\n    softGoal g15;\\n  }\\n  actor Cyclist {\\n    softGoal g16;\\n  }\\n  actor OtherDriver {\\n    softGoal g17;\\n  }\\n}\",\"goals\":[{\"id\":\"g1\",\"actor\":\"UberATG\",\"text\":\"Conduct automated driving system testing on public roads.\"},{\"id\":\"g2\",\"actor\":\"ADS\",\"text\":\"Drive the vehicle without human input within defined operating conditions, at speeds up to about 45 mph.\"},{\"id\":\"g3\",\"actor\":\"Sensors\",\"text\":\"Sense the area around the vehicle using roof-mounted lidar, radar units, and cameras.\"},{\"id\":\"g4\",\"actor\":\"Perception\",\"text\":\"Detect objects around the vehicle.\"},{\"id\":\"g5\",\"actor\":\"Perception\",\"text\":\"Classify detected objects, such as vehicles, pedestrians, and bicycles.\"},{\"id\":\"g6\",\"actor\":\"Perception\",\"text\":\"Track detected objects over time.\"},{\"id\":\"g7\",\"actor\":\"Prediction\",\"text\":\"Estimate where each tracked object will move next using its class and recent movement.\"},{\"id\":\"g8\",\"actor\":\"PlanningControl\",\"text\":\"Choose a path and speed for the vehicle.\"},{\"id\":\"g9\",\"actor\":\"PlanningControl\",\"text\":\"Control vehicle steering, throttle, and braking.\"},{\"id\":\"g10\",\"actor\":\"VolvoVehicle\",\"text\":\"Provide forward collision warning through the factory driver-assistance features.\"},{\"id\":\"g11\",\"actor\":\"VolvoVehicle\",\"text\":\"Provide automatic emergency braking through the factory driver-assistance features.\"},{\"id\":\"g12\",\"actor\":\"Operator\",\"text\":\"Watch the road while seated in the driver seat.\"},{\"id\":\"g13\",\"actor\":\"Operator\",\"text\":\"Take over control when needed.\"},{\"id\":\"g14\",\"actor\":\"Operator\",\"text\":\"Use the tablet-style interface to tag events and check system status.\"},{\"id\":\"g15\",\"actor\":\"Pedestrian\",\"text\":\"Travel and cross public roads safely.\"},{\"id\":\"g16\",\"actor\":\"Cyclist\",\"text\":\"Travel on public roads safely.\"},{\"id\":\"g17\",\"actor\":\"OtherDriver\",\"text\":\"Drive and share public roads safely.\"}]}",
+      "parsed": {
+        "tgrl": "grl UberATGTestVehicle {\n  actor UberATG {\n    goal g1;\n  }\n  actor ADS {\n    goal g2;\n  }\n  actor Sensors {\n    goal g3;\n  }\n  actor Perception {\n    goal g4;\n    goal g5;\n    goal g6;\n  }\n  actor Prediction {\n    goal g7;\n  }\n  actor PlanningControl {\n    goal g8;\n    goal g9;\n  }\n  actor VolvoVehicle {\n    goal g10;\n    goal g11;\n  }\n  actor Operator {\n    goal g12;\n    goal g13;\n    goal g14;\n  }\n  actor Pedestrian {\n    softGoal g15;\n  }\n  actor Cyclist {\n    softGoal g16;\n  }\n  actor OtherDriver {\n    softGoal g17;\n  }\n}",
+        "goals": [
+          {
+            "id": "g1",
+            "actor": "UberATG",
+            "text": "Conduct automated driving system testing on public roads."
+          },
+          {
+            "id": "g2",
+            "actor": "ADS",
+            "text": "Drive the vehicle without human input within defined operating conditions, at speeds up to about 45 mph."
+          },
+          {
+            "id": "g3",
+            "actor": "Sensors",
+            "text": "Sense the area around the vehicle using roof-mounted lidar, radar units, and cameras."
+          },
+          {
+            "id": "g4",
+            "actor": "Perception",
+            "text": "Detect objects around the vehicle."
+          },
+          {
+            "id": "g5",
+            "actor": "Perception",
+            "text": "Classify detected objects, such as vehicles, pedestrians, and bicycles."
+          },
+          {
+            "id": "g6",
+            "actor": "Perception",
+            "text": "Track detected objects over time."
+          },
+          {
+            "id": "g7",
+            "actor": "Prediction",
+            "text": "Estimate where each tracked object will move next using its class and recent movement."
+          },
+          {
+            "id": "g8",
+            "actor": "PlanningControl",
+            "text": "Choose a path and speed for the vehicle."
+          },
+          {
+            "id": "g9",
+            "actor": "PlanningControl",
+            "text": "Control vehicle steering, throttle, and braking."
+          },
+          {
+            "id": "g10",
+            "actor": "VolvoVehicle",
+            "text": "Provide forward collision warning through the factory driver-assistance features."
+          },
+          {
+            "id": "g11",
+            "actor": "VolvoVehicle",
+            "text": "Provide automatic emergency braking through the factory driver-assistance features."
+          },
+          {
+            "id": "g12",
+            "actor": "Operator",
+            "text": "Watch the road while seated in the driver seat."
+          },
+          {
+            "id": "g13",
+            "actor": "Operator",
+            "text": "Take over control when needed."
+          },
+          {
+            "id": "g14",
+            "actor": "Operator",
+            "text": "Use the tablet-style interface to tag events and check system status."
+          },
+          {
+            "id": "g15",
+            "actor": "Pedestrian",
+            "text": "Travel and cross public roads safely."
+          },
+          {
+            "id": "g16",
+            "actor": "Cyclist",
+            "text": "Travel on public roads safely."
+          },
+          {
+            "id": "g17",
+            "actor": "OtherDriver",
+            "text": "Drive and share public roads safely."
+          }
+        ]
+      },
+      "error": ""
+    },
+    {
+      "stage": "s2_obstacles",
+      "prompt": "You are a safety analyst doing obstacle analysis on a goal model.\n\nAn obstacle is a condition that prevents a goal from being satisfied.\nFor EACH goal below, propose obstacles. Use these guide words to search:\n- omission: the system or an actor does not do something it should\n- commission: it does something it should not\n- too early / too late: it acts at the wrong time\n\nAlso check these obstacle types:\n- non-information: an actor never gets information it needs\n- wrong belief: an actor assumes something about the world that can be false\n- inaccuracy: information is imprecise, unstable or out of date\n- unavailability: a needed agent or resource is missing or switched off\n\nDo not only think about sensor or hardware faults. Also think about what people and other road users\nactually do (for example a pedestrian in an unexpected place, an operator who looks away or relies too\nmuch on the system), how the system classifies and tracks objects, and what it does with uncertain\ndetections (for example ignoring or suppressing them).\n\nFor every obstacle, name the hidden premise it violates: the assumption that someone\nthought was too obvious to write down.\n\nReturn at most 10 obstacles in total, ranked from most to least important for safety.\n\nReply with JSON only, in this shape:\n{\"obstacles\": [{\"id\": \"o1\", \"goal_id\": \"g1\", \"guide_word\": \"omission\",\n                \"text\": \"...\", \"violated_premise\": \"...\"}]}\n\nSystem description:\n# Case: Uber ATG automated test vehicle (Tempe, Arizona, 2018)\n\nSource: NTSB Highway Accident Report HAR-19/03. This is a description of the system and its use before the crash. It does not include the investigation findings.\n\n## System\nA modified Volvo XC90 SUV is used by Uber Advanced Technologies Group (ATG) to test an automated driving system (ADS) on public roads. The ADS is designed to drive the vehicle without human input in defined conditions, up to about 45 mph in this test program.\n\n## Main parts\n- Sensors: roof-mounted lidar, radar units and cameras covering the area around the vehicle.\n- Perception: detects objects around the vehicle, classifies each one (for example vehicle, pedestrian, bicycle, other), and tracks it over time.\n- Prediction: estimates where each tracked object will go next, using its class and recent movement.\n- Planning and control: chooses a path and speed, and controls steering, throttle and braking.\n- Vehicle: the Volvo factory driver-assistance features (such as forward collision warning and automatic emergency braking) are part of the base vehicle.\n\n## People\n- One vehicle operator sits in the driver seat. The operator is responsible for watching the road and taking over control when needed. The operator also uses a tablet-style interface to tag events and check system status.\n- Other road users share the road: pedestrians, cyclists and other drivers. They are not aware of the test program.\n\n## Operating context\nPublic multi-lane roads in an urban area, day and night, with posted speed limits, marked crosswalks, intersections and street lighting that varies by location.\n\n\nGoals:\n[\n  {\n    \"id\": \"g1\",\n    \"actor\": \"UberATG\",\n    \"text\": \"Conduct automated driving system testing on public roads.\"\n  },\n  {\n    \"id\": \"g2\",\n    \"actor\": \"ADS\",\n    \"text\": \"Drive the vehicle without human input within defined operating conditions, at speeds up to about 45 mph.\"\n  },\n  {\n    \"id\": \"g3\",\n    \"actor\": \"Sensors\",\n    \"text\": \"Sense the area around the vehicle using roof-mounted lidar, radar units, and cameras.\"\n  },\n  {\n    \"id\": \"g4\",\n    \"actor\": \"Perception\",\n    \"text\": \"Detect objects around the vehicle.\"\n  },\n  {\n    \"id\": \"g5\",\n    \"actor\": \"Perception\",\n    \"text\": \"Classify detected objects, such as vehicles, pedestrians, and bicycles.\"\n  },\n  {\n    \"id\": \"g6\",\n    \"actor\": \"Perception\",\n    \"text\": \"Track detected objects over time.\"\n  },\n  {\n    \"id\": \"g7\",\n    \"actor\": \"Prediction\",\n    \"text\": \"Estimate where each tracked object will move next using its class and recent movement.\"\n  },\n  {\n    \"id\": \"g8\",\n    \"actor\": \"PlanningControl\",\n    \"text\": \"Choose a path and speed for the vehicle.\"\n  },\n  {\n    \"id\": \"g9\",\n    \"actor\": \"PlanningControl\",\n    \"text\": \"Control vehicle steering, throttle, and braking.\"\n  },\n  {\n    \"id\": \"g10\",\n    \"actor\": \"VolvoVehicle\",\n    \"text\": \"Provide forward collision warning through the factory driver-assistance features.\"\n  },\n  {\n    \"id\": \"g11\",\n    \"actor\": \"VolvoVehicle\",\n    \"text\": \"Provide automatic emergency braking through the factory driver-assistance features.\"\n  },\n  {\n    \"id\": \"g12\",\n    \"actor\": \"Operator\",\n    \"text\": \"Watch the road while seated in the driver seat.\"\n  },\n  {\n    \"id\": \"g13\",\n    \"actor\": \"Operator\",\n    \"text\": \"Take over control when needed.\"\n  },\n  {\n    \"id\": \"g14\",\n    \"actor\": \"Operator\",\n    \"text\": \"Use the tablet-style interface to tag events and check system status.\"\n  },\n  {\n    \"id\": \"g15\",\n    \"actor\": \"Pedestrian\",\n    \"text\": \"Travel and cross public roads safely.\"\n  },\n  {\n    \"id\": \"g16\",\n    \"actor\": \"Cyclist\",\n    \"text\": \"Travel on public roads safely.\"\n  },\n  {\n    \"id\": \"g17\",\n    \"actor\": \"OtherDriver\",\n    \"text\": \"Drive and share public roads safely.\"\n  }\n]\n",
+      "raw_response": "{\"obstacles\":[{\"id\":\"o1\",\"goal_id\":\"g4\",\"guide_word\":\"omission\",\"text\":\"Perception suppresses or ignores a low-confidence object instead of retaining it as a possible hazard, so the object is not detected for downstream use.\",\"violated_premise\":\"Any hazard that matters will be detected confidently; an uncertain detection can safely be discarded.\"},{\"id\":\"o2\",\"goal_id\":\"g13\",\"guide_word\":\"too late\",\"text\":\"The operator notices a developing hazard only after there is too little time or distance to take control and avoid it, for example after attention has shifted to the tablet or away from the road.\",\"violated_premise\":\"The operator will remain continuously attentive and will have enough time to recognize a hazard and intervene.\"},{\"id\":\"o3\",\"goal_id\":\"g7\",\"guide_word\":\"wrong belief\",\"text\":\"Prediction assumes a pedestrian will stay on a sidewalk, use a crosswalk, or otherwise follow an expected path, when the pedestrian instead enters the vehicle's path.\",\"violated_premise\":\"Pedestrians will behave predictably and cross only where the system expects them to.\"},{\"id\":\"o4\",\"goal_id\":\"g3\",\"guide_word\":\"non-information\",\"text\":\"Occlusion, darkness, glare, or other conditions leave the sensors without usable information about a road user in or near the vehicle's path.\",\"violated_premise\":\"The sensor suite will have a clear view and provide usable coverage of every relevant hazard in the operating area.\"},{\"id\":\"o5\",\"goal_id\":\"g8\",\"guide_word\":\"wrong belief\",\"text\":\"Planning selects a speed or path that leaves inadequate stopping distance for the visibility, road layout, or hazards actually present.\",\"violated_premise\":\"A speed permitted by the test program or posted limit is safe regardless of local conditions.\"},{\"id\":\"o6\",\"goal_id\":\"g6\",\"guide_word\":\"inaccuracy\",\"text\":\"An object's tracked position or velocity becomes stale or unstable, or its track is lost or confused with another object, so downstream components act on an inaccurate history.\",\"violated_premise\":\"Once an object is tracked, its identity and motion estimate remain sufficiently accurate and continuous.\"},{\"id\":\"o7\",\"goal_id\":\"g11\",\"guide_word\":\"unavailability\",\"text\":\"Automatic emergency braking is unavailable or does not intervene for a hazard the ADS fails to handle, leaving no effective independent braking backup.\",\"violated_premise\":\"The factory emergency-braking feature will be available and effective for hazards the ADS misses.\"},{\"id\":\"o8\",\"goal_id\":\"g9\",\"guide_word\":\"too late\",\"text\":\"The control system applies braking only after delayed or uncertain hazard information has left insufficient distance to stop before the obstacle.\",\"violated_premise\":\"The information and control path will respond quickly enough for braking to remain effective.\"},{\"id\":\"o9\",\"goal_id\":\"g15\",\"guide_word\":\"commission\",\"text\":\"A pedestrian enters the vehicle's path at an unexpected location or time, creating a collision risk despite the vehicle's planned path.\",\"violated_premise\":\"Pedestrians will remain out of the vehicle's path unless they are crossing at a marked crossing and can be anticipated.\"},{\"id\":\"o10\",\"goal_id\":\"g17\",\"guide_word\":\"commission\",\"text\":\"Another driver makes a sudden unsafe maneuver, such as turning or changing lanes into the vehicle's path, creating a hazard that cannot be avoided in time.\",\"violated_premise\":\"Other drivers will follow predictable, safe road behavior and leave the test vehicle adequate space.\"}]}",
+      "parsed": {
+        "obstacles": [
+          {
+            "id": "o1",
+            "goal_id": "g4",
+            "guide_word": "omission",
+            "text": "Perception suppresses or ignores a low-confidence object instead of retaining it as a possible hazard, so the object is not detected for downstream use.",
+            "violated_premise": "Any hazard that matters will be detected confidently; an uncertain detection can safely be discarded."
+          },
+          {
+            "id": "o2",
+            "goal_id": "g13",
+            "guide_word": "too late",
+            "text": "The operator notices a developing hazard only after there is too little time or distance to take control and avoid it, for example after attention has shifted to the tablet or away from the road.",
+            "violated_premise": "The operator will remain continuously attentive and will have enough time to recognize a hazard and intervene."
+          },
+          {
+            "id": "o3",
+            "goal_id": "g7",
+            "guide_word": "wrong belief",
+            "text": "Prediction assumes a pedestrian will stay on a sidewalk, use a crosswalk, or otherwise follow an expected path, when the pedestrian instead enters the vehicle's path.",
+            "violated_premise": "Pedestrians will behave predictably and cross only where the system expects them to."
+          },
+          {
+            "id": "o4",
+            "goal_id": "g3",
+            "guide_word": "non-information",
+            "text": "Occlusion, darkness, glare, or other conditions leave the sensors without usable information about a road user in or near the vehicle's path.",
+            "violated_premise": "The sensor suite will have a clear view and provide usable coverage of every relevant hazard in the operating area."
+          },
+          {
+            "id": "o5",
+            "goal_id": "g8",
+            "guide_word": "wrong belief",
+            "text": "Planning selects a speed or path that leaves inadequate stopping distance for the visibility, road layout, or hazards actually present.",
+            "violated_premise": "A speed permitted by the test program or posted limit is safe regardless of local conditions."
+          },
+          {
+            "id": "o6",
+            "goal_id": "g6",
+            "guide_word": "inaccuracy",
+            "text": "An object's tracked position or velocity becomes stale or unstable, or its track is lost or confused with another object, so downstream components act on an inaccurate history.",
+            "violated_premise": "Once an object is tracked, its identity and motion estimate remain sufficiently accurate and continuous."
+          },
+          {
+            "id": "o7",
+            "goal_id": "g11",
+            "guide_word": "unavailability",
+            "text": "Automatic emergency braking is unavailable or does not intervene for a hazard the ADS fails to handle, leaving no effective independent braking backup.",
+            "violated_premise": "The factory emergency-braking feature will be available and effective for hazards the ADS misses."
+          },
+          {
+            "id": "o8",
+            "goal_id": "g9",
+            "guide_word": "too late",
+            "text": "The control system applies braking only after delayed or uncertain hazard information has left insufficient distance to stop before the obstacle.",
+            "violated_premise": "The information and control path will respond quickly enough for braking to remain effective."
+          },
+          {
+            "id": "o9",
+            "goal_id": "g15",
+            "guide_word": "commission",
+            "text": "A pedestrian enters the vehicle's path at an unexpected location or time, creating a collision risk despite the vehicle's planned path.",
+            "violated_premise": "Pedestrians will remain out of the vehicle's path unless they are crossing at a marked crossing and can be anticipated."
+          },
+          {
+            "id": "o10",
+            "goal_id": "g17",
+            "guide_word": "commission",
+            "text": "Another driver makes a sudden unsafe maneuver, such as turning or changing lanes into the vehicle's path, creating a hazard that cannot be avoided in time.",
+            "violated_premise": "Other drivers will follow predictable, safe road behavior and leave the test vehicle adequate space."
+          }
+        ]
+      },
+      "error": ""
+    },
+    {
+      "stage": "s3_resolve",
+      "prompt": "You are a requirements engineer. Each obstacle below shows a hidden premise in the system.\n\nFor each obstacle, write ONE new requirement that makes the premise explicit and testable,\nso the system handles the case instead of assuming it away.\n\nWrite one requirement for each obstacle, no more than 10 in total.\n\nReply with JSON only, in this shape:\n{\"requirements\": [{\"obstacle_id\": \"o1\", \"text\": \"The system shall ...\"}]}\n\nSystem description:\n# Case: Uber ATG automated test vehicle (Tempe, Arizona, 2018)\n\nSource: NTSB Highway Accident Report HAR-19/03. This is a description of the system and its use before the crash. It does not include the investigation findings.\n\n## System\nA modified Volvo XC90 SUV is used by Uber Advanced Technologies Group (ATG) to test an automated driving system (ADS) on public roads. The ADS is designed to drive the vehicle without human input in defined conditions, up to about 45 mph in this test program.\n\n## Main parts\n- Sensors: roof-mounted lidar, radar units and cameras covering the area around the vehicle.\n- Perception: detects objects around the vehicle, classifies each one (for example vehicle, pedestrian, bicycle, other), and tracks it over time.\n- Prediction: estimates where each tracked object will go next, using its class and recent movement.\n- Planning and control: chooses a path and speed, and controls steering, throttle and braking.\n- Vehicle: the Volvo factory driver-assistance features (such as forward collision warning and automatic emergency braking) are part of the base vehicle.\n\n## People\n- One vehicle operator sits in the driver seat. The operator is responsible for watching the road and taking over control when needed. The operator also uses a tablet-style interface to tag events and check system status.\n- Other road users share the road: pedestrians, cyclists and other drivers. They are not aware of the test program.\n\n## Operating context\nPublic multi-lane roads in an urban area, day and night, with posted speed limits, marked crosswalks, intersections and street lighting that varies by location.\n\n\nObstacles:\n[\n  {\n    \"id\": \"o1\",\n    \"goal_id\": \"g4\",\n    \"guide_word\": \"omission\",\n    \"text\": \"Perception suppresses or ignores a low-confidence object instead of retaining it as a possible hazard, so the object is not detected for downstream use.\",\n    \"violated_premise\": \"Any hazard that matters will be detected confidently; an uncertain detection can safely be discarded.\"\n  },\n  {\n    \"id\": \"o2\",\n    \"goal_id\": \"g13\",\n    \"guide_word\": \"too late\",\n    \"text\": \"The operator notices a developing hazard only after there is too little time or distance to take control and avoid it, for example after attention has shifted to the tablet or away from the road.\",\n    \"violated_premise\": \"The operator will remain continuously attentive and will have enough time to recognize a hazard and intervene.\"\n  },\n  {\n    \"id\": \"o3\",\n    \"goal_id\": \"g7\",\n    \"guide_word\": \"wrong belief\",\n    \"text\": \"Prediction assumes a pedestrian will stay on a sidewalk, use a crosswalk, or otherwise follow an expected path, when the pedestrian instead enters the vehicle's path.\",\n    \"violated_premise\": \"Pedestrians will behave predictably and cross only where the system expects them to.\"\n  },\n  {\n    \"id\": \"o4\",\n    \"goal_id\": \"g3\",\n    \"guide_word\": \"non-information\",\n    \"text\": \"Occlusion, darkness, glare, or other conditions leave the sensors without usable information about a road user in or near the vehicle's path.\",\n    \"violated_premise\": \"The sensor suite will have a clear view and provide usable coverage of every relevant hazard in the operating area.\"\n  },\n  {\n    \"id\": \"o5\",\n    \"goal_id\": \"g8\",\n    \"guide_word\": \"wrong belief\",\n    \"text\": \"Planning selects a speed or path that leaves inadequate stopping distance for the visibility, road layout, or hazards actually present.\",\n    \"violated_premise\": \"A speed permitted by the test program or posted limit is safe regardless of local conditions.\"\n  },\n  {\n    \"id\": \"o6\",\n    \"goal_id\": \"g6\",\n    \"guide_word\": \"inaccuracy\",\n    \"text\": \"An object's tracked position or velocity becomes stale or unstable, or its track is lost or confused with another object, so downstream components act on an inaccurate history.\",\n    \"violated_premise\": \"Once an object is tracked, its identity and motion estimate remain sufficiently accurate and continuous.\"\n  },\n  {\n    \"id\": \"o7\",\n    \"goal_id\": \"g11\",\n    \"guide_word\": \"unavailability\",\n    \"text\": \"Automatic emergency braking is unavailable or does not intervene for a hazard the ADS fails to handle, leaving no effective independent braking backup.\",\n    \"violated_premise\": \"The factory emergency-braking feature will be available and effective for hazards the ADS misses.\"\n  },\n  {\n    \"id\": \"o8\",\n    \"goal_id\": \"g9\",\n    \"guide_word\": \"too late\",\n    \"text\": \"The control system applies braking only after delayed or uncertain hazard information has left insufficient distance to stop before the obstacle.\",\n    \"violated_premise\": \"The information and control path will respond quickly enough for braking to remain effective.\"\n  },\n  {\n    \"id\": \"o9\",\n    \"goal_id\": \"g15\",\n    \"guide_word\": \"commission\",\n    \"text\": \"A pedestrian enters the vehicle's path at an unexpected location or time, creating a collision risk despite the vehicle's planned path.\",\n    \"violated_premise\": \"Pedestrians will remain out of the vehicle's path unless they are crossing at a marked crossing and can be anticipated.\"\n  },\n  {\n    \"id\": \"o10\",\n    \"goal_id\": \"g17\",\n    \"guide_word\": \"commission\",\n    \"text\": \"Another driver makes a sudden unsafe maneuver, such as turning or changing lanes into the vehicle's path, creating a hazard that cannot be avoided in time.\",\n    \"violated_premise\": \"Other drivers will follow predictable, safe road behavior and leave the test vehicle adequate space.\"\n  }\n]\n",
+      "raw_response": "{\"requirements\":[{\"obstacle_id\":\"o1\",\"text\":\"The system shall retain every sensor detection in or near the vehicle's projected path as a potential hazard until it is resolved, and shall reduce speed or stop when the detection's uncertainty prevents safe classification or tracking.\"},{\"obstacle_id\":\"o2\",\"text\":\"The system shall monitor operator readiness and, if the operator is not road-attentive or fails to acknowledge a takeover request within the validated takeover time, initiate a minimum-risk stop without relying on operator intervention.\"},{\"obstacle_id\":\"o3\",\"text\":\"For every tracked pedestrian, the prediction component shall include in its predicted reachable paths any movement into the vehicle's path, regardless of whether that movement follows a sidewalk, crosswalk, or traffic rule; planning shall respond to any resulting collision risk.\"},{\"obstacle_id\":\"o4\",\"text\":\"The system shall determine when occlusion, darkness, glare, or sensor faults prevent usable coverage of the vehicle's stopping path and shall reduce speed or stop before entering an area it cannot safely observe.\"},{\"obstacle_id\":\"o5\",\"text\":\"The planner shall select a speed and path such that, under the detected visibility, road, and hazard conditions, the vehicle can stop within the distance it can reliably observe and keep clear.\"},{\"obstacle_id\":\"o6\",\"text\":\"The system shall monitor each object's track age, continuity, and state uncertainty; when a track is stale, lost, or inconsistent beyond validated limits, it shall treat the object's location as uncertain and take a safe action before proceeding.\"},{\"obstacle_id\":\"o7\",\"text\":\"Before each test drive, the system shall verify that factory automatic emergency braking is available, and it shall not rely on that feature as the sole means of avoiding a hazard the ADS may fail to handle.\"},{\"obstacle_id\":\"o8\",\"text\":\"The system shall bound and verify the time from receipt of hazard information to brake command such that, at every permitted test speed, the vehicle can stop within the remaining clear distance; otherwise it shall reduce speed or stop.\"},{\"obstacle_id\":\"o9\",\"text\":\"The system shall detect and respond to pedestrians entering the vehicle's path at marked or unmarked locations and at unexpected times by braking or steering to avoid collision whenever a safe maneuver remains possible.\"},{\"obstacle_id\":\"o10\",\"text\":\"The system shall detect sudden maneuvers by other road users that create a conflict with the vehicle's path and shall brake or steer to avoid collision whenever a safe maneuver remains possible.\"}]}",
+      "parsed": {
+        "requirements": [
+          {
+            "obstacle_id": "o1",
+            "text": "The system shall retain every sensor detection in or near the vehicle's projected path as a potential hazard until it is resolved, and shall reduce speed or stop when the detection's uncertainty prevents safe classification or tracking."
+          },
+          {
+            "obstacle_id": "o2",
+            "text": "The system shall monitor operator readiness and, if the operator is not road-attentive or fails to acknowledge a takeover request within the validated takeover time, initiate a minimum-risk stop without relying on operator intervention."
+          },
+          {
+            "obstacle_id": "o3",
+            "text": "For every tracked pedestrian, the prediction component shall include in its predicted reachable paths any movement into the vehicle's path, regardless of whether that movement follows a sidewalk, crosswalk, or traffic rule; planning shall respond to any resulting collision risk."
+          },
+          {
+            "obstacle_id": "o4",
+            "text": "The system shall determine when occlusion, darkness, glare, or sensor faults prevent usable coverage of the vehicle's stopping path and shall reduce speed or stop before entering an area it cannot safely observe."
+          },
+          {
+            "obstacle_id": "o5",
+            "text": "The planner shall select a speed and path such that, under the detected visibility, road, and hazard conditions, the vehicle can stop within the distance it can reliably observe and keep clear."
+          },
+          {
+            "obstacle_id": "o6",
+            "text": "The system shall monitor each object's track age, continuity, and state uncertainty; when a track is stale, lost, or inconsistent beyond validated limits, it shall treat the object's location as uncertain and take a safe action before proceeding."
+          },
+          {
+            "obstacle_id": "o7",
+            "text": "Before each test drive, the system shall verify that factory automatic emergency braking is available, and it shall not rely on that feature as the sole means of avoiding a hazard the ADS may fail to handle."
+          },
+          {
+            "obstacle_id": "o8",
+            "text": "The system shall bound and verify the time from receipt of hazard information to brake command such that, at every permitted test speed, the vehicle can stop within the remaining clear distance; otherwise it shall reduce speed or stop."
+          },
+          {
+            "obstacle_id": "o9",
+            "text": "The system shall detect and respond to pedestrians entering the vehicle's path at marked or unmarked locations and at unexpected times by braking or steering to avoid collision whenever a safe maneuver remains possible."
+          },
+          {
+            "obstacle_id": "o10",
+            "text": "The system shall detect sudden maneuvers by other road users that create a conflict with the vehicle's path and shall brake or steer to avoid collision whenever a safe maneuver remains possible."
+          }
+        ]
+      },
+      "error": ""
+    }
+  ],
+  "tgrl": "grl UberATGTestVehicle {\n  actor UberATG {\n    goal g1;\n  }\n  actor ADS {\n    goal g2;\n  }\n  actor Sensors {\n    goal g3;\n  }\n  actor Perception {\n    goal g4;\n    goal g5;\n    goal g6;\n  }\n  actor Prediction {\n    goal g7;\n  }\n  actor PlanningControl {\n    goal g8;\n    goal g9;\n  }\n  actor VolvoVehicle {\n    goal g10;\n    goal g11;\n  }\n  actor Operator {\n    goal g12;\n    goal g13;\n    goal g14;\n  }\n  actor Pedestrian {\n    softGoal g15;\n  }\n  actor Cyclist {\n    softGoal g16;\n  }\n  actor OtherDriver {\n    softGoal g17;\n  }\n}",
+  "tgrl_valid": true,
+  "ok": true
+}

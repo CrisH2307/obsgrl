@@ -1,0 +1,138 @@
+{
+  "condition": "b2",
+  "case": "williston_2016",
+  "model": "gpt-oss-120b",
+  "model_id": "openai/gpt-oss-120b",
+  "run": 5,
+  "temperature": 0.7,
+  "prompt_version": "v1",
+  "started_at": "2026-11-11T15:27:34+00:00",
+  "items": [
+    {
+      "id": "g1",
+      "kind": "goal",
+      "text": "Driver: SafeTravel – avoid collisions and reach destination safely",
+      "context": ""
+    },
+    {
+      "id": "g2",
+      "kind": "goal",
+      "text": "Autopilot: DetectObstacles – reliably identify vehicles, trucks, and motorcycles ahead",
+      "context": ""
+    },
+    {
+      "id": "g3",
+      "kind": "goal",
+      "text": "Autopilot: MaintainLanePosition – keep the vehicle centered in its lane",
+      "context": ""
+    },
+    {
+      "id": "g4",
+      "kind": "goal",
+      "text": "Autopilot: RespectSpeedSetting – follow the driver‑set cruising speed",
+      "context": ""
+    },
+    {
+      "id": "g5",
+      "kind": "goal",
+      "text": "Autopilot: ProvideDriverAlertnessMonitoring – ensure driver’s hands are on the wheel and issue alerts otherwise",
+      "context": ""
+    },
+    {
+      "id": "g6",
+      "kind": "goal",
+      "text": "Driver: ReducedWorkload – minimise mental and physical effort while using Autopilot",
+      "context": ""
+    },
+    {
+      "id": "g7",
+      "kind": "goal",
+      "text": "Autopilot: ComplianceWithTrafficRules – obey speed limits, lane markings and right‑of‑way",
+      "context": ""
+    },
+    {
+      "id": "g8",
+      "kind": "goal",
+      "text": "Autopilot: EmergencyBraking – execute automatic emergency braking when an imminent collision is detected",
+      "context": ""
+    },
+    {
+      "id": "g9",
+      "kind": "goal",
+      "text": "OtherRoadUsers: PreservePedestrianSafety – avoid striking pedestrians or vulnerable road users",
+      "context": ""
+    },
+    {
+      "id": "g10",
+      "kind": "goal",
+      "text": "Driver: TrustInSystem – maintain confidence in the Autopilot’s reliability and safety",
+      "context": ""
+    }
+  ],
+  "stages": [
+    {
+      "stage": "s1_extract",
+      "prompt": "You are a requirements engineer building a goal model in GRL (Goal-oriented Requirement Language).\n\nRead the system description below and build a GRL model in textual GRL (TGRL).\nInclude every actor, including humans affected by the system (for example operators and pedestrians).\n\nTGRL syntax example:\ngrl Example { actor Driver { goal ReachDestination; softGoal Comfort; } }\n\nReply with JSON only, in this shape:\n{\"tgrl\": \"grl ... { ... }\",\n \"goals\": [{\"id\": \"g1\", \"actor\": \"...\", \"text\": \"...\"}]}\n\nList the 10 most important goals in \"goals\", ranked from most to least important, including goals of human actors.\n\nSystem description:\n# Case: Tesla Model S with Autopilot (Williston, Florida, 2016)\n\nSource: NTSB Highway Accident Report HAR-17/02. This is a description of the system and its use before the crash. It does not include the investigation findings.\n\n## System\nA 2015 Tesla Model S has Autopilot, a SAE Level 2 partial driving automation feature. It combines Traffic-Aware Cruise Control (TACC) and Autosteer (lane keeping). The driver stays responsible for driving and monitoring the road.\n\n## Main parts\n- Sensors: a forward-facing camera, a forward-facing radar and ultrasonic sensors.\n- Vision processing: a camera-based system detects lane markings and objects ahead.\n- TACC: holds a speed set by the driver, slows down for a vehicle ahead in the same lane, and speeds up again when the lane is clear.\n- Autosteer: keeps the vehicle centered in its lane using lane markings and the vehicle ahead.\n- Forward collision warning and automatic emergency braking are available as separate features.\n- Driver monitoring: the system checks that the driver's hands are on the steering wheel by sensing steering torque, and shows visual and audible alerts if no hands are detected for a period of time.\n\n## People\n- The driver sets the cruising speed, turns Autopilot on, and is told to keep hands on the wheel and watch the road.\n- Other road users include cars, large trucks crossing or joining the road, and motorcyclists.\n\n## Operating context\nAutopilot is intended mainly for highways with limited access, in good visibility. Drivers can also turn it on for other roads, such as divided highways with cross traffic at intersections.\n\n",
+      "raw_response": "{\n  \"tgrl\": \"grl TeslaAutopilotModel {\\n    actor Driver {\\n        goal SafeTravel;           // avoid collisions and reach destination safely\\n        softGoal ReducedWorkload;  // minimize mental and physical effort while using Autopilot\\n        softGoal TrustInSystem;    // maintain confidence in Autopilot functionality\\n    }\\n    actor Autopilot {\\n        goal MaintainLanePosition; // keep vehicle centered in its lane using lane markings\\n        goal RespectSpeedSetting;  // obey the speed set by the driver (TACC)\\n        goal DetectObstacles;      // identify vehicles, trucks, motorcycles ahead\\n        goal ProvideDriverAlertnessMonitoring; // monitor steering torque, alert if hands off\\n        softGoal ComplianceWithTrafficRules;   // obey speed limits, lane rules, right‑of‑way\\n        task EmergencyBraking;     // execute automatic emergency braking when imminent collision detected\\n    }\\n    actor OtherRoadUsers {\\n        goal PreservePedestrianSafety; // avoid striking pedestrians or vulnerable road users\\n        goal AvoidCollisionWithVehicles; // maintain safe distance from cars, trucks, motorcycles\\n    }\\n    actor Sensors {\\n        goal CaptureCameraImages;\\n        goal EmitRadarSignals;\\n        goal ProvideUltrasonicData;\\n    }\\n    actor VisionProcessing {\\n        goal IdentifyLaneMarkings;\\n        goal DetectObjectsAhead;\\n    }\\n}\",\n  \"goals\": [\n    {\n      \"id\": \"g1\",\n      \"actor\": \"Driver\",\n      \"text\": \"SafeTravel – avoid collisions and reach destination safely\"\n    },\n    {\n      \"id\": \"g2\",\n      \"actor\": \"Autopilot\",\n      \"text\": \"DetectObstacles – reliably identify vehicles, trucks, and motorcycles ahead\"\n    },\n    {\n      \"id\": \"g3\",\n      \"actor\": \"Autopilot\",\n      \"text\": \"MaintainLanePosition – keep the vehicle centered in its lane\"\n    },\n    {\n      \"id\": \"g4\",\n      \"actor\": \"Autopilot\",\n      \"text\": \"RespectSpeedSetting – follow the driver‑set cruising speed\"\n    },\n    {\n      \"id\": \"g5\",\n      \"actor\": \"Autopilot\",\n      \"text\": \"ProvideDriverAlertnessMonitoring – ensure driver’s hands are on the wheel and issue alerts otherwise\"\n    },\n    {\n      \"id\": \"g6\",\n      \"actor\": \"Driver\",\n      \"text\": \"ReducedWorkload – minimise mental and physical effort while using Autopilot\"\n    },\n    {\n      \"id\": \"g7\",\n      \"actor\": \"Autopilot\",\n      \"text\": \"ComplianceWithTrafficRules – obey speed limits, lane markings and right‑of‑way\"\n    },\n    {\n      \"id\": \"g8\",\n      \"actor\": \"Autopilot\",\n      \"text\": \"EmergencyBraking – execute automatic emergency braking when an imminent collision is detected\"\n    },\n    {\n      \"id\": \"g9\",\n      \"actor\": \"OtherRoadUsers\",\n      \"text\": \"PreservePedestrianSafety – avoid striking pedestrians or vulnerable road users\"\n    },\n    {\n      \"id\": \"g10\",\n      \"actor\": \"Driver\",\n      \"text\": \"TrustInSystem – maintain confidence in the Autopilot’s reliability and safety\"\n    }\n  ]\n}",
+      "parsed": {
+        "tgrl": "grl TeslaAutopilotModel {\n    actor Driver {\n        goal SafeTravel;           // avoid collisions and reach destination safely\n        softGoal ReducedWorkload;  // minimize mental and physical effort while using Autopilot\n        softGoal TrustInSystem;    // maintain confidence in Autopilot functionality\n    }\n    actor Autopilot {\n        goal MaintainLanePosition; // keep vehicle centered in its lane using lane markings\n        goal RespectSpeedSetting;  // obey the speed set by the driver (TACC)\n        goal DetectObstacles;      // identify vehicles, trucks, motorcycles ahead\n        goal ProvideDriverAlertnessMonitoring; // monitor steering torque, alert if hands off\n        softGoal ComplianceWithTrafficRules;   // obey speed limits, lane rules, right‑of‑way\n        task EmergencyBraking;     // execute automatic emergency braking when imminent collision detected\n    }\n    actor OtherRoadUsers {\n        goal PreservePedestrianSafety; // avoid striking pedestrians or vulnerable road users\n        goal AvoidCollisionWithVehicles; // maintain safe distance from cars, trucks, motorcycles\n    }\n    actor Sensors {\n        goal CaptureCameraImages;\n        goal EmitRadarSignals;\n        goal ProvideUltrasonicData;\n    }\n    actor VisionProcessing {\n        goal IdentifyLaneMarkings;\n        goal DetectObjectsAhead;\n    }\n}",
+        "goals": [
+          {
+            "id": "g1",
+            "actor": "Driver",
+            "text": "SafeTravel – avoid collisions and reach destination safely"
+          },
+          {
+            "id": "g2",
+            "actor": "Autopilot",
+            "text": "DetectObstacles – reliably identify vehicles, trucks, and motorcycles ahead"
+          },
+          {
+            "id": "g3",
+            "actor": "Autopilot",
+            "text": "MaintainLanePosition – keep the vehicle centered in its lane"
+          },
+          {
+            "id": "g4",
+            "actor": "Autopilot",
+            "text": "RespectSpeedSetting – follow the driver‑set cruising speed"
+          },
+          {
+            "id": "g5",
+            "actor": "Autopilot",
+            "text": "ProvideDriverAlertnessMonitoring – ensure driver’s hands are on the wheel and issue alerts otherwise"
+          },
+          {
+            "id": "g6",
+            "actor": "Driver",
+            "text": "ReducedWorkload – minimise mental and physical effort while using Autopilot"
+          },
+          {
+            "id": "g7",
+            "actor": "Autopilot",
+            "text": "ComplianceWithTrafficRules – obey speed limits, lane markings and right‑of‑way"
+          },
+          {
+            "id": "g8",
+            "actor": "Autopilot",
+            "text": "EmergencyBraking – execute automatic emergency braking when an imminent collision is detected"
+          },
+          {
+            "id": "g9",
+            "actor": "OtherRoadUsers",
+            "text": "PreservePedestrianSafety – avoid striking pedestrians or vulnerable road users"
+          },
+          {
+            "id": "g10",
+            "actor": "Driver",
+            "text": "TrustInSystem – maintain confidence in the Autopilot’s reliability and safety"
+          }
+        ]
+      },
+      "error": ""
+    }
+  ],
+  "tgrl": "grl TeslaAutopilotModel {\n    actor Driver {\n        goal SafeTravel;           // avoid collisions and reach destination safely\n        softGoal ReducedWorkload;  // minimize mental and physical effort while using Autopilot\n        softGoal TrustInSystem;    // maintain confidence in Autopilot functionality\n    }\n    actor Autopilot {\n        goal MaintainLanePosition; // keep vehicle centered in its lane using lane markings\n        goal RespectSpeedSetting;  // obey the speed set by the driver (TACC)\n        goal DetectObstacles;      // identify vehicles, trucks, motorcycles ahead\n        goal ProvideDriverAlertnessMonitoring; // monitor steering torque, alert if hands off\n        softGoal ComplianceWithTrafficRules;   // obey speed limits, lane rules, right‑of‑way\n        task EmergencyBraking;     // execute automatic emergency braking when imminent collision detected\n    }\n    actor OtherRoadUsers {\n        goal PreservePedestrianSafety; // avoid striking pedestrians or vulnerable road users\n        goal AvoidCollisionWithVehicles; // maintain safe distance from cars, trucks, motorcycles\n    }\n    actor Sensors {\n        goal CaptureCameraImages;\n        goal EmitRadarSignals;\n        goal ProvideUltrasonicData;\n    }\n    actor VisionProcessing {\n        goal IdentifyLaneMarkings;\n        goal DetectObjectsAhead;\n    }\n}",
+  "tgrl_valid": true,
+  "ok": true
+}
