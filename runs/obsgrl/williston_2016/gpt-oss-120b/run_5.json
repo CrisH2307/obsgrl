@@ -1,0 +1,298 @@
+{
+  "condition": "obsgrl",
+  "case": "williston_2016",
+  "model": "gpt-oss-120b",
+  "model_id": "openai/gpt-oss-120b",
+  "run": 5,
+  "temperature": 0.7,
+  "prompt_version": "v1",
+  "started_at": "2026-11-11T15:35:41+00:00",
+  "items": [
+    {
+      "id": "r1",
+      "kind": "requirement",
+      "text": "The system shall continuously monitor driver visual attention using an interior camera and, if the driver’s gaze is off the road for more than 2 seconds while Autopilot is engaged, issue an escalating visual and audible warning and automatically disengage Autopilot if attention is not restored within a further 2 seconds.",
+      "context": "Obstacle: Driver fails to monitor the road while Autopilot is engaged. | Premise: The driver will keep eyes on the road and remain attentive whenever Autopilot is active."
+    },
+    {
+      "id": "r2",
+      "kind": "requirement",
+      "text": "The system shall detect steering‑wheel torque continuously and, if no torque is sensed for longer than 1.5 seconds, present a visual and audible hands‑off alert; if hands remain off for an additional 2 seconds, the system shall disengage Autopilot and apply a controlled deceleration.",
+      "context": "Obstacle: Driver removes hands from the steering wheel and does not intervene when the vehicle drifts. | Premise: The driver will keep at least one hand on the wheel for the entire duration Autopilot is on."
+    },
+    {
+      "id": "r3",
+      "kind": "requirement",
+      "text": "The system shall fuse forward‑facing camera and radar data such that, when camera confidence falls below 0.6 (e.g., due to occlusion), radar‑only detection is used to maintain a minimum obstacle detection range of 100 m and a safe following distance, and an alert shall be shown to the driver.",
+      "context": "Obstacle: Autopilot fails to detect the white truck ahead because the forward‑facing camera’s field of view is occluded. | Premise: The vision system will always detect any vehicle occupying the lane ahead of the host vehicle."
+    },
+    {
+      "id": "r4",
+      "kind": "requirement",
+      "text": "The lane‑detection algorithm shall achieve at least a 95 % detection rate for lane markings under lighting conditions from 0.1 to 10 000 lux and surface reflectivity variations, providing a confidence score; if confidence drops below 0.7, the system shall notify the driver and disengage Autosteer.",
+      "context": "Obstacle: Autopilot does not detect lane markings that are faded or partially washed out. | Premise: The camera‑based lane‑detection algorithm will reliably recognise lane markings under all highway lighting and surface conditions."
+    },
+    {
+      "id": "r5",
+      "kind": "requirement",
+      "text": "The system shall perform a self‑test of the forward‑facing radar at each Autopilot activation and shall prohibit Autopilot engagement if the radar is unavailable or fails, displaying an error message to the driver.",
+      "context": "Obstacle: The forward‑facing radar is unavailable (switched off or failed), leaving a blind spot for obstacle detection. | Premise: All required sensors (camera, radar, ultrasonic) are functional and available whenever Autopilot is engaged."
+    },
+    {
+      "id": "r6",
+      "kind": "requirement",
+      "text": "Automatic Emergency Braking shall activate only when the calculated time‑to‑collision is ≤ 1.5 seconds and the predicted impact speed is ≥ 5 km/h, and only after the obstacle detection confidence exceeds 0.9.",
+      "context": "Obstacle: Automatic Emergency Braking activates before a collision is imminent, causing an abrupt deceleration that surprises the driver. | Premise: AEB will only trigger when a crash is imminent, not for marginal or spurious detections."
+    },
+    {
+      "id": "r7",
+      "kind": "requirement",
+      "text": "Traffic‑Aware Cruise Control shall initiate deceleration within 0.5 seconds of detecting that the headway distance has fallen below 1.5 times the safe‑time‑headway (based on lead‑vehicle speed), ensuring the following distance never breaches the defined safety threshold.",
+      "context": "Obstacle: TACC reduces speed only after the host vehicle has already entered the collision zone of the vehicle ahead. | Premise: Speed‑control will adjust promptly enough to keep a safe following distance once an obstacle is detected."
+    },
+    {
+      "id": "r8",
+      "kind": "requirement",
+      "text": "Hands‑off detection shall trigger a visual icon and an audible tone within 0.5 seconds of detection; if the driver’s hands remain off for more than 2 seconds, the system shall disengage Autopilot and apply a gentle brake to alert the driver.",
+      "context": "Obstacle: System fails to issue a visual or audible alert when the driver’s hands are off the wheel because of a software bug. | Premise: The system will always alert the driver if hands‑off is detected for longer than the allowed interval."
+    },
+    {
+      "id": "r9",
+      "kind": "requirement",
+      "text": "The lane‑position estimator shall provide a lateral position error no greater than 0.1 m (RMS) at speeds up to 30 km/h, and the Autosteer controller shall correct any drift exceeding 0.2 m within 0.3 seconds.",
+      "context": "Obstacle: Vehicle drifts out of its lane because lane‑position information from the camera is imprecise, leading Autosteer to mis‑center. | Premise: Lane‑detection provides an accurate and stable lateral position estimate for the Autosteer controller."
+    },
+    {
+      "id": "r10",
+      "kind": "requirement",
+      "text": "The system shall assume that any road user may enter the lane without signaling and shall maintain a minimum lateral clearance of 1.0 m; if a vehicle is detected cutting into the lane, the system shall initiate emergency braking if a collision is predicted within 2 seconds.",
+      "context": "Obstacle: Motorcyclist abruptly cuts into the lane without signaling, violating the expected behavior of other road users. | Premise: Other road users will maintain their lane and give appropriate signals before crossing or merging."
+    }
+  ],
+  "stages": [
+    {
+      "stage": "s1_extract",
+      "prompt": "You are a requirements engineer building a goal model in GRL (Goal-oriented Requirement Language).\n\nRead the system description below and build a GRL model in textual GRL (TGRL).\nInclude every actor, including humans affected by the system (for example operators and pedestrians).\n\nTGRL syntax example:\ngrl Example { actor Driver { goal ReachDestination; softGoal Comfort; } }\n\nReply with JSON only, in this shape:\n{\"tgrl\": \"grl ... { ... }\",\n \"goals\": [{\"id\": \"g1\", \"actor\": \"...\", \"text\": \"...\"}]}\n\nList every goal in \"goals\", including goals of human actors.\n\nSystem description:\n# Case: Tesla Model S with Autopilot (Williston, Florida, 2016)\n\nSource: NTSB Highway Accident Report HAR-17/02. This is a description of the system and its use before the crash. It does not include the investigation findings.\n\n## System\nA 2015 Tesla Model S has Autopilot, a SAE Level 2 partial driving automation feature. It combines Traffic-Aware Cruise Control (TACC) and Autosteer (lane keeping). The driver stays responsible for driving and monitoring the road.\n\n## Main parts\n- Sensors: a forward-facing camera, a forward-facing radar and ultrasonic sensors.\n- Vision processing: a camera-based system detects lane markings and objects ahead.\n- TACC: holds a speed set by the driver, slows down for a vehicle ahead in the same lane, and speeds up again when the lane is clear.\n- Autosteer: keeps the vehicle centered in its lane using lane markings and the vehicle ahead.\n- Forward collision warning and automatic emergency braking are available as separate features.\n- Driver monitoring: the system checks that the driver's hands are on the steering wheel by sensing steering torque, and shows visual and audible alerts if no hands are detected for a period of time.\n\n## People\n- The driver sets the cruising speed, turns Autopilot on, and is told to keep hands on the wheel and watch the road.\n- Other road users include cars, large trucks crossing or joining the road, and motorcyclists.\n\n## Operating context\nAutopilot is intended mainly for highways with limited access, in good visibility. Drivers can also turn it on for other roads, such as divided highways with cross traffic at intersections.\n\n",
+      "raw_response": "{\n  \"tgrl\": \"grl TeslaAutopilotModel {\\n actor Driver {\\n  goal ReachDestination;\\n  softGoal Comfort;\\n  goal StayInControl;\\n  goal MonitorRoad;\\n  goal KeepHandsOnWheel;\\n }\\n actor AutopilotSystem {\\n  goal MaintainSetSpeed;\\n  goal KeepLaneCentred;\\n  goal DetectLaneMarkings;\\n  goal DetectObstacles;\\n  goal ProvideCollisionWarning;\\n  goal ApplyEmergencyBraking;\\n  goal MonitorDriverHands;\\n  goal IssueDriverAlerts;\\n }\\n actor RoadUser {\\n  goal AvoidCollision;\\n  goal MaintainSafeFollowingDistance;\\n }\\n actor Pedestrian {\\n  goal RemainSafe;\\n }\\n}\",\n  \"goals\": [\n    { \"id\": \"g1\", \"actor\": \"Driver\", \"text\": \"Reach Destination\" },\n    { \"id\": \"g2\", \"actor\": \"Driver\", \"text\": \"Maintain Comfort\" },\n    { \"id\": \"g3\", \"actor\": \"Driver\", \"text\": \"Stay In Control of Vehicle\" },\n    { \"id\": \"g4\", \"actor\": \"Driver\", \"text\": \"Monitor Road\" },\n    { \"id\": \"g5\", \"actor\": \"Driver\", \"text\": \"Keep Hands on Steering Wheel\" },\n    { \"id\": \"g6\", \"actor\": \"AutopilotSystem\", \"text\": \"Maintain Set Cruising Speed\" },\n    { \"id\": \"g7\", \"actor\": \"AutopilotSystem\", \"text\": \"Keep Vehicle Centered in Lane\" },\n    { \"id\": \"g8\", \"actor\": \"AutopilotSystem\", \"text\": \"Detect Lane Markings\" },\n    { \"id\": \"g9\", \"actor\": \"AutopilotSystem\", \"text\": \"Detect Obstacles Ahead\" },\n    { \"id\": \"g10\", \"actor\": \"AutopilotSystem\", \"text\": \"Provide Forward Collision Warning\" },\n    { \"id\": \"g11\", \"actor\": \"AutopilotSystem\", \"text\": \"Apply Automatic Emergency Braking\" },\n    { \"id\": \"g12\", \"actor\": \"AutopilotSystem\", \"text\": \"Monitor Driver Hands\" },\n    { \"id\": \"g13\", \"actor\": \"AutopilotSystem\", \"text\": \"Issue Visual and Audible Driver Alerts\" },\n    { \"id\": \"g14\", \"actor\": \"RoadUser\", \"text\": \"Avoid Collision with Vehicle\" },\n    { \"id\": \"g15\", \"actor\": \"RoadUser\", \"text\": \"Maintain Safe Following Distance\" },\n    { \"id\": \"g16\", \"actor\": \"Pedestrian\", \"text\": \"Remain Safe while Crossing Road\" }\n  ]\n}",
+      "parsed": {
+        "tgrl": "grl TeslaAutopilotModel {\n actor Driver {\n  goal ReachDestination;\n  softGoal Comfort;\n  goal StayInControl;\n  goal MonitorRoad;\n  goal KeepHandsOnWheel;\n }\n actor AutopilotSystem {\n  goal MaintainSetSpeed;\n  goal KeepLaneCentred;\n  goal DetectLaneMarkings;\n  goal DetectObstacles;\n  goal ProvideCollisionWarning;\n  goal ApplyEmergencyBraking;\n  goal MonitorDriverHands;\n  goal IssueDriverAlerts;\n }\n actor RoadUser {\n  goal AvoidCollision;\n  goal MaintainSafeFollowingDistance;\n }\n actor Pedestrian {\n  goal RemainSafe;\n }\n}",
+        "goals": [
+          {
+            "id": "g1",
+            "actor": "Driver",
+            "text": "Reach Destination"
+          },
+          {
+            "id": "g2",
+            "actor": "Driver",
+            "text": "Maintain Comfort"
+          },
+          {
+            "id": "g3",
+            "actor": "Driver",
+            "text": "Stay In Control of Vehicle"
+          },
+          {
+            "id": "g4",
+            "actor": "Driver",
+            "text": "Monitor Road"
+          },
+          {
+            "id": "g5",
+            "actor": "Driver",
+            "text": "Keep Hands on Steering Wheel"
+          },
+          {
+            "id": "g6",
+            "actor": "AutopilotSystem",
+            "text": "Maintain Set Cruising Speed"
+          },
+          {
+            "id": "g7",
+            "actor": "AutopilotSystem",
+            "text": "Keep Vehicle Centered in Lane"
+          },
+          {
+            "id": "g8",
+            "actor": "AutopilotSystem",
+            "text": "Detect Lane Markings"
+          },
+          {
+            "id": "g9",
+            "actor": "AutopilotSystem",
+            "text": "Detect Obstacles Ahead"
+          },
+          {
+            "id": "g10",
+            "actor": "AutopilotSystem",
+            "text": "Provide Forward Collision Warning"
+          },
+          {
+            "id": "g11",
+            "actor": "AutopilotSystem",
+            "text": "Apply Automatic Emergency Braking"
+          },
+          {
+            "id": "g12",
+            "actor": "AutopilotSystem",
+            "text": "Monitor Driver Hands"
+          },
+          {
+            "id": "g13",
+            "actor": "AutopilotSystem",
+            "text": "Issue Visual and Audible Driver Alerts"
+          },
+          {
+            "id": "g14",
+            "actor": "RoadUser",
+            "text": "Avoid Collision with Vehicle"
+          },
+          {
+            "id": "g15",
+            "actor": "RoadUser",
+            "text": "Maintain Safe Following Distance"
+          },
+          {
+            "id": "g16",
+            "actor": "Pedestrian",
+            "text": "Remain Safe while Crossing Road"
+          }
+        ]
+      },
+      "error": ""
+    },
+    {
+      "stage": "s2_obstacles",
+      "prompt": "You are a safety analyst doing obstacle analysis on a goal model.\n\nAn obstacle is a condition that prevents a goal from being satisfied.\nFor EACH goal below, propose obstacles. Use these guide words to search:\n- omission: the system or an actor does not do something it should\n- commission: it does something it should not\n- too early / too late: it acts at the wrong time\n\nAlso check these obstacle types:\n- non-information: an actor never gets information it needs\n- wrong belief: an actor assumes something about the world that can be false\n- inaccuracy: information is imprecise, unstable or out of date\n- unavailability: a needed agent or resource is missing or switched off\n\nDo not only think about sensor or hardware faults. Also think about what people and other road users\nactually do (for example a pedestrian in an unexpected place, an operator who looks away or relies too\nmuch on the system), how the system classifies and tracks objects, and what it does with uncertain\ndetections (for example ignoring or suppressing them).\n\nFor every obstacle, name the hidden premise it violates: the assumption that someone\nthought was too obvious to write down.\n\nReturn at most 10 obstacles in total, ranked from most to least important for safety.\n\nReply with JSON only, in this shape:\n{\"obstacles\": [{\"id\": \"o1\", \"goal_id\": \"g1\", \"guide_word\": \"omission\",\n                \"text\": \"...\", \"violated_premise\": \"...\"}]}\n\nSystem description:\n# Case: Tesla Model S with Autopilot (Williston, Florida, 2016)\n\nSource: NTSB Highway Accident Report HAR-17/02. This is a description of the system and its use before the crash. It does not include the investigation findings.\n\n## System\nA 2015 Tesla Model S has Autopilot, a SAE Level 2 partial driving automation feature. It combines Traffic-Aware Cruise Control (TACC) and Autosteer (lane keeping). The driver stays responsible for driving and monitoring the road.\n\n## Main parts\n- Sensors: a forward-facing camera, a forward-facing radar and ultrasonic sensors.\n- Vision processing: a camera-based system detects lane markings and objects ahead.\n- TACC: holds a speed set by the driver, slows down for a vehicle ahead in the same lane, and speeds up again when the lane is clear.\n- Autosteer: keeps the vehicle centered in its lane using lane markings and the vehicle ahead.\n- Forward collision warning and automatic emergency braking are available as separate features.\n- Driver monitoring: the system checks that the driver's hands are on the steering wheel by sensing steering torque, and shows visual and audible alerts if no hands are detected for a period of time.\n\n## People\n- The driver sets the cruising speed, turns Autopilot on, and is told to keep hands on the wheel and watch the road.\n- Other road users include cars, large trucks crossing or joining the road, and motorcyclists.\n\n## Operating context\nAutopilot is intended mainly for highways with limited access, in good visibility. Drivers can also turn it on for other roads, such as divided highways with cross traffic at intersections.\n\n\nGoals:\n[\n  {\n    \"id\": \"g1\",\n    \"actor\": \"Driver\",\n    \"text\": \"Reach Destination\"\n  },\n  {\n    \"id\": \"g2\",\n    \"actor\": \"Driver\",\n    \"text\": \"Maintain Comfort\"\n  },\n  {\n    \"id\": \"g3\",\n    \"actor\": \"Driver\",\n    \"text\": \"Stay In Control of Vehicle\"\n  },\n  {\n    \"id\": \"g4\",\n    \"actor\": \"Driver\",\n    \"text\": \"Monitor Road\"\n  },\n  {\n    \"id\": \"g5\",\n    \"actor\": \"Driver\",\n    \"text\": \"Keep Hands on Steering Wheel\"\n  },\n  {\n    \"id\": \"g6\",\n    \"actor\": \"AutopilotSystem\",\n    \"text\": \"Maintain Set Cruising Speed\"\n  },\n  {\n    \"id\": \"g7\",\n    \"actor\": \"AutopilotSystem\",\n    \"text\": \"Keep Vehicle Centered in Lane\"\n  },\n  {\n    \"id\": \"g8\",\n    \"actor\": \"AutopilotSystem\",\n    \"text\": \"Detect Lane Markings\"\n  },\n  {\n    \"id\": \"g9\",\n    \"actor\": \"AutopilotSystem\",\n    \"text\": \"Detect Obstacles Ahead\"\n  },\n  {\n    \"id\": \"g10\",\n    \"actor\": \"AutopilotSystem\",\n    \"text\": \"Provide Forward Collision Warning\"\n  },\n  {\n    \"id\": \"g11\",\n    \"actor\": \"AutopilotSystem\",\n    \"text\": \"Apply Automatic Emergency Braking\"\n  },\n  {\n    \"id\": \"g12\",\n    \"actor\": \"AutopilotSystem\",\n    \"text\": \"Monitor Driver Hands\"\n  },\n  {\n    \"id\": \"g13\",\n    \"actor\": \"AutopilotSystem\",\n    \"text\": \"Issue Visual and Audible Driver Alerts\"\n  },\n  {\n    \"id\": \"g14\",\n    \"actor\": \"RoadUser\",\n    \"text\": \"Avoid Collision with Vehicle\"\n  },\n  {\n    \"id\": \"g15\",\n    \"actor\": \"RoadUser\",\n    \"text\": \"Maintain Safe Following Distance\"\n  },\n  {\n    \"id\": \"g16\",\n    \"actor\": \"Pedestrian\",\n    \"text\": \"Remain Safe while Crossing Road\"\n  }\n]\n",
+      "raw_response": "{\n  \"obstacles\": [\n    {\n      \"id\": \"o1\",\n      \"goal_id\": \"g4\",\n      \"guide_word\": \"omission\",\n      \"text\": \"Driver fails to monitor the road while Autopilot is engaged.\",\n      \"violated_premise\": \"The driver will keep eyes on the road and remain attentive whenever Autopilot is active.\"\n    },\n    {\n      \"id\": \"o2\",\n      \"goal_id\": \"g5\",\n      \"guide_word\": \"commission\",\n      \"text\": \"Driver removes hands from the steering wheel and does not intervene when the vehicle drifts.\",\n      \"violated_premise\": \"The driver will keep at least one hand on the wheel for the entire duration Autopilot is on.\"\n    },\n    {\n      \"id\": \"o3\",\n      \"goal_id\": \"g9\",\n      \"guide_word\": \"omission\",\n      \"text\": \"Autopilot fails to detect the white truck ahead because the forward‑facing camera’s field of view is occluded.\",\n      \"violated_premise\": \"The vision system will always detect any vehicle occupying the lane ahead of the host vehicle.\"\n    },\n    {\n      \"id\": \"o4\",\n      \"goal_id\": \"g8\",\n      \"guide_word\": \"omission\",\n      \"text\": \"Autopilot does not detect lane markings that are faded or partially washed out.\",\n      \"violated_premise\": \"The camera‑based lane‑detection algorithm will reliably recognise lane markings under all highway lighting and surface conditions.\"\n    },\n    {\n      \"id\": \"o5\",\n      \"goal_id\": \"g9\",\n      \"guide_word\": \"omission\",\n      \"text\": \"The forward‑facing radar is unavailable (switched off or failed), leaving a blind spot for obstacle detection.\",\n      \"violated_premise\": \"All required sensors (camera, radar, ultrasonic) are functional and available whenever Autopilot is engaged.\"\n    },\n    {\n      \"id\": \"o6\",\n      \"goal_id\": \"g11\",\n      \"guide_word\": \"too early\",\n      \"text\": \"Automatic Emergency Braking activates before a collision is imminent, causing an abrupt deceleration that surprises the driver.\",\n      \"violated_premise\": \"AEB will only trigger when a crash is imminent, not for marginal or spurious detections.\"\n    },\n    {\n      \"id\": \"o7\",\n      \"goal_id\": \"g6\",\n      \"guide_word\": \"too late\",\n      \"text\": \"TACC reduces speed only after the host vehicle has already entered the collision zone of the vehicle ahead.\",\n      \"violated_premise\": \"Speed‑control will adjust promptly enough to keep a safe following distance once an obstacle is detected.\"\n    },\n    {\n      \"id\": \"o8\",\n      \"goal_id\": \"g13\",\n      \"guide_word\": \"omission\",\n      \"text\": \"System fails to issue a visual or audible alert when the driver’s hands are off the wheel because of a software bug.\",\n      \"violated_premise\": \"The system will always alert the driver if hands‑off is detected for longer than the allowed interval.\"\n    },\n    {\n      \"id\": \"o9\",\n      \"goal_id\": \"g7\",\n      \"guide_word\": \"omission\",\n      \"text\": \"Vehicle drifts out of its lane because lane‑position information from the camera is imprecise, leading Autosteer to mis‑center.\",\n      \"violated_premise\": \"Lane‑detection provides an accurate and stable lateral position estimate for the Autosteer controller.\"\n    },\n    {\n      \"id\": \"o10\",\n      \"goal_id\": \"g14\",\n      \"guide_word\": \"commission\",\n      \"text\": \"Motorcyclist abruptly cuts into the lane without signaling, violating the expected behavior of other road users.\",\n      \"violated_premise\": \"Other road users will maintain their lane and give appropriate signals before crossing or merging.\"\n    }\n  ]\n}",
+      "parsed": {
+        "obstacles": [
+          {
+            "id": "o1",
+            "goal_id": "g4",
+            "guide_word": "omission",
+            "text": "Driver fails to monitor the road while Autopilot is engaged.",
+            "violated_premise": "The driver will keep eyes on the road and remain attentive whenever Autopilot is active."
+          },
+          {
+            "id": "o2",
+            "goal_id": "g5",
+            "guide_word": "commission",
+            "text": "Driver removes hands from the steering wheel and does not intervene when the vehicle drifts.",
+            "violated_premise": "The driver will keep at least one hand on the wheel for the entire duration Autopilot is on."
+          },
+          {
+            "id": "o3",
+            "goal_id": "g9",
+            "guide_word": "omission",
+            "text": "Autopilot fails to detect the white truck ahead because the forward‑facing camera’s field of view is occluded.",
+            "violated_premise": "The vision system will always detect any vehicle occupying the lane ahead of the host vehicle."
+          },
+          {
+            "id": "o4",
+            "goal_id": "g8",
+            "guide_word": "omission",
+            "text": "Autopilot does not detect lane markings that are faded or partially washed out.",
+            "violated_premise": "The camera‑based lane‑detection algorithm will reliably recognise lane markings under all highway lighting and surface conditions."
+          },
+          {
+            "id": "o5",
+            "goal_id": "g9",
+            "guide_word": "omission",
+            "text": "The forward‑facing radar is unavailable (switched off or failed), leaving a blind spot for obstacle detection.",
+            "violated_premise": "All required sensors (camera, radar, ultrasonic) are functional and available whenever Autopilot is engaged."
+          },
+          {
+            "id": "o6",
+            "goal_id": "g11",
+            "guide_word": "too early",
+            "text": "Automatic Emergency Braking activates before a collision is imminent, causing an abrupt deceleration that surprises the driver.",
+            "violated_premise": "AEB will only trigger when a crash is imminent, not for marginal or spurious detections."
+          },
+          {
+            "id": "o7",
+            "goal_id": "g6",
+            "guide_word": "too late",
+            "text": "TACC reduces speed only after the host vehicle has already entered the collision zone of the vehicle ahead.",
+            "violated_premise": "Speed‑control will adjust promptly enough to keep a safe following distance once an obstacle is detected."
+          },
+          {
+            "id": "o8",
+            "goal_id": "g13",
+            "guide_word": "omission",
+            "text": "System fails to issue a visual or audible alert when the driver’s hands are off the wheel because of a software bug.",
+            "violated_premise": "The system will always alert the driver if hands‑off is detected for longer than the allowed interval."
+          },
+          {
+            "id": "o9",
+            "goal_id": "g7",
+            "guide_word": "omission",
+            "text": "Vehicle drifts out of its lane because lane‑position information from the camera is imprecise, leading Autosteer to mis‑center.",
+            "violated_premise": "Lane‑detection provides an accurate and stable lateral position estimate for the Autosteer controller."
+          },
+          {
+            "id": "o10",
+            "goal_id": "g14",
+            "guide_word": "commission",
+            "text": "Motorcyclist abruptly cuts into the lane without signaling, violating the expected behavior of other road users.",
+            "violated_premise": "Other road users will maintain their lane and give appropriate signals before crossing or merging."
+          }
+        ]
+      },
+      "error": ""
+    },
+    {
+      "stage": "s3_resolve",
+      "prompt": "You are a requirements engineer. Each obstacle below shows a hidden premise in the system.\n\nFor each obstacle, write ONE new requirement that makes the premise explicit and testable,\nso the system handles the case instead of assuming it away.\n\nWrite one requirement for each obstacle, no more than 10 in total.\n\nReply with JSON only, in this shape:\n{\"requirements\": [{\"obstacle_id\": \"o1\", \"text\": \"The system shall ...\"}]}\n\nSystem description:\n# Case: Tesla Model S with Autopilot (Williston, Florida, 2016)\n\nSource: NTSB Highway Accident Report HAR-17/02. This is a description of the system and its use before the crash. It does not include the investigation findings.\n\n## System\nA 2015 Tesla Model S has Autopilot, a SAE Level 2 partial driving automation feature. It combines Traffic-Aware Cruise Control (TACC) and Autosteer (lane keeping). The driver stays responsible for driving and monitoring the road.\n\n## Main parts\n- Sensors: a forward-facing camera, a forward-facing radar and ultrasonic sensors.\n- Vision processing: a camera-based system detects lane markings and objects ahead.\n- TACC: holds a speed set by the driver, slows down for a vehicle ahead in the same lane, and speeds up again when the lane is clear.\n- Autosteer: keeps the vehicle centered in its lane using lane markings and the vehicle ahead.\n- Forward collision warning and automatic emergency braking are available as separate features.\n- Driver monitoring: the system checks that the driver's hands are on the steering wheel by sensing steering torque, and shows visual and audible alerts if no hands are detected for a period of time.\n\n## People\n- The driver sets the cruising speed, turns Autopilot on, and is told to keep hands on the wheel and watch the road.\n- Other road users include cars, large trucks crossing or joining the road, and motorcyclists.\n\n## Operating context\nAutopilot is intended mainly for highways with limited access, in good visibility. Drivers can also turn it on for other roads, such as divided highways with cross traffic at intersections.\n\n\nObstacles:\n[\n  {\n    \"id\": \"o1\",\n    \"goal_id\": \"g4\",\n    \"guide_word\": \"omission\",\n    \"text\": \"Driver fails to monitor the road while Autopilot is engaged.\",\n    \"violated_premise\": \"The driver will keep eyes on the road and remain attentive whenever Autopilot is active.\"\n  },\n  {\n    \"id\": \"o2\",\n    \"goal_id\": \"g5\",\n    \"guide_word\": \"commission\",\n    \"text\": \"Driver removes hands from the steering wheel and does not intervene when the vehicle drifts.\",\n    \"violated_premise\": \"The driver will keep at least one hand on the wheel for the entire duration Autopilot is on.\"\n  },\n  {\n    \"id\": \"o3\",\n    \"goal_id\": \"g9\",\n    \"guide_word\": \"omission\",\n    \"text\": \"Autopilot fails to detect the white truck ahead because the forward\\u2011facing camera\\u2019s field of view is occluded.\",\n    \"violated_premise\": \"The vision system will always detect any vehicle occupying the lane ahead of the host vehicle.\"\n  },\n  {\n    \"id\": \"o4\",\n    \"goal_id\": \"g8\",\n    \"guide_word\": \"omission\",\n    \"text\": \"Autopilot does not detect lane markings that are faded or partially washed out.\",\n    \"violated_premise\": \"The camera\\u2011based lane\\u2011detection algorithm will reliably recognise lane markings under all highway lighting and surface conditions.\"\n  },\n  {\n    \"id\": \"o5\",\n    \"goal_id\": \"g9\",\n    \"guide_word\": \"omission\",\n    \"text\": \"The forward\\u2011facing radar is unavailable (switched off or failed), leaving a blind spot for obstacle detection.\",\n    \"violated_premise\": \"All required sensors (camera, radar, ultrasonic) are functional and available whenever Autopilot is engaged.\"\n  },\n  {\n    \"id\": \"o6\",\n    \"goal_id\": \"g11\",\n    \"guide_word\": \"too early\",\n    \"text\": \"Automatic Emergency Braking activates before a collision is imminent, causing an abrupt deceleration that surprises the driver.\",\n    \"violated_premise\": \"AEB will only trigger when a crash is imminent, not for marginal or spurious detections.\"\n  },\n  {\n    \"id\": \"o7\",\n    \"goal_id\": \"g6\",\n    \"guide_word\": \"too late\",\n    \"text\": \"TACC reduces speed only after the host vehicle has already entered the collision zone of the vehicle ahead.\",\n    \"violated_premise\": \"Speed\\u2011control will adjust promptly enough to keep a safe following distance once an obstacle is detected.\"\n  },\n  {\n    \"id\": \"o8\",\n    \"goal_id\": \"g13\",\n    \"guide_word\": \"omission\",\n    \"text\": \"System fails to issue a visual or audible alert when the driver\\u2019s hands are off the wheel because of a software bug.\",\n    \"violated_premise\": \"The system will always alert the driver if hands\\u2011off is detected for longer than the allowed interval.\"\n  },\n  {\n    \"id\": \"o9\",\n    \"goal_id\": \"g7\",\n    \"guide_word\": \"omission\",\n    \"text\": \"Vehicle drifts out of its lane because lane\\u2011position information from the camera is imprecise, leading Autosteer to mis\\u2011center.\",\n    \"violated_premise\": \"Lane\\u2011detection provides an accurate and stable lateral position estimate for the Autosteer controller.\"\n  },\n  {\n    \"id\": \"o10\",\n    \"goal_id\": \"g14\",\n    \"guide_word\": \"commission\",\n    \"text\": \"Motorcyclist abruptly cuts into the lane without signaling, violating the expected behavior of other road users.\",\n    \"violated_premise\": \"Other road users will maintain their lane and give appropriate signals before crossing or merging.\"\n  }\n]\n",
+      "raw_response": "{\n  \"requirements\": [\n    {\n      \"obstacle_id\": \"o1\",\n      \"text\": \"The system shall continuously monitor driver visual attention using an interior camera and, if the driver’s gaze is off the road for more than 2 seconds while Autopilot is engaged, issue an escalating visual and audible warning and automatically disengage Autopilot if attention is not restored within a further 2 seconds.\"\n    },\n    {\n      \"obstacle_id\": \"o2\",\n      \"text\": \"The system shall detect steering‑wheel torque continuously and, if no torque is sensed for longer than 1.5 seconds, present a visual and audible hands‑off alert; if hands remain off for an additional 2 seconds, the system shall disengage Autopilot and apply a controlled deceleration.\"\n    },\n    {\n      \"obstacle_id\": \"o3\",\n      \"text\": \"The system shall fuse forward‑facing camera and radar data such that, when camera confidence falls below 0.6 (e.g., due to occlusion), radar‑only detection is used to maintain a minimum obstacle detection range of 100 m and a safe following distance, and an alert shall be shown to the driver.\"\n    },\n    {\n      \"obstacle_id\": \"o4\",\n      \"text\": \"The lane‑detection algorithm shall achieve at least a 95 % detection rate for lane markings under lighting conditions from 0.1 to 10 000 lux and surface reflectivity variations, providing a confidence score; if confidence drops below 0.7, the system shall notify the driver and disengage Autosteer.\"\n    },\n    {\n      \"obstacle_id\": \"o5\",\n      \"text\": \"The system shall perform a self‑test of the forward‑facing radar at each Autopilot activation and shall prohibit Autopilot engagement if the radar is unavailable or fails, displaying an error message to the driver.\"\n    },\n    {\n      \"obstacle_id\": \"o6\",\n      \"text\": \"Automatic Emergency Braking shall activate only when the calculated time‑to‑collision is ≤ 1.5 seconds and the predicted impact speed is ≥ 5 km/h, and only after the obstacle detection confidence exceeds 0.9.\"\n    },\n    {\n      \"obstacle_id\": \"o7\",\n      \"text\": \"Traffic‑Aware Cruise Control shall initiate deceleration within 0.5 seconds of detecting that the headway distance has fallen below 1.5 times the safe‑time‑headway (based on lead‑vehicle speed), ensuring the following distance never breaches the defined safety threshold.\"\n    },\n    {\n      \"obstacle_id\": \"o8\",\n      \"text\": \"Hands‑off detection shall trigger a visual icon and an audible tone within 0.5 seconds of detection; if the driver’s hands remain off for more than 2 seconds, the system shall disengage Autopilot and apply a gentle brake to alert the driver.\"\n    },\n    {\n      \"obstacle_id\": \"o9\",\n      \"text\": \"The lane‑position estimator shall provide a lateral position error no greater than 0.1 m (RMS) at speeds up to 30 km/h, and the Autosteer controller shall correct any drift exceeding 0.2 m within 0.3 seconds.\"\n    },\n    {\n      \"obstacle_id\": \"o10\",\n      \"text\": \"The system shall assume that any road user may enter the lane without signaling and shall maintain a minimum lateral clearance of 1.0 m; if a vehicle is detected cutting into the lane, the system shall initiate emergency braking if a collision is predicted within 2 seconds.\"\n    }\n  ]\n}",
+      "parsed": {
+        "requirements": [
+          {
+            "obstacle_id": "o1",
+            "text": "The system shall continuously monitor driver visual attention using an interior camera and, if the driver’s gaze is off the road for more than 2 seconds while Autopilot is engaged, issue an escalating visual and audible warning and automatically disengage Autopilot if attention is not restored within a further 2 seconds."
+          },
+          {
+            "obstacle_id": "o2",
+            "text": "The system shall detect steering‑wheel torque continuously and, if no torque is sensed for longer than 1.5 seconds, present a visual and audible hands‑off alert; if hands remain off for an additional 2 seconds, the system shall disengage Autopilot and apply a controlled deceleration."
+          },
+          {
+            "obstacle_id": "o3",
+            "text": "The system shall fuse forward‑facing camera and radar data such that, when camera confidence falls below 0.6 (e.g., due to occlusion), radar‑only detection is used to maintain a minimum obstacle detection range of 100 m and a safe following distance, and an alert shall be shown to the driver."
+          },
+          {
+            "obstacle_id": "o4",
+            "text": "The lane‑detection algorithm shall achieve at least a 95 % detection rate for lane markings under lighting conditions from 0.1 to 10 000 lux and surface reflectivity variations, providing a confidence score; if confidence drops below 0.7, the system shall notify the driver and disengage Autosteer."
+          },
+          {
+            "obstacle_id": "o5",
+            "text": "The system shall perform a self‑test of the forward‑facing radar at each Autopilot activation and shall prohibit Autopilot engagement if the radar is unavailable or fails, displaying an error message to the driver."
+          },
+          {
+            "obstacle_id": "o6",
+            "text": "Automatic Emergency Braking shall activate only when the calculated time‑to‑collision is ≤ 1.5 seconds and the predicted impact speed is ≥ 5 km/h, and only after the obstacle detection confidence exceeds 0.9."
+          },
+          {
+            "obstacle_id": "o7",
+            "text": "Traffic‑Aware Cruise Control shall initiate deceleration within 0.5 seconds of detecting that the headway distance has fallen below 1.5 times the safe‑time‑headway (based on lead‑vehicle speed), ensuring the following distance never breaches the defined safety threshold."
+          },
+          {
+            "obstacle_id": "o8",
+            "text": "Hands‑off detection shall trigger a visual icon and an audible tone within 0.5 seconds of detection; if the driver’s hands remain off for more than 2 seconds, the system shall disengage Autopilot and apply a gentle brake to alert the driver."
+          },
+          {
+            "obstacle_id": "o9",
+            "text": "The lane‑position estimator shall provide a lateral position error no greater than 0.1 m (RMS) at speeds up to 30 km/h, and the Autosteer controller shall correct any drift exceeding 0.2 m within 0.3 seconds."
+          },
+          {
+            "obstacle_id": "o10",
+            "text": "The system shall assume that any road user may enter the lane without signaling and shall maintain a minimum lateral clearance of 1.0 m; if a vehicle is detected cutting into the lane, the system shall initiate emergency braking if a collision is predicted within 2 seconds."
+          }
+        ]
+      },
+      "error": ""
+    }
+  ],
+  "tgrl": "grl TeslaAutopilotModel {\n actor Driver {\n  goal ReachDestination;\n  softGoal Comfort;\n  goal StayInControl;\n  goal MonitorRoad;\n  goal KeepHandsOnWheel;\n }\n actor AutopilotSystem {\n  goal MaintainSetSpeed;\n  goal KeepLaneCentred;\n  goal DetectLaneMarkings;\n  goal DetectObstacles;\n  goal ProvideCollisionWarning;\n  goal ApplyEmergencyBraking;\n  goal MonitorDriverHands;\n  goal IssueDriverAlerts;\n }\n actor RoadUser {\n  goal AvoidCollision;\n  goal MaintainSafeFollowingDistance;\n }\n actor Pedestrian {\n  goal RemainSafe;\n }\n}",
+  "tgrl_valid": true,
+  "ok": true
+}

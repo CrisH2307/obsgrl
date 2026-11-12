@@ -1,0 +1,138 @@
+{
+  "condition": "b2",
+  "case": "williston_2016",
+  "model": "gpt-6-luna",
+  "model_id": "openai/gpt-6-luna",
+  "run": 3,
+  "temperature": null,
+  "prompt_version": "v1",
+  "started_at": "2026-11-11T15:44:54+00:00",
+  "items": [
+    {
+      "id": "g1",
+      "kind": "goal",
+      "text": "Driver: Remain responsible for driving and maintain control of the vehicle.",
+      "context": ""
+    },
+    {
+      "id": "g2",
+      "kind": "goal",
+      "text": "Driver: Monitor the road and surrounding traffic while Autopilot is active.",
+      "context": ""
+    },
+    {
+      "id": "g3",
+      "kind": "goal",
+      "text": "Autosteer: Keep the vehicle centered in its lane using available lane and vehicle information.",
+      "context": ""
+    },
+    {
+      "id": "g4",
+      "kind": "goal",
+      "text": "TrafficAwareCruiseControl: Maintain the driver-set speed, slow for a vehicle ahead in the same lane, and resume speed when the lane is clear.",
+      "context": ""
+    },
+    {
+      "id": "g5",
+      "kind": "goal",
+      "text": "Sensors: Provide forward camera, radar, and ultrasonic sensing inputs for the vehicle's assistance features.",
+      "context": ""
+    },
+    {
+      "id": "g6",
+      "kind": "goal",
+      "text": "DriverMonitoring: Check whether the driver's hands are on the steering wheel and give visual and audible alerts when hands are not detected for a period of time.",
+      "context": ""
+    },
+    {
+      "id": "g7",
+      "kind": "goal",
+      "text": "ForwardCollisionWarningAndAutomaticEmergencyBraking: Provide forward collision warning and automatic emergency braking as separate available features.",
+      "context": ""
+    },
+    {
+      "id": "g8",
+      "kind": "goal",
+      "text": "OtherCarDrivers: Travel safely while sharing the road with the Tesla.",
+      "context": ""
+    },
+    {
+      "id": "g9",
+      "kind": "goal",
+      "text": "TruckDrivers: Cross or join the road safely while sharing it with the Tesla.",
+      "context": ""
+    },
+    {
+      "id": "g10",
+      "kind": "goal",
+      "text": "Motorcyclists: Travel safely while sharing the road with the Tesla.",
+      "context": ""
+    }
+  ],
+  "stages": [
+    {
+      "stage": "s1_extract",
+      "prompt": "You are a requirements engineer building a goal model in GRL (Goal-oriented Requirement Language).\n\nRead the system description below and build a GRL model in textual GRL (TGRL).\nInclude every actor, including humans affected by the system (for example operators and pedestrians).\n\nTGRL syntax example:\ngrl Example { actor Driver { goal ReachDestination; softGoal Comfort; } }\n\nReply with JSON only, in this shape:\n{\"tgrl\": \"grl ... { ... }\",\n \"goals\": [{\"id\": \"g1\", \"actor\": \"...\", \"text\": \"...\"}]}\n\nList the 10 most important goals in \"goals\", ranked from most to least important, including goals of human actors.\n\nSystem description:\n# Case: Tesla Model S with Autopilot (Williston, Florida, 2016)\n\nSource: NTSB Highway Accident Report HAR-17/02. This is a description of the system and its use before the crash. It does not include the investigation findings.\n\n## System\nA 2015 Tesla Model S has Autopilot, a SAE Level 2 partial driving automation feature. It combines Traffic-Aware Cruise Control (TACC) and Autosteer (lane keeping). The driver stays responsible for driving and monitoring the road.\n\n## Main parts\n- Sensors: a forward-facing camera, a forward-facing radar and ultrasonic sensors.\n- Vision processing: a camera-based system detects lane markings and objects ahead.\n- TACC: holds a speed set by the driver, slows down for a vehicle ahead in the same lane, and speeds up again when the lane is clear.\n- Autosteer: keeps the vehicle centered in its lane using lane markings and the vehicle ahead.\n- Forward collision warning and automatic emergency braking are available as separate features.\n- Driver monitoring: the system checks that the driver's hands are on the steering wheel by sensing steering torque, and shows visual and audible alerts if no hands are detected for a period of time.\n\n## People\n- The driver sets the cruising speed, turns Autopilot on, and is told to keep hands on the wheel and watch the road.\n- Other road users include cars, large trucks crossing or joining the road, and motorcyclists.\n\n## Operating context\nAutopilot is intended mainly for highways with limited access, in good visibility. Drivers can also turn it on for other roads, such as divided highways with cross traffic at intersections.\n\n",
+      "raw_response": "{\"tgrl\":\"grl TeslaModelSAutopilot {\\n  actor Driver {\\n    goal g1;\\n    goal g2;\\n    goal SetCruisingSpeed;\\n    goal EngageAutopilotWhenAppropriate;\\n    goal KeepHandsOnSteeringWheel;\\n  }\\n  actor Autopilot {\\n    goal SupportDriverWithPartialAutomation;\\n    softGoal SupportUsePrimarilyOnLimitedAccessHighwaysInGoodVisibility;\\n  }\\n  actor Sensors {\\n    goal g5;\\n    goal ProvideForwardSensingData;\\n  }\\n  actor VisionProcessing {\\n    goal DetectLaneMarkingsAndObjectsAhead;\\n  }\\n  actor TrafficAwareCruiseControl {\\n    goal g4;\\n  }\\n  actor Autosteer {\\n    goal g3;\\n  }\\n  actor DriverMonitoring {\\n    goal g6;\\n    goal CheckForHandsOnSteeringWheelUsingSteeringTorque;\\n  }\\n  actor ForwardCollisionWarningAndAutomaticEmergencyBraking {\\n    goal g7;\\n  }\\n  actor OtherCarDrivers {\\n    goal g8;\\n  }\\n  actor TruckDrivers {\\n    goal g9;\\n  }\\n  actor Motorcyclists {\\n    goal g10;\\n  }\\n}\",\"goals\":[{\"id\":\"g1\",\"actor\":\"Driver\",\"text\":\"Remain responsible for driving and maintain control of the vehicle.\"},{\"id\":\"g2\",\"actor\":\"Driver\",\"text\":\"Monitor the road and surrounding traffic while Autopilot is active.\"},{\"id\":\"g3\",\"actor\":\"Autosteer\",\"text\":\"Keep the vehicle centered in its lane using available lane and vehicle information.\"},{\"id\":\"g4\",\"actor\":\"TrafficAwareCruiseControl\",\"text\":\"Maintain the driver-set speed, slow for a vehicle ahead in the same lane, and resume speed when the lane is clear.\"},{\"id\":\"g5\",\"actor\":\"Sensors\",\"text\":\"Provide forward camera, radar, and ultrasonic sensing inputs for the vehicle's assistance features.\"},{\"id\":\"g6\",\"actor\":\"DriverMonitoring\",\"text\":\"Check whether the driver's hands are on the steering wheel and give visual and audible alerts when hands are not detected for a period of time.\"},{\"id\":\"g7\",\"actor\":\"ForwardCollisionWarningAndAutomaticEmergencyBraking\",\"text\":\"Provide forward collision warning and automatic emergency braking as separate available features.\"},{\"id\":\"g8\",\"actor\":\"OtherCarDrivers\",\"text\":\"Travel safely while sharing the road with the Tesla.\"},{\"id\":\"g9\",\"actor\":\"TruckDrivers\",\"text\":\"Cross or join the road safely while sharing it with the Tesla.\"},{\"id\":\"g10\",\"actor\":\"Motorcyclists\",\"text\":\"Travel safely while sharing the road with the Tesla.\"}]}",
+      "parsed": {
+        "tgrl": "grl TeslaModelSAutopilot {\n  actor Driver {\n    goal g1;\n    goal g2;\n    goal SetCruisingSpeed;\n    goal EngageAutopilotWhenAppropriate;\n    goal KeepHandsOnSteeringWheel;\n  }\n  actor Autopilot {\n    goal SupportDriverWithPartialAutomation;\n    softGoal SupportUsePrimarilyOnLimitedAccessHighwaysInGoodVisibility;\n  }\n  actor Sensors {\n    goal g5;\n    goal ProvideForwardSensingData;\n  }\n  actor VisionProcessing {\n    goal DetectLaneMarkingsAndObjectsAhead;\n  }\n  actor TrafficAwareCruiseControl {\n    goal g4;\n  }\n  actor Autosteer {\n    goal g3;\n  }\n  actor DriverMonitoring {\n    goal g6;\n    goal CheckForHandsOnSteeringWheelUsingSteeringTorque;\n  }\n  actor ForwardCollisionWarningAndAutomaticEmergencyBraking {\n    goal g7;\n  }\n  actor OtherCarDrivers {\n    goal g8;\n  }\n  actor TruckDrivers {\n    goal g9;\n  }\n  actor Motorcyclists {\n    goal g10;\n  }\n}",
+        "goals": [
+          {
+            "id": "g1",
+            "actor": "Driver",
+            "text": "Remain responsible for driving and maintain control of the vehicle."
+          },
+          {
+            "id": "g2",
+            "actor": "Driver",
+            "text": "Monitor the road and surrounding traffic while Autopilot is active."
+          },
+          {
+            "id": "g3",
+            "actor": "Autosteer",
+            "text": "Keep the vehicle centered in its lane using available lane and vehicle information."
+          },
+          {
+            "id": "g4",
+            "actor": "TrafficAwareCruiseControl",
+            "text": "Maintain the driver-set speed, slow for a vehicle ahead in the same lane, and resume speed when the lane is clear."
+          },
+          {
+            "id": "g5",
+            "actor": "Sensors",
+            "text": "Provide forward camera, radar, and ultrasonic sensing inputs for the vehicle's assistance features."
+          },
+          {
+            "id": "g6",
+            "actor": "DriverMonitoring",
+            "text": "Check whether the driver's hands are on the steering wheel and give visual and audible alerts when hands are not detected for a period of time."
+          },
+          {
+            "id": "g7",
+            "actor": "ForwardCollisionWarningAndAutomaticEmergencyBraking",
+            "text": "Provide forward collision warning and automatic emergency braking as separate available features."
+          },
+          {
+            "id": "g8",
+            "actor": "OtherCarDrivers",
+            "text": "Travel safely while sharing the road with the Tesla."
+          },
+          {
+            "id": "g9",
+            "actor": "TruckDrivers",
+            "text": "Cross or join the road safely while sharing it with the Tesla."
+          },
+          {
+            "id": "g10",
+            "actor": "Motorcyclists",
+            "text": "Travel safely while sharing the road with the Tesla."
+          }
+        ]
+      },
+      "error": ""
+    }
+  ],
+  "tgrl": "grl TeslaModelSAutopilot {\n  actor Driver {\n    goal g1;\n    goal g2;\n    goal SetCruisingSpeed;\n    goal EngageAutopilotWhenAppropriate;\n    goal KeepHandsOnSteeringWheel;\n  }\n  actor Autopilot {\n    goal SupportDriverWithPartialAutomation;\n    softGoal SupportUsePrimarilyOnLimitedAccessHighwaysInGoodVisibility;\n  }\n  actor Sensors {\n    goal g5;\n    goal ProvideForwardSensingData;\n  }\n  actor VisionProcessing {\n    goal DetectLaneMarkingsAndObjectsAhead;\n  }\n  actor TrafficAwareCruiseControl {\n    goal g4;\n  }\n  actor Autosteer {\n    goal g3;\n  }\n  actor DriverMonitoring {\n    goal g6;\n    goal CheckForHandsOnSteeringWheelUsingSteeringTorque;\n  }\n  actor ForwardCollisionWarningAndAutomaticEmergencyBraking {\n    goal g7;\n  }\n  actor OtherCarDrivers {\n    goal g8;\n  }\n  actor TruckDrivers {\n    goal g9;\n  }\n  actor Motorcyclists {\n    goal g10;\n  }\n}",
+  "tgrl_valid": true,
+  "ok": true
+}

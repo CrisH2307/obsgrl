@@ -1,0 +1,138 @@
+{
+  "condition": "b2",
+  "case": "uber_2018",
+  "model": "gpt-6-luna",
+  "model_id": "openai/gpt-6-luna",
+  "run": 3,
+  "temperature": null,
+  "prompt_version": "v1",
+  "started_at": "2026-11-11T15:43:10+00:00",
+  "items": [
+    {
+      "id": "g1",
+      "kind": "goal",
+      "text": "ADS: Drive the vehicle safely without human input within the defined test conditions, including the test program’s speed limit of about 45 mph.",
+      "context": ""
+    },
+    {
+      "id": "g2",
+      "kind": "goal",
+      "text": "VehicleOperator: Watch the road continuously and take over vehicle control when needed.",
+      "context": ""
+    },
+    {
+      "id": "g3",
+      "kind": "goal",
+      "text": "PlanningControl: Choose a safe path and speed, and control steering, throttle, and braking accordingly.",
+      "context": ""
+    },
+    {
+      "id": "g4",
+      "kind": "goal",
+      "text": "Perception: Detect, classify, and track objects around the vehicle, including pedestrians, cyclists, and other vehicles.",
+      "context": ""
+    },
+    {
+      "id": "g5",
+      "kind": "goal",
+      "text": "Pedestrians: Use shared public roads safely and reach intended destinations.",
+      "context": ""
+    },
+    {
+      "id": "g6",
+      "kind": "goal",
+      "text": "Cyclists: Use shared public roads safely and reach intended destinations.",
+      "context": ""
+    },
+    {
+      "id": "g7",
+      "kind": "goal",
+      "text": "OtherDrivers: Share the road safely with the test vehicle and other road users.",
+      "context": ""
+    },
+    {
+      "id": "g8",
+      "kind": "goal",
+      "text": "Prediction: Estimate the future movement of tracked objects using their class and recent movement.",
+      "context": ""
+    },
+    {
+      "id": "g9",
+      "kind": "goal",
+      "text": "SensorSuite: Sense the area around the vehicle using lidar, radar, and cameras.",
+      "context": ""
+    },
+    {
+      "id": "g10",
+      "kind": "goal",
+      "text": "VehicleOperator: Use the tablet-style interface to check system status and tag events.",
+      "context": ""
+    }
+  ],
+  "stages": [
+    {
+      "stage": "s1_extract",
+      "prompt": "You are a requirements engineer building a goal model in GRL (Goal-oriented Requirement Language).\n\nRead the system description below and build a GRL model in textual GRL (TGRL).\nInclude every actor, including humans affected by the system (for example operators and pedestrians).\n\nTGRL syntax example:\ngrl Example { actor Driver { goal ReachDestination; softGoal Comfort; } }\n\nReply with JSON only, in this shape:\n{\"tgrl\": \"grl ... { ... }\",\n \"goals\": [{\"id\": \"g1\", \"actor\": \"...\", \"text\": \"...\"}]}\n\nList the 10 most important goals in \"goals\", ranked from most to least important, including goals of human actors.\n\nSystem description:\n# Case: Uber ATG automated test vehicle (Tempe, Arizona, 2018)\n\nSource: NTSB Highway Accident Report HAR-19/03. This is a description of the system and its use before the crash. It does not include the investigation findings.\n\n## System\nA modified Volvo XC90 SUV is used by Uber Advanced Technologies Group (ATG) to test an automated driving system (ADS) on public roads. The ADS is designed to drive the vehicle without human input in defined conditions, up to about 45 mph in this test program.\n\n## Main parts\n- Sensors: roof-mounted lidar, radar units and cameras covering the area around the vehicle.\n- Perception: detects objects around the vehicle, classifies each one (for example vehicle, pedestrian, bicycle, other), and tracks it over time.\n- Prediction: estimates where each tracked object will go next, using its class and recent movement.\n- Planning and control: chooses a path and speed, and controls steering, throttle and braking.\n- Vehicle: the Volvo factory driver-assistance features (such as forward collision warning and automatic emergency braking) are part of the base vehicle.\n\n## People\n- One vehicle operator sits in the driver seat. The operator is responsible for watching the road and taking over control when needed. The operator also uses a tablet-style interface to tag events and check system status.\n- Other road users share the road: pedestrians, cyclists and other drivers. They are not aware of the test program.\n\n## Operating context\nPublic multi-lane roads in an urban area, day and night, with posted speed limits, marked crosswalks, intersections and street lighting that varies by location.\n\n",
+      "raw_response": "{\"tgrl\":\"grl UberATG_TestVehicle {\\n  actor UberATG {\\n    goal ConductPublicRoadTesting;\\n  }\\n  actor SensorSuite {\\n    goal g9;\\n    goal CoverSurroundingArea;\\n  }\\n  actor Perception {\\n    goal g4;\\n    goal ClassifyAndTrackObjects;\\n  }\\n  actor Prediction {\\n    goal g8;\\n  }\\n  actor PlanningControl {\\n    goal g3;\\n    goal ControlSteeringThrottleAndBraking;\\n  }\\n  actor ADS {\\n    goal g1;\\n    goal OperateWithinDefinedTestConditions;\\n  }\\n  actor VolvoVehicle {\\n    goal ProvideFactoryDriverAssistance;\\n  }\\n  actor VehicleOperator {\\n    goal g2;\\n    goal g10;\\n  }\\n  actor Pedestrians {\\n    goal g5;\\n  }\\n  actor Cyclists {\\n    goal g6;\\n  }\\n  actor OtherDrivers {\\n    goal g7;\\n  }\\n}\",\"goals\":[{\"id\":\"g1\",\"actor\":\"ADS\",\"text\":\"Drive the vehicle safely without human input within the defined test conditions, including the test program’s speed limit of about 45 mph.\"},{\"id\":\"g2\",\"actor\":\"VehicleOperator\",\"text\":\"Watch the road continuously and take over vehicle control when needed.\"},{\"id\":\"g3\",\"actor\":\"PlanningControl\",\"text\":\"Choose a safe path and speed, and control steering, throttle, and braking accordingly.\"},{\"id\":\"g4\",\"actor\":\"Perception\",\"text\":\"Detect, classify, and track objects around the vehicle, including pedestrians, cyclists, and other vehicles.\"},{\"id\":\"g5\",\"actor\":\"Pedestrians\",\"text\":\"Use shared public roads safely and reach intended destinations.\"},{\"id\":\"g6\",\"actor\":\"Cyclists\",\"text\":\"Use shared public roads safely and reach intended destinations.\"},{\"id\":\"g7\",\"actor\":\"OtherDrivers\",\"text\":\"Share the road safely with the test vehicle and other road users.\"},{\"id\":\"g8\",\"actor\":\"Prediction\",\"text\":\"Estimate the future movement of tracked objects using their class and recent movement.\"},{\"id\":\"g9\",\"actor\":\"SensorSuite\",\"text\":\"Sense the area around the vehicle using lidar, radar, and cameras.\"},{\"id\":\"g10\",\"actor\":\"VehicleOperator\",\"text\":\"Use the tablet-style interface to check system status and tag events.\"}]}",
+      "parsed": {
+        "tgrl": "grl UberATG_TestVehicle {\n  actor UberATG {\n    goal ConductPublicRoadTesting;\n  }\n  actor SensorSuite {\n    goal g9;\n    goal CoverSurroundingArea;\n  }\n  actor Perception {\n    goal g4;\n    goal ClassifyAndTrackObjects;\n  }\n  actor Prediction {\n    goal g8;\n  }\n  actor PlanningControl {\n    goal g3;\n    goal ControlSteeringThrottleAndBraking;\n  }\n  actor ADS {\n    goal g1;\n    goal OperateWithinDefinedTestConditions;\n  }\n  actor VolvoVehicle {\n    goal ProvideFactoryDriverAssistance;\n  }\n  actor VehicleOperator {\n    goal g2;\n    goal g10;\n  }\n  actor Pedestrians {\n    goal g5;\n  }\n  actor Cyclists {\n    goal g6;\n  }\n  actor OtherDrivers {\n    goal g7;\n  }\n}",
+        "goals": [
+          {
+            "id": "g1",
+            "actor": "ADS",
+            "text": "Drive the vehicle safely without human input within the defined test conditions, including the test program’s speed limit of about 45 mph."
+          },
+          {
+            "id": "g2",
+            "actor": "VehicleOperator",
+            "text": "Watch the road continuously and take over vehicle control when needed."
+          },
+          {
+            "id": "g3",
+            "actor": "PlanningControl",
+            "text": "Choose a safe path and speed, and control steering, throttle, and braking accordingly."
+          },
+          {
+            "id": "g4",
+            "actor": "Perception",
+            "text": "Detect, classify, and track objects around the vehicle, including pedestrians, cyclists, and other vehicles."
+          },
+          {
+            "id": "g5",
+            "actor": "Pedestrians",
+            "text": "Use shared public roads safely and reach intended destinations."
+          },
+          {
+            "id": "g6",
+            "actor": "Cyclists",
+            "text": "Use shared public roads safely and reach intended destinations."
+          },
+          {
+            "id": "g7",
+            "actor": "OtherDrivers",
+            "text": "Share the road safely with the test vehicle and other road users."
+          },
+          {
+            "id": "g8",
+            "actor": "Prediction",
+            "text": "Estimate the future movement of tracked objects using their class and recent movement."
+          },
+          {
+            "id": "g9",
+            "actor": "SensorSuite",
+            "text": "Sense the area around the vehicle using lidar, radar, and cameras."
+          },
+          {
+            "id": "g10",
+            "actor": "VehicleOperator",
+            "text": "Use the tablet-style interface to check system status and tag events."
+          }
+        ]
+      },
+      "error": ""
+    }
+  ],
+  "tgrl": "grl UberATG_TestVehicle {\n  actor UberATG {\n    goal ConductPublicRoadTesting;\n  }\n  actor SensorSuite {\n    goal g9;\n    goal CoverSurroundingArea;\n  }\n  actor Perception {\n    goal g4;\n    goal ClassifyAndTrackObjects;\n  }\n  actor Prediction {\n    goal g8;\n  }\n  actor PlanningControl {\n    goal g3;\n    goal ControlSteeringThrottleAndBraking;\n  }\n  actor ADS {\n    goal g1;\n    goal OperateWithinDefinedTestConditions;\n  }\n  actor VolvoVehicle {\n    goal ProvideFactoryDriverAssistance;\n  }\n  actor VehicleOperator {\n    goal g2;\n    goal g10;\n  }\n  actor Pedestrians {\n    goal g5;\n  }\n  actor Cyclists {\n    goal g6;\n  }\n  actor OtherDrivers {\n    goal g7;\n  }\n}",
+  "tgrl_valid": true,
+  "ok": true
+}

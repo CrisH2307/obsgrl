@@ -1,0 +1,138 @@
+{
+  "condition": "b2",
+  "case": "uber_2018",
+  "model": "gpt-oss-120b",
+  "model_id": "openai/gpt-oss-120b",
+  "run": 3,
+  "temperature": 0.7,
+  "prompt_version": "v1",
+  "started_at": "2026-11-11T15:26:15+00:00",
+  "items": [
+    {
+      "id": "g1",
+      "kind": "goal",
+      "text": "System: Prevent any collision involving the test vehicle and any road user.",
+      "context": ""
+    },
+    {
+      "id": "g2",
+      "kind": "goal",
+      "text": "System: Maintain accurate perception of the surrounding environment using lidar, radar, and cameras.",
+      "context": ""
+    },
+    {
+      "id": "g3",
+      "kind": "goal",
+      "text": "System: Generate correct short‑term predictions of the trajectories of detected objects.",
+      "context": ""
+    },
+    {
+      "id": "g4",
+      "kind": "goal",
+      "text": "System: Plan and execute safe paths and speeds within the operational design domain.",
+      "context": ""
+    },
+    {
+      "id": "g5",
+      "kind": "goal",
+      "text": "Operator: Continuously monitor the road and system status while the ADS is engaged.",
+      "context": ""
+    },
+    {
+      "id": "g6",
+      "kind": "goal",
+      "text": "Operator: Take over manual control promptly when the ADS cannot handle the situation.",
+      "context": ""
+    },
+    {
+      "id": "g7",
+      "kind": "goal",
+      "text": "Pedestrian: Cross streets safely without being endangered by the test vehicle.",
+      "context": ""
+    },
+    {
+      "id": "g8",
+      "kind": "goal",
+      "text": "Cyclist: Travel along bike lanes or roadways without risk of collision with the test vehicle.",
+      "context": ""
+    },
+    {
+      "id": "g9",
+      "kind": "goal",
+      "text": "OtherDriver: Avoid collisions with the test vehicle while driving under normal traffic conditions.",
+      "context": ""
+    },
+    {
+      "id": "g10",
+      "kind": "goal",
+      "text": "UberATG: Collect high‑quality test data to support ongoing development and validation of the ADS.",
+      "context": ""
+    }
+  ],
+  "stages": [
+    {
+      "stage": "s1_extract",
+      "prompt": "You are a requirements engineer building a goal model in GRL (Goal-oriented Requirement Language).\n\nRead the system description below and build a GRL model in textual GRL (TGRL).\nInclude every actor, including humans affected by the system (for example operators and pedestrians).\n\nTGRL syntax example:\ngrl Example { actor Driver { goal ReachDestination; softGoal Comfort; } }\n\nReply with JSON only, in this shape:\n{\"tgrl\": \"grl ... { ... }\",\n \"goals\": [{\"id\": \"g1\", \"actor\": \"...\", \"text\": \"...\"}]}\n\nList the 10 most important goals in \"goals\", ranked from most to least important, including goals of human actors.\n\nSystem description:\n# Case: Uber ATG automated test vehicle (Tempe, Arizona, 2018)\n\nSource: NTSB Highway Accident Report HAR-19/03. This is a description of the system and its use before the crash. It does not include the investigation findings.\n\n## System\nA modified Volvo XC90 SUV is used by Uber Advanced Technologies Group (ATG) to test an automated driving system (ADS) on public roads. The ADS is designed to drive the vehicle without human input in defined conditions, up to about 45 mph in this test program.\n\n## Main parts\n- Sensors: roof-mounted lidar, radar units and cameras covering the area around the vehicle.\n- Perception: detects objects around the vehicle, classifies each one (for example vehicle, pedestrian, bicycle, other), and tracks it over time.\n- Prediction: estimates where each tracked object will go next, using its class and recent movement.\n- Planning and control: chooses a path and speed, and controls steering, throttle and braking.\n- Vehicle: the Volvo factory driver-assistance features (such as forward collision warning and automatic emergency braking) are part of the base vehicle.\n\n## People\n- One vehicle operator sits in the driver seat. The operator is responsible for watching the road and taking over control when needed. The operator also uses a tablet-style interface to tag events and check system status.\n- Other road users share the road: pedestrians, cyclists and other drivers. They are not aware of the test program.\n\n## Operating context\nPublic multi-lane roads in an urban area, day and night, with posted speed limits, marked crosswalks, intersections and street lighting that varies by location.\n\n",
+      "raw_response": "{\n  \"tgrl\": \"grl UberATG_TestVehicle {\\n    actor System {\\n        goal PreventCollision;\\n        softGoal AccuratePerception;\\n        softGoal CorrectPrediction;\\n        softGoal ReliablePlanning;\\n    }\\n    actor Operator {\\n        goal MonitorRoad;\\n        softGoal TakeoverControl;\\n        softGoal EventTagging;\\n    }\\n    actor UberATG {\\n        goal CollectTestData;\\n        softGoal ContinuousImprovement;\\n    }\\n    actor Pedestrian {\\n        goal SafeCrossing;\\n    }\\n    actor Cyclist {\\n        goal SafeTravel;\\n    }\\n    actor OtherDriver {\\n        goal AvoidCollision;\\n    }\\n}\",\n  \"goals\": [\n    {\n      \"id\": \"g1\",\n      \"actor\": \"System\",\n      \"text\": \"Prevent any collision involving the test vehicle and any road user.\"\n    },\n    {\n      \"id\": \"g2\",\n      \"actor\": \"System\",\n      \"text\": \"Maintain accurate perception of the surrounding environment using lidar, radar, and cameras.\"\n    },\n    {\n      \"id\": \"g3\",\n      \"actor\": \"System\",\n      \"text\": \"Generate correct short‑term predictions of the trajectories of detected objects.\"\n    },\n    {\n      \"id\": \"g4\",\n      \"actor\": \"System\",\n      \"text\": \"Plan and execute safe paths and speeds within the operational design domain.\"\n    },\n    {\n      \"id\": \"g5\",\n      \"actor\": \"Operator\",\n      \"text\": \"Continuously monitor the road and system status while the ADS is engaged.\"\n    },\n    {\n      \"id\": \"g6\",\n      \"actor\": \"Operator\",\n      \"text\": \"Take over manual control promptly when the ADS cannot handle the situation.\"\n    },\n    {\n      \"id\": \"g7\",\n      \"actor\": \"Pedestrian\",\n      \"text\": \"Cross streets safely without being endangered by the test vehicle.\"\n    },\n    {\n      \"id\": \"g8\",\n      \"actor\": \"Cyclist\",\n      \"text\": \"Travel along bike lanes or roadways without risk of collision with the test vehicle.\"\n    },\n    {\n      \"id\": \"g9\",\n      \"actor\": \"OtherDriver\",\n      \"text\": \"Avoid collisions with the test vehicle while driving under normal traffic conditions.\"\n    },\n    {\n      \"id\": \"g10\",\n      \"actor\": \"UberATG\",\n      \"text\": \"Collect high‑quality test data to support ongoing development and validation of the ADS.\"\n    }\n  ]\n}",
+      "parsed": {
+        "tgrl": "grl UberATG_TestVehicle {\n    actor System {\n        goal PreventCollision;\n        softGoal AccuratePerception;\n        softGoal CorrectPrediction;\n        softGoal ReliablePlanning;\n    }\n    actor Operator {\n        goal MonitorRoad;\n        softGoal TakeoverControl;\n        softGoal EventTagging;\n    }\n    actor UberATG {\n        goal CollectTestData;\n        softGoal ContinuousImprovement;\n    }\n    actor Pedestrian {\n        goal SafeCrossing;\n    }\n    actor Cyclist {\n        goal SafeTravel;\n    }\n    actor OtherDriver {\n        goal AvoidCollision;\n    }\n}",
+        "goals": [
+          {
+            "id": "g1",
+            "actor": "System",
+            "text": "Prevent any collision involving the test vehicle and any road user."
+          },
+          {
+            "id": "g2",
+            "actor": "System",
+            "text": "Maintain accurate perception of the surrounding environment using lidar, radar, and cameras."
+          },
+          {
+            "id": "g3",
+            "actor": "System",
+            "text": "Generate correct short‑term predictions of the trajectories of detected objects."
+          },
+          {
+            "id": "g4",
+            "actor": "System",
+            "text": "Plan and execute safe paths and speeds within the operational design domain."
+          },
+          {
+            "id": "g5",
+            "actor": "Operator",
+            "text": "Continuously monitor the road and system status while the ADS is engaged."
+          },
+          {
+            "id": "g6",
+            "actor": "Operator",
+            "text": "Take over manual control promptly when the ADS cannot handle the situation."
+          },
+          {
+            "id": "g7",
+            "actor": "Pedestrian",
+            "text": "Cross streets safely without being endangered by the test vehicle."
+          },
+          {
+            "id": "g8",
+            "actor": "Cyclist",
+            "text": "Travel along bike lanes or roadways without risk of collision with the test vehicle."
+          },
+          {
+            "id": "g9",
+            "actor": "OtherDriver",
+            "text": "Avoid collisions with the test vehicle while driving under normal traffic conditions."
+          },
+          {
+            "id": "g10",
+            "actor": "UberATG",
+            "text": "Collect high‑quality test data to support ongoing development and validation of the ADS."
+          }
+        ]
+      },
+      "error": ""
+    }
+  ],
+  "tgrl": "grl UberATG_TestVehicle {\n    actor System {\n        goal PreventCollision;\n        softGoal AccuratePerception;\n        softGoal CorrectPrediction;\n        softGoal ReliablePlanning;\n    }\n    actor Operator {\n        goal MonitorRoad;\n        softGoal TakeoverControl;\n        softGoal EventTagging;\n    }\n    actor UberATG {\n        goal CollectTestData;\n        softGoal ContinuousImprovement;\n    }\n    actor Pedestrian {\n        goal SafeCrossing;\n    }\n    actor Cyclist {\n        goal SafeTravel;\n    }\n    actor OtherDriver {\n        goal AvoidCollision;\n    }\n}",
+  "tgrl_valid": true,
+  "ok": true
+}

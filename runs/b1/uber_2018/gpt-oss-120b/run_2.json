@@ -1,0 +1,117 @@
+{
+  "condition": "b1",
+  "case": "uber_2018",
+  "model": "gpt-oss-120b",
+  "model_id": "openai/gpt-oss-120b",
+  "run": 2,
+  "temperature": 0.7,
+  "prompt_version": "v1",
+  "started_at": "2026-11-11T15:23:42+00:00",
+  "items": [
+    {
+      "id": "r1",
+      "kind": "requirement",
+      "text": "The system shall continuously monitor the health and redundancy of all critical sensors and initiate a safe stop if any sensor failure or degradation is detected.",
+      "context": ""
+    },
+    {
+      "id": "r2",
+      "kind": "requirement",
+      "text": "The system shall detect the presence and intent of pedestrians, cyclists, and other vulnerable road users with a minimum detection range of 30 meters and react to avoid collisions.",
+      "context": ""
+    },
+    {
+      "id": "r3",
+      "kind": "requirement",
+      "text": "The system shall enforce a minimum safe following distance based on speed and road conditions, and automatically adjust speed to maintain that distance.",
+      "context": ""
+    },
+    {
+      "id": "r4",
+      "kind": "requirement",
+      "text": "The system shall provide an unambiguous, real‑time alert to the vehicle operator when control transfer is required, and verify that the operator has taken control within a bounded response time (e.g., 2 seconds).",
+      "context": ""
+    },
+    {
+      "id": "r5",
+      "kind": "requirement",
+      "text": "The system shall implement a fail‑safe emergency braking capability that can bring the vehicle to a stop within the legally required stopping distance when a collision is imminent, regardless of operator input.",
+      "context": ""
+    },
+    {
+      "id": "r6",
+      "kind": "requirement",
+      "text": "The system shall operate only within predefined operational design domains (ODD) and automatically disengage or request operator takeover when conditions exceed those limits (e.g., weather, lighting, road geometry).",
+      "context": ""
+    },
+    {
+      "id": "r7",
+      "kind": "requirement",
+      "text": "The system shall log all sensor data, perception outputs, decisions, and control actions with timestamps for post‑event analysis and compliance auditing.",
+      "context": ""
+    },
+    {
+      "id": "r8",
+      "kind": "requirement",
+      "text": "The system shall undergo rigorous functional safety verification (e.g., ISO 26262) and demonstrate compliance with defined safety integrity levels for all software components.",
+      "context": ""
+    },
+    {
+      "id": "r9",
+      "kind": "requirement",
+      "text": "The system shall protect against unauthorized access and cyber‑attacks by employing authentication, encryption, and intrusion detection mechanisms for all communication links and on‑board computing resources.",
+      "context": ""
+    },
+    {
+      "id": "r10",
+      "kind": "requirement",
+      "text": "The system shall provide a clear, redundant human‑machine interface (visual, auditory, and tactile) that displays the system’s current status, mode, and any detected hazards to the operator at all times.",
+      "context": ""
+    }
+  ],
+  "stages": [
+    {
+      "stage": "b1",
+      "prompt": "You are a requirements engineer reviewing a safety-critical system.\n\nRead the system description below. List the 10 most important requirements that are missing from it:\nthings the system should do or guarantee for safe operation that the description does not cover.\nGive at most 10, ranked from most to least important.\n\nReply with JSON only, in this shape:\n{\"requirements\": [{\"text\": \"The system shall ...\"}]}\n\nSystem description:\n# Case: Uber ATG automated test vehicle (Tempe, Arizona, 2018)\n\nSource: NTSB Highway Accident Report HAR-19/03. This is a description of the system and its use before the crash. It does not include the investigation findings.\n\n## System\nA modified Volvo XC90 SUV is used by Uber Advanced Technologies Group (ATG) to test an automated driving system (ADS) on public roads. The ADS is designed to drive the vehicle without human input in defined conditions, up to about 45 mph in this test program.\n\n## Main parts\n- Sensors: roof-mounted lidar, radar units and cameras covering the area around the vehicle.\n- Perception: detects objects around the vehicle, classifies each one (for example vehicle, pedestrian, bicycle, other), and tracks it over time.\n- Prediction: estimates where each tracked object will go next, using its class and recent movement.\n- Planning and control: chooses a path and speed, and controls steering, throttle and braking.\n- Vehicle: the Volvo factory driver-assistance features (such as forward collision warning and automatic emergency braking) are part of the base vehicle.\n\n## People\n- One vehicle operator sits in the driver seat. The operator is responsible for watching the road and taking over control when needed. The operator also uses a tablet-style interface to tag events and check system status.\n- Other road users share the road: pedestrians, cyclists and other drivers. They are not aware of the test program.\n\n## Operating context\nPublic multi-lane roads in an urban area, day and night, with posted speed limits, marked crosswalks, intersections and street lighting that varies by location.\n\n",
+      "raw_response": "{\"requirements\":[{\"text\":\"The system shall continuously monitor the health and redundancy of all critical sensors and initiate a safe stop if any sensor failure or degradation is detected.\"},{\"text\":\"The system shall detect the presence and intent of pedestrians, cyclists, and other vulnerable road users with a minimum detection range of 30 meters and react to avoid collisions.\"},{\"text\":\"The system shall enforce a minimum safe following distance based on speed and road conditions, and automatically adjust speed to maintain that distance.\"},{\"text\":\"The system shall provide an unambiguous, real‑time alert to the vehicle operator when control transfer is required, and verify that the operator has taken control within a bounded response time (e.g., 2 seconds).\"},{\"text\":\"The system shall implement a fail‑safe emergency braking capability that can bring the vehicle to a stop within the legally required stopping distance when a collision is imminent, regardless of operator input.\"},{\"text\":\"The system shall operate only within predefined operational design domains (ODD) and automatically disengage or request operator takeover when conditions exceed those limits (e.g., weather, lighting, road geometry).\"},{\"text\":\"The system shall log all sensor data, perception outputs, decisions, and control actions with timestamps for post‑event analysis and compliance auditing.\"},{\"text\":\"The system shall undergo rigorous functional safety verification (e.g., ISO 26262) and demonstrate compliance with defined safety integrity levels for all software components.\"},{\"text\":\"The system shall protect against unauthorized access and cyber‑attacks by employing authentication, encryption, and intrusion detection mechanisms for all communication links and on‑board computing resources.\"},{\"text\":\"The system shall provide a clear, redundant human‑machine interface (visual, auditory, and tactile) that displays the system’s current status, mode, and any detected hazards to the operator at all times.\"}]}",
+      "parsed": {
+        "requirements": [
+          {
+            "text": "The system shall continuously monitor the health and redundancy of all critical sensors and initiate a safe stop if any sensor failure or degradation is detected."
+          },
+          {
+            "text": "The system shall detect the presence and intent of pedestrians, cyclists, and other vulnerable road users with a minimum detection range of 30 meters and react to avoid collisions."
+          },
+          {
+            "text": "The system shall enforce a minimum safe following distance based on speed and road conditions, and automatically adjust speed to maintain that distance."
+          },
+          {
+            "text": "The system shall provide an unambiguous, real‑time alert to the vehicle operator when control transfer is required, and verify that the operator has taken control within a bounded response time (e.g., 2 seconds)."
+          },
+          {
+            "text": "The system shall implement a fail‑safe emergency braking capability that can bring the vehicle to a stop within the legally required stopping distance when a collision is imminent, regardless of operator input."
+          },
+          {
+            "text": "The system shall operate only within predefined operational design domains (ODD) and automatically disengage or request operator takeover when conditions exceed those limits (e.g., weather, lighting, road geometry)."
+          },
+          {
+            "text": "The system shall log all sensor data, perception outputs, decisions, and control actions with timestamps for post‑event analysis and compliance auditing."
+          },
+          {
+            "text": "The system shall undergo rigorous functional safety verification (e.g., ISO 26262) and demonstrate compliance with defined safety integrity levels for all software components."
+          },
+          {
+            "text": "The system shall protect against unauthorized access and cyber‑attacks by employing authentication, encryption, and intrusion detection mechanisms for all communication links and on‑board computing resources."
+          },
+          {
+            "text": "The system shall provide a clear, redundant human‑machine interface (visual, auditory, and tactile) that displays the system’s current status, mode, and any detected hazards to the operator at all times."
+          }
+        ]
+      },
+      "error": ""
+    }
+  ],
+  "tgrl": "",
+  "tgrl_valid": null,
+  "ok": true
+}

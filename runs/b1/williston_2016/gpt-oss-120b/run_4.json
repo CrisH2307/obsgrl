@@ -1,0 +1,117 @@
+{
+  "condition": "b1",
+  "case": "williston_2016",
+  "model": "gpt-oss-120b",
+  "model_id": "openai/gpt-oss-120b",
+  "run": 4,
+  "temperature": 0.7,
+  "prompt_version": "v1",
+  "started_at": "2026-11-11T15:24:43+00:00",
+  "items": [
+    {
+      "id": "r1",
+      "kind": "requirement",
+      "text": "The system shall continuously monitor the health and redundancy of all primary sensors (camera, radar, ultrasonic) and initiate a safe‑stop or disengagement if any sensor degrades or fails.",
+      "context": ""
+    },
+    {
+      "id": "r2",
+      "kind": "requirement",
+      "text": "The system shall detect and assess adverse environmental conditions (e.g., rain, fog, low light) and automatically disable Autopilot or limit functionality when conditions fall below defined visibility thresholds.",
+      "context": ""
+    },
+    {
+      "id": "r3",
+      "kind": "requirement",
+      "text": "The system shall require the driver to maintain active hands‑on‑wheel contact verified by torque and periodic driver‑attention checks (e.g., eye‑tracking or steering‑wheel touch) and immediately disengage if attention is lost.",
+      "context": ""
+    },
+    {
+      "id": "r4",
+      "kind": "requirement",
+      "text": "The system shall provide a clear, unambiguous disengagement command that the driver can activate at any time, with immediate return of full vehicle control without delay.",
+      "context": ""
+    },
+    {
+      "id": "r5",
+      "kind": "requirement",
+      "text": "The system shall perform real‑time validation of detected lane markings and objects, and if confidence falls below a safe level, it shall reduce speed and request driver takeover.",
+      "context": ""
+    },
+    {
+      "id": "r6",
+      "kind": "requirement",
+      "text": "The system shall implement a minimum safe following distance algorithm that adapts to vehicle speed, road curvature, and weather, and must not allow the vehicle to close to a preceding object below that distance.",
+      "context": ""
+    },
+    {
+      "id": "r7",
+      "kind": "requirement",
+      "text": "The system shall log all Autopilot engagements, sensor status, driver‑monitoring events, and disengagements in a tamper‑evident record for post‑incident analysis.",
+      "context": ""
+    },
+    {
+      "id": "r8",
+      "kind": "requirement",
+      "text": "The system shall undergo rigorous functional safety verification in accordance with ISO 26262 (ASIL D) and provide evidence of compliance for all safety‑critical functions.",
+      "context": ""
+    },
+    {
+      "id": "r9",
+      "kind": "requirement",
+      "text": "The system shall incorporate cybersecurity safeguards that protect sensor data, control commands, and over‑the‑air updates from unauthorized modification or spoofing.",
+      "context": ""
+    },
+    {
+      "id": "r10",
+      "kind": "requirement",
+      "text": "The system shall execute a controlled emergency‑brake maneuver if an imminent collision is detected and the driver does not intervene within a defined reaction window, while providing audible and visual warnings prior to actuation.",
+      "context": ""
+    }
+  ],
+  "stages": [
+    {
+      "stage": "b1",
+      "prompt": "You are a requirements engineer reviewing a safety-critical system.\n\nRead the system description below. List the 10 most important requirements that are missing from it:\nthings the system should do or guarantee for safe operation that the description does not cover.\nGive at most 10, ranked from most to least important.\n\nReply with JSON only, in this shape:\n{\"requirements\": [{\"text\": \"The system shall ...\"}]}\n\nSystem description:\n# Case: Tesla Model S with Autopilot (Williston, Florida, 2016)\n\nSource: NTSB Highway Accident Report HAR-17/02. This is a description of the system and its use before the crash. It does not include the investigation findings.\n\n## System\nA 2015 Tesla Model S has Autopilot, a SAE Level 2 partial driving automation feature. It combines Traffic-Aware Cruise Control (TACC) and Autosteer (lane keeping). The driver stays responsible for driving and monitoring the road.\n\n## Main parts\n- Sensors: a forward-facing camera, a forward-facing radar and ultrasonic sensors.\n- Vision processing: a camera-based system detects lane markings and objects ahead.\n- TACC: holds a speed set by the driver, slows down for a vehicle ahead in the same lane, and speeds up again when the lane is clear.\n- Autosteer: keeps the vehicle centered in its lane using lane markings and the vehicle ahead.\n- Forward collision warning and automatic emergency braking are available as separate features.\n- Driver monitoring: the system checks that the driver's hands are on the steering wheel by sensing steering torque, and shows visual and audible alerts if no hands are detected for a period of time.\n\n## People\n- The driver sets the cruising speed, turns Autopilot on, and is told to keep hands on the wheel and watch the road.\n- Other road users include cars, large trucks crossing or joining the road, and motorcyclists.\n\n## Operating context\nAutopilot is intended mainly for highways with limited access, in good visibility. Drivers can also turn it on for other roads, such as divided highways with cross traffic at intersections.\n\n",
+      "raw_response": "{\"requirements\":[{\"text\":\"The system shall continuously monitor the health and redundancy of all primary sensors (camera, radar, ultrasonic) and initiate a safe‑stop or disengagement if any sensor degrades or fails.\"},{\"text\":\"The system shall detect and assess adverse environmental conditions (e.g., rain, fog, low light) and automatically disable Autopilot or limit functionality when conditions fall below defined visibility thresholds.\"},{\"text\":\"The system shall require the driver to maintain active hands‑on‑wheel contact verified by torque and periodic driver‑attention checks (e.g., eye‑tracking or steering‑wheel touch) and immediately disengage if attention is lost.\"},{\"text\":\"The system shall provide a clear, unambiguous disengagement command that the driver can activate at any time, with immediate return of full vehicle control without delay.\"},{\"text\":\"The system shall perform real‑time validation of detected lane markings and objects, and if confidence falls below a safe level, it shall reduce speed and request driver takeover.\"},{\"text\":\"The system shall implement a minimum safe following distance algorithm that adapts to vehicle speed, road curvature, and weather, and must not allow the vehicle to close to a preceding object below that distance.\"},{\"text\":\"The system shall log all Autopilot engagements, sensor status, driver‑monitoring events, and disengagements in a tamper‑evident record for post‑incident analysis.\"},{\"text\":\"The system shall undergo rigorous functional safety verification in accordance with ISO 26262 (ASIL D) and provide evidence of compliance for all safety‑critical functions.\"},{\"text\":\"The system shall incorporate cybersecurity safeguards that protect sensor data, control commands, and over‑the‑air updates from unauthorized modification or spoofing.\"},{\"text\":\"The system shall execute a controlled emergency‑brake maneuver if an imminent collision is detected and the driver does not intervene within a defined reaction window, while providing audible and visual warnings prior to actuation.\"}]}",
+      "parsed": {
+        "requirements": [
+          {
+            "text": "The system shall continuously monitor the health and redundancy of all primary sensors (camera, radar, ultrasonic) and initiate a safe‑stop or disengagement if any sensor degrades or fails."
+          },
+          {
+            "text": "The system shall detect and assess adverse environmental conditions (e.g., rain, fog, low light) and automatically disable Autopilot or limit functionality when conditions fall below defined visibility thresholds."
+          },
+          {
+            "text": "The system shall require the driver to maintain active hands‑on‑wheel contact verified by torque and periodic driver‑attention checks (e.g., eye‑tracking or steering‑wheel touch) and immediately disengage if attention is lost."
+          },
+          {
+            "text": "The system shall provide a clear, unambiguous disengagement command that the driver can activate at any time, with immediate return of full vehicle control without delay."
+          },
+          {
+            "text": "The system shall perform real‑time validation of detected lane markings and objects, and if confidence falls below a safe level, it shall reduce speed and request driver takeover."
+          },
+          {
+            "text": "The system shall implement a minimum safe following distance algorithm that adapts to vehicle speed, road curvature, and weather, and must not allow the vehicle to close to a preceding object below that distance."
+          },
+          {
+            "text": "The system shall log all Autopilot engagements, sensor status, driver‑monitoring events, and disengagements in a tamper‑evident record for post‑incident analysis."
+          },
+          {
+            "text": "The system shall undergo rigorous functional safety verification in accordance with ISO 26262 (ASIL D) and provide evidence of compliance for all safety‑critical functions."
+          },
+          {
+            "text": "The system shall incorporate cybersecurity safeguards that protect sensor data, control commands, and over‑the‑air updates from unauthorized modification or spoofing."
+          },
+          {
+            "text": "The system shall execute a controlled emergency‑brake maneuver if an imminent collision is detected and the driver does not intervene within a defined reaction window, while providing audible and visual warnings prior to actuation."
+          }
+        ]
+      },
+      "error": ""
+    }
+  ],
+  "tgrl": "",
+  "tgrl_valid": null,
+  "ok": true
+}

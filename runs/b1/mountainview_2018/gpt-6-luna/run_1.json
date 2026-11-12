@@ -1,0 +1,117 @@
+{
+  "condition": "b1",
+  "case": "mountainview_2018",
+  "model": "gpt-6-luna",
+  "model_id": "openai/gpt-6-luna",
+  "run": 1,
+  "temperature": null,
+  "prompt_version": "v1",
+  "started_at": "2026-11-11T15:41:10+00:00",
+  "items": [
+    {
+      "id": "r1",
+      "kind": "requirement",
+      "text": "The system shall detect lane endings, gore areas, road boundaries, and fixed hazards such as barriers or crash attenuators, and shall prevent the vehicle from steering or continuing along a path that would enter them.",
+      "context": ""
+    },
+    {
+      "id": "r2",
+      "kind": "requirement",
+      "text": "The system shall assess whether lane markings and the road path are sufficiently clear and unambiguous for Autosteer, and shall inhibit or safely limit Autosteer when they are not.",
+      "context": ""
+    },
+    {
+      "id": "r3",
+      "kind": "requirement",
+      "text": "The system shall determine whether the driver is attentive and able to take control using monitoring beyond steering-wheel torque, and shall issue escalating alerts when the driver is inattentive or unavailable.",
+      "context": ""
+    },
+    {
+      "id": "r4",
+      "kind": "requirement",
+      "text": "If the driver does not respond to an urgent takeover request, the system shall perform a controlled fallback, including maintaining a safe path where possible and slowing the vehicle to a stop when necessary.",
+      "context": ""
+    },
+    {
+      "id": "r5",
+      "kind": "requirement",
+      "text": "The system shall identify and communicate when operating conditions are outside its supported capabilities, and shall prevent activation or continued operation in those conditions unless a safe response is available.",
+      "context": ""
+    },
+    {
+      "id": "r6",
+      "kind": "requirement",
+      "text": "The system shall detect relevant stationary and moving hazards in its travel path and shall warn or intervene, including braking when needed to avoid or mitigate a collision.",
+      "context": ""
+    },
+    {
+      "id": "r7",
+      "kind": "requirement",
+      "text": "The system shall select or limit vehicle speed to remain safe for the road geometry, visibility, traffic, and detected hazards, rather than relying solely on the driver-set cruising speed.",
+      "context": ""
+    },
+    {
+      "id": "r8",
+      "kind": "requirement",
+      "text": "The system shall provide clear, timely alerts before and during any loss or reduction of automated control, and shall make the current automation state and the driver's required actions unambiguous.",
+      "context": ""
+    },
+    {
+      "id": "r9",
+      "kind": "requirement",
+      "text": "The system shall detect sensor or perception faults, obstruction, and excessive uncertainty, and shall transition to a safe state rather than continuing to control the vehicle using unreliable information.",
+      "context": ""
+    },
+    {
+      "id": "r10",
+      "kind": "requirement",
+      "text": "The system shall be validated to maintain safe control or enter a safe state across relevant freeway scenarios, including changing lane-marking quality, lane splits, stopped traffic, and transitions near exits and interchanges.",
+      "context": ""
+    }
+  ],
+  "stages": [
+    {
+      "stage": "b1",
+      "prompt": "You are a requirements engineer reviewing a safety-critical system.\n\nRead the system description below. List the 10 most important requirements that are missing from it:\nthings the system should do or guarantee for safe operation that the description does not cover.\nGive at most 10, ranked from most to least important.\n\nReply with JSON only, in this shape:\n{\"requirements\": [{\"text\": \"The system shall ...\"}]}\n\nSystem description:\n# Case: Tesla Model X with Autopilot (Mountain View, California, 2018)\n\nSource: NTSB Highway Accident Report HAR-20/01. This is a description of the system and its use before the crash. It does not include the investigation findings.\n\n## System\nA 2017 Tesla Model X has Autopilot, a SAE Level 2 partial driving automation feature. It combines Traffic-Aware Cruise Control (TACC) and Autosteer (lane keeping). The driver stays responsible for driving and monitoring the road.\n\n## Main parts\n- Sensors: a forward-facing camera, a forward-facing radar and ultrasonic sensors.\n- Vision processing: a camera-based system detects lane markings, vehicles and some objects ahead.\n- TACC: holds a speed set by the driver, follows a vehicle ahead at a chosen gap, and returns to the set speed when no vehicle is ahead.\n- Autosteer: keeps the vehicle in its lane using lane markings and the path of the vehicle ahead.\n- Forward collision warning and automatic emergency braking are available as separate features.\n- Driver monitoring: steering torque is used to check that the driver's hands are on the wheel, with visual and audible alerts if no hands are detected for a period of time.\n\n## People\n- The driver sets the cruising speed, turns Autopilot on, and is told to keep hands on the wheel and watch the road.\n- Other road users and road workers share the highway. Road agencies maintain road markings and safety hardware such as barriers and crash attenuators.\n\n## Operating context\nBusy multi-lane freeway with high-occupancy-vehicle (HOV) lanes, exits and interchanges, lane markings of different quality, and traffic that changes in speed.\n\n",
+      "raw_response": "{\"requirements\":[{\"text\":\"The system shall detect lane endings, gore areas, road boundaries, and fixed hazards such as barriers or crash attenuators, and shall prevent the vehicle from steering or continuing along a path that would enter them.\"},{\"text\":\"The system shall assess whether lane markings and the road path are sufficiently clear and unambiguous for Autosteer, and shall inhibit or safely limit Autosteer when they are not.\"},{\"text\":\"The system shall determine whether the driver is attentive and able to take control using monitoring beyond steering-wheel torque, and shall issue escalating alerts when the driver is inattentive or unavailable.\"},{\"text\":\"If the driver does not respond to an urgent takeover request, the system shall perform a controlled fallback, including maintaining a safe path where possible and slowing the vehicle to a stop when necessary.\"},{\"text\":\"The system shall identify and communicate when operating conditions are outside its supported capabilities, and shall prevent activation or continued operation in those conditions unless a safe response is available.\"},{\"text\":\"The system shall detect relevant stationary and moving hazards in its travel path and shall warn or intervene, including braking when needed to avoid or mitigate a collision.\"},{\"text\":\"The system shall select or limit vehicle speed to remain safe for the road geometry, visibility, traffic, and detected hazards, rather than relying solely on the driver-set cruising speed.\"},{\"text\":\"The system shall provide clear, timely alerts before and during any loss or reduction of automated control, and shall make the current automation state and the driver's required actions unambiguous.\"},{\"text\":\"The system shall detect sensor or perception faults, obstruction, and excessive uncertainty, and shall transition to a safe state rather than continuing to control the vehicle using unreliable information.\"},{\"text\":\"The system shall be validated to maintain safe control or enter a safe state across relevant freeway scenarios, including changing lane-marking quality, lane splits, stopped traffic, and transitions near exits and interchanges.\"}]}",
+      "parsed": {
+        "requirements": [
+          {
+            "text": "The system shall detect lane endings, gore areas, road boundaries, and fixed hazards such as barriers or crash attenuators, and shall prevent the vehicle from steering or continuing along a path that would enter them."
+          },
+          {
+            "text": "The system shall assess whether lane markings and the road path are sufficiently clear and unambiguous for Autosteer, and shall inhibit or safely limit Autosteer when they are not."
+          },
+          {
+            "text": "The system shall determine whether the driver is attentive and able to take control using monitoring beyond steering-wheel torque, and shall issue escalating alerts when the driver is inattentive or unavailable."
+          },
+          {
+            "text": "If the driver does not respond to an urgent takeover request, the system shall perform a controlled fallback, including maintaining a safe path where possible and slowing the vehicle to a stop when necessary."
+          },
+          {
+            "text": "The system shall identify and communicate when operating conditions are outside its supported capabilities, and shall prevent activation or continued operation in those conditions unless a safe response is available."
+          },
+          {
+            "text": "The system shall detect relevant stationary and moving hazards in its travel path and shall warn or intervene, including braking when needed to avoid or mitigate a collision."
+          },
+          {
+            "text": "The system shall select or limit vehicle speed to remain safe for the road geometry, visibility, traffic, and detected hazards, rather than relying solely on the driver-set cruising speed."
+          },
+          {
+            "text": "The system shall provide clear, timely alerts before and during any loss or reduction of automated control, and shall make the current automation state and the driver's required actions unambiguous."
+          },
+          {
+            "text": "The system shall detect sensor or perception faults, obstruction, and excessive uncertainty, and shall transition to a safe state rather than continuing to control the vehicle using unreliable information."
+          },
+          {
+            "text": "The system shall be validated to maintain safe control or enter a safe state across relevant freeway scenarios, including changing lane-marking quality, lane splits, stopped traffic, and transitions near exits and interchanges."
+          }
+        ]
+      },
+      "error": ""
+    }
+  ],
+  "tgrl": "",
+  "tgrl_valid": null,
+  "ok": true
+}

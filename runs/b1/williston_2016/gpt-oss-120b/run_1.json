@@ -1,0 +1,117 @@
+{
+  "condition": "b1",
+  "case": "williston_2016",
+  "model": "gpt-oss-120b",
+  "model_id": "openai/gpt-oss-120b",
+  "run": 1,
+  "temperature": 0.7,
+  "prompt_version": "v1",
+  "started_at": "2026-11-11T15:24:31+00:00",
+  "items": [
+    {
+      "id": "r1",
+      "kind": "requirement",
+      "text": "The system shall continuously perform self‑diagnostics on all critical sensors (camera, radar, ultrasonic) and automatically disengage Autopilot with an audible/visual warning if any sensor degrades beyond defined confidence thresholds.",
+      "context": ""
+    },
+    {
+      "id": "r2",
+      "kind": "requirement",
+      "text": "The system shall enforce a maximum allowable driver inattention interval (e.g., no steering torque) of no more than 2 seconds, and if exceeded, issue escalating alerts and subsequently disengage Autosteer.",
+      "context": ""
+    },
+    {
+      "id": "r3",
+      "kind": "requirement",
+      "text": "The system shall limit Autopilot activation to road segments that meet predefined environmental criteria (e.g., clear weather, adequate lane marking visibility, road type) and automatically refuse activation or disengage when those criteria are violated.",
+      "context": ""
+    },
+    {
+      "id": "r4",
+      "kind": "requirement",
+      "text": "The system shall maintain a minimum safe following distance based on vehicle speed and road conditions, and must override TACC to increase gap if a faster‑approaching vehicle is detected in an adjacent lane.",
+      "context": ""
+    },
+    {
+      "id": "r5",
+      "kind": "requirement",
+      "text": "The system shall provide a deterministic, fail‑safe transition to manual control, ensuring that steering torque and braking authority are instantly returned to the driver without delay upon any disengagement event.",
+      "context": ""
+    },
+    {
+      "id": "r6",
+      "kind": "requirement",
+      "text": "The system shall detect and correctly classify non‑lane‑based obstacles (e.g., stopped trucks, motorcycles, construction zones) and initiate appropriate evasive actions, including emergency braking, even when lane markings are absent or ambiguous.",
+      "context": ""
+    },
+    {
+      "id": "r7",
+      "kind": "requirement",
+      "text": "The system shall log, in tamper‑evident storage, all sensor inputs, system state changes, driver alerts, and disengagement events with timestamps for post‑incident analysis.",
+      "context": ""
+    },
+    {
+      "id": "r8",
+      "kind": "requirement",
+      "text": "The system shall implement cybersecurity controls that validate all over‑the‑air updates and reject any unauthorized modification to safety‑critical software components.",
+      "context": ""
+    },
+    {
+      "id": "r9",
+      "kind": "requirement",
+      "text": "The system shall provide a redundancy path for steering actuation (e.g., dual‑channel motor control) such that a single‑point failure does not prevent the driver from regaining manual control.",
+      "context": ""
+    },
+    {
+      "id": "r10",
+      "kind": "requirement",
+      "text": "The system shall conduct periodic calibration checks of camera and radar alignment, and if calibration drifts exceed tolerance, notify the driver and prohibit Autopilot activation until service is performed.",
+      "context": ""
+    }
+  ],
+  "stages": [
+    {
+      "stage": "b1",
+      "prompt": "You are a requirements engineer reviewing a safety-critical system.\n\nRead the system description below. List the 10 most important requirements that are missing from it:\nthings the system should do or guarantee for safe operation that the description does not cover.\nGive at most 10, ranked from most to least important.\n\nReply with JSON only, in this shape:\n{\"requirements\": [{\"text\": \"The system shall ...\"}]}\n\nSystem description:\n# Case: Tesla Model S with Autopilot (Williston, Florida, 2016)\n\nSource: NTSB Highway Accident Report HAR-17/02. This is a description of the system and its use before the crash. It does not include the investigation findings.\n\n## System\nA 2015 Tesla Model S has Autopilot, a SAE Level 2 partial driving automation feature. It combines Traffic-Aware Cruise Control (TACC) and Autosteer (lane keeping). The driver stays responsible for driving and monitoring the road.\n\n## Main parts\n- Sensors: a forward-facing camera, a forward-facing radar and ultrasonic sensors.\n- Vision processing: a camera-based system detects lane markings and objects ahead.\n- TACC: holds a speed set by the driver, slows down for a vehicle ahead in the same lane, and speeds up again when the lane is clear.\n- Autosteer: keeps the vehicle centered in its lane using lane markings and the vehicle ahead.\n- Forward collision warning and automatic emergency braking are available as separate features.\n- Driver monitoring: the system checks that the driver's hands are on the steering wheel by sensing steering torque, and shows visual and audible alerts if no hands are detected for a period of time.\n\n## People\n- The driver sets the cruising speed, turns Autopilot on, and is told to keep hands on the wheel and watch the road.\n- Other road users include cars, large trucks crossing or joining the road, and motorcyclists.\n\n## Operating context\nAutopilot is intended mainly for highways with limited access, in good visibility. Drivers can also turn it on for other roads, such as divided highways with cross traffic at intersections.\n\n",
+      "raw_response": "{\n  \"requirements\": [\n    {\n      \"text\": \"The system shall continuously perform self‑diagnostics on all critical sensors (camera, radar, ultrasonic) and automatically disengage Autopilot with an audible/visual warning if any sensor degrades beyond defined confidence thresholds.\"\n    },\n    {\n      \"text\": \"The system shall enforce a maximum allowable driver inattention interval (e.g., no steering torque) of no more than 2 seconds, and if exceeded, issue escalating alerts and subsequently disengage Autosteer.\"\n    },\n    {\n      \"text\": \"The system shall limit Autopilot activation to road segments that meet predefined environmental criteria (e.g., clear weather, adequate lane marking visibility, road type) and automatically refuse activation or disengage when those criteria are violated.\"\n    },\n    {\n      \"text\": \"The system shall maintain a minimum safe following distance based on vehicle speed and road conditions, and must override TACC to increase gap if a faster‑approaching vehicle is detected in an adjacent lane.\"\n    },\n    {\n      \"text\": \"The system shall provide a deterministic, fail‑safe transition to manual control, ensuring that steering torque and braking authority are instantly returned to the driver without delay upon any disengagement event.\"\n    },\n    {\n      \"text\": \"The system shall detect and correctly classify non‑lane‑based obstacles (e.g., stopped trucks, motorcycles, construction zones) and initiate appropriate evasive actions, including emergency braking, even when lane markings are absent or ambiguous.\"\n    },\n    {\n      \"text\": \"The system shall log, in tamper‑evident storage, all sensor inputs, system state changes, driver alerts, and disengagement events with timestamps for post‑incident analysis.\"\n    },\n    {\n      \"text\": \"The system shall implement cybersecurity controls that validate all over‑the‑air updates and reject any unauthorized modification to safety‑critical software components.\"\n    },\n    {\n      \"text\": \"The system shall provide a redundancy path for steering actuation (e.g., dual‑channel motor control) such that a single‑point failure does not prevent the driver from regaining manual control.\"\n    },\n    {\n      \"text\": \"The system shall conduct periodic calibration checks of camera and radar alignment, and if calibration drifts exceed tolerance, notify the driver and prohibit Autopilot activation until service is performed.\"\n    }\n  ]\n}",
+      "parsed": {
+        "requirements": [
+          {
+            "text": "The system shall continuously perform self‑diagnostics on all critical sensors (camera, radar, ultrasonic) and automatically disengage Autopilot with an audible/visual warning if any sensor degrades beyond defined confidence thresholds."
+          },
+          {
+            "text": "The system shall enforce a maximum allowable driver inattention interval (e.g., no steering torque) of no more than 2 seconds, and if exceeded, issue escalating alerts and subsequently disengage Autosteer."
+          },
+          {
+            "text": "The system shall limit Autopilot activation to road segments that meet predefined environmental criteria (e.g., clear weather, adequate lane marking visibility, road type) and automatically refuse activation or disengage when those criteria are violated."
+          },
+          {
+            "text": "The system shall maintain a minimum safe following distance based on vehicle speed and road conditions, and must override TACC to increase gap if a faster‑approaching vehicle is detected in an adjacent lane."
+          },
+          {
+            "text": "The system shall provide a deterministic, fail‑safe transition to manual control, ensuring that steering torque and braking authority are instantly returned to the driver without delay upon any disengagement event."
+          },
+          {
+            "text": "The system shall detect and correctly classify non‑lane‑based obstacles (e.g., stopped trucks, motorcycles, construction zones) and initiate appropriate evasive actions, including emergency braking, even when lane markings are absent or ambiguous."
+          },
+          {
+            "text": "The system shall log, in tamper‑evident storage, all sensor inputs, system state changes, driver alerts, and disengagement events with timestamps for post‑incident analysis."
+          },
+          {
+            "text": "The system shall implement cybersecurity controls that validate all over‑the‑air updates and reject any unauthorized modification to safety‑critical software components."
+          },
+          {
+            "text": "The system shall provide a redundancy path for steering actuation (e.g., dual‑channel motor control) such that a single‑point failure does not prevent the driver from regaining manual control."
+          },
+          {
+            "text": "The system shall conduct periodic calibration checks of camera and radar alignment, and if calibration drifts exceed tolerance, notify the driver and prohibit Autopilot activation until service is performed."
+          }
+        ]
+      },
+      "error": ""
+    }
+  ],
+  "tgrl": "",
+  "tgrl_valid": null,
+  "ok": true
+}

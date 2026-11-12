@@ -1,0 +1,117 @@
+{
+  "condition": "b1",
+  "case": "uber_2018",
+  "model": "gpt-oss-120b",
+  "model_id": "openai/gpt-oss-120b",
+  "run": 4,
+  "temperature": 0.7,
+  "prompt_version": "v1",
+  "started_at": "2026-11-11T15:24:06+00:00",
+  "items": [
+    {
+      "id": "r1",
+      "kind": "requirement",
+      "text": "The system shall continuously monitor the health and integrity of all critical sensors and compute modules, and if any single‑point failure is detected it shall transition to a predefined safe‑stop state within a bounded distance.",
+      "context": ""
+    },
+    {
+      "id": "r2",
+      "kind": "requirement",
+      "text": "The system shall define an explicit Operational Design Domain (ODD) – including maximum speed, weather, illumination, and road‑type limits – and shall automatically disengage the automated driving mode whenever any ODD condition is violated.",
+      "context": ""
+    },
+    {
+      "id": "r3",
+      "kind": "requirement",
+      "text": "The system shall issue an unmistakable, multimodal takeover request (visual, auditory, and haptic) to the operator with a minimum lead time of 5 seconds, and shall only continue automated control if the operator acknowledges and assumes control within that interval.",
+      "context": ""
+    },
+    {
+      "id": "r4",
+      "kind": "requirement",
+      "text": "The system shall continuously assess driver attentiveness (e.g., hands on wheel, gaze direction) and, if the driver is inattentive and does not respond to a takeover request within the prescribed time, shall execute a safe‑stop maneuver.",
+      "context": ""
+    },
+    {
+      "id": "r5",
+      "kind": "requirement",
+      "text": "The system shall validate every planned trajectory in real time against the predicted occupancy of all tracked objects, applying a safety margin, and shall abort or re‑plan if any potential collision is detected.",
+      "context": ""
+    },
+    {
+      "id": "r6",
+      "kind": "requirement",
+      "text": "The system shall provide functional redundancy for all safety‑critical functions (perception, prediction, planning, and actuation) such that loss of any single component does not compromise safe operation.",
+      "context": ""
+    },
+    {
+      "id": "r7",
+      "kind": "requirement",
+      "text": "The system shall record, in a tamper‑evident log, all raw sensor data, perception outputs, predictions, planning decisions, control commands, and operator interventions with synchronized timestamps for post‑incident analysis.",
+      "context": ""
+    },
+    {
+      "id": "r8",
+      "kind": "requirement",
+      "text": "The system shall incorporate robust cybersecurity controls to prevent unauthorized remote access or modification of perception, planning, or control software and data.",
+      "context": ""
+    },
+    {
+      "id": "r9",
+      "kind": "requirement",
+      "text": "The system shall be capable of performing an emergency stop that brings the vehicle to a halt within a maximum of 5 meters from the point of detecting an imminent collision, regardless of operator input.",
+      "context": ""
+    },
+    {
+      "id": "r10",
+      "kind": "requirement",
+      "text": "The system shall undergo periodic safety validation (including software verification, hardware calibration, and sensor alignment) before each deployment, and shall refuse to operate if any validation step fails.",
+      "context": ""
+    }
+  ],
+  "stages": [
+    {
+      "stage": "b1",
+      "prompt": "You are a requirements engineer reviewing a safety-critical system.\n\nRead the system description below. List the 10 most important requirements that are missing from it:\nthings the system should do or guarantee for safe operation that the description does not cover.\nGive at most 10, ranked from most to least important.\n\nReply with JSON only, in this shape:\n{\"requirements\": [{\"text\": \"The system shall ...\"}]}\n\nSystem description:\n# Case: Uber ATG automated test vehicle (Tempe, Arizona, 2018)\n\nSource: NTSB Highway Accident Report HAR-19/03. This is a description of the system and its use before the crash. It does not include the investigation findings.\n\n## System\nA modified Volvo XC90 SUV is used by Uber Advanced Technologies Group (ATG) to test an automated driving system (ADS) on public roads. The ADS is designed to drive the vehicle without human input in defined conditions, up to about 45 mph in this test program.\n\n## Main parts\n- Sensors: roof-mounted lidar, radar units and cameras covering the area around the vehicle.\n- Perception: detects objects around the vehicle, classifies each one (for example vehicle, pedestrian, bicycle, other), and tracks it over time.\n- Prediction: estimates where each tracked object will go next, using its class and recent movement.\n- Planning and control: chooses a path and speed, and controls steering, throttle and braking.\n- Vehicle: the Volvo factory driver-assistance features (such as forward collision warning and automatic emergency braking) are part of the base vehicle.\n\n## People\n- One vehicle operator sits in the driver seat. The operator is responsible for watching the road and taking over control when needed. The operator also uses a tablet-style interface to tag events and check system status.\n- Other road users share the road: pedestrians, cyclists and other drivers. They are not aware of the test program.\n\n## Operating context\nPublic multi-lane roads in an urban area, day and night, with posted speed limits, marked crosswalks, intersections and street lighting that varies by location.\n\n",
+      "raw_response": "{\n  \"requirements\": [\n    {\n      \"text\": \"The system shall continuously monitor the health and integrity of all critical sensors and compute modules, and if any single‑point failure is detected it shall transition to a predefined safe‑stop state within a bounded distance.\"\n    },\n    {\n      \"text\": \"The system shall define an explicit Operational Design Domain (ODD) – including maximum speed, weather, illumination, and road‑type limits – and shall automatically disengage the automated driving mode whenever any ODD condition is violated.\"\n    },\n    {\n      \"text\": \"The system shall issue an unmistakable, multimodal takeover request (visual, auditory, and haptic) to the operator with a minimum lead time of 5 seconds, and shall only continue automated control if the operator acknowledges and assumes control within that interval.\"\n    },\n    {\n      \"text\": \"The system shall continuously assess driver attentiveness (e.g., hands on wheel, gaze direction) and, if the driver is inattentive and does not respond to a takeover request within the prescribed time, shall execute a safe‑stop maneuver.\"\n    },\n    {\n      \"text\": \"The system shall validate every planned trajectory in real time against the predicted occupancy of all tracked objects, applying a safety margin, and shall abort or re‑plan if any potential collision is detected.\"\n    },\n    {\n      \"text\": \"The system shall provide functional redundancy for all safety‑critical functions (perception, prediction, planning, and actuation) such that loss of any single component does not compromise safe operation.\"\n    },\n    {\n      \"text\": \"The system shall record, in a tamper‑evident log, all raw sensor data, perception outputs, predictions, planning decisions, control commands, and operator interventions with synchronized timestamps for post‑incident analysis.\"\n    },\n    {\n      \"text\": \"The system shall incorporate robust cybersecurity controls to prevent unauthorized remote access or modification of perception, planning, or control software and data.\"\n    },\n    {\n      \"text\": \"The system shall be capable of performing an emergency stop that brings the vehicle to a halt within a maximum of 5 meters from the point of detecting an imminent collision, regardless of operator input.\"\n    },\n    {\n      \"text\": \"The system shall undergo periodic safety validation (including software verification, hardware calibration, and sensor alignment) before each deployment, and shall refuse to operate if any validation step fails.\"\n    }\n  ]\n}",
+      "parsed": {
+        "requirements": [
+          {
+            "text": "The system shall continuously monitor the health and integrity of all critical sensors and compute modules, and if any single‑point failure is detected it shall transition to a predefined safe‑stop state within a bounded distance."
+          },
+          {
+            "text": "The system shall define an explicit Operational Design Domain (ODD) – including maximum speed, weather, illumination, and road‑type limits – and shall automatically disengage the automated driving mode whenever any ODD condition is violated."
+          },
+          {
+            "text": "The system shall issue an unmistakable, multimodal takeover request (visual, auditory, and haptic) to the operator with a minimum lead time of 5 seconds, and shall only continue automated control if the operator acknowledges and assumes control within that interval."
+          },
+          {
+            "text": "The system shall continuously assess driver attentiveness (e.g., hands on wheel, gaze direction) and, if the driver is inattentive and does not respond to a takeover request within the prescribed time, shall execute a safe‑stop maneuver."
+          },
+          {
+            "text": "The system shall validate every planned trajectory in real time against the predicted occupancy of all tracked objects, applying a safety margin, and shall abort or re‑plan if any potential collision is detected."
+          },
+          {
+            "text": "The system shall provide functional redundancy for all safety‑critical functions (perception, prediction, planning, and actuation) such that loss of any single component does not compromise safe operation."
+          },
+          {
+            "text": "The system shall record, in a tamper‑evident log, all raw sensor data, perception outputs, predictions, planning decisions, control commands, and operator interventions with synchronized timestamps for post‑incident analysis."
+          },
+          {
+            "text": "The system shall incorporate robust cybersecurity controls to prevent unauthorized remote access or modification of perception, planning, or control software and data."
+          },
+          {
+            "text": "The system shall be capable of performing an emergency stop that brings the vehicle to a halt within a maximum of 5 meters from the point of detecting an imminent collision, regardless of operator input."
+          },
+          {
+            "text": "The system shall undergo periodic safety validation (including software verification, hardware calibration, and sensor alignment) before each deployment, and shall refuse to operate if any validation step fails."
+          }
+        ]
+      },
+      "error": ""
+    }
+  ],
+  "tgrl": "",
+  "tgrl_valid": null,
+  "ok": true
+}

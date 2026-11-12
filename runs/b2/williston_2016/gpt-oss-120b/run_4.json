@@ -1,0 +1,138 @@
+{
+  "condition": "b2",
+  "case": "williston_2016",
+  "model": "gpt-oss-120b",
+  "model_id": "openai/gpt-oss-120b",
+  "run": 4,
+  "temperature": 0.7,
+  "prompt_version": "v1",
+  "started_at": "2026-11-11T15:27:28+00:00",
+  "items": [
+    {
+      "id": "g1",
+      "kind": "goal",
+      "text": "Driver: Avoid collisions with any road participant while driving",
+      "context": ""
+    },
+    {
+      "id": "g2",
+      "kind": "goal",
+      "text": "Autopilot: Keep the vehicle centered within its lane using lane‑keeping assistance",
+      "context": ""
+    },
+    {
+      "id": "g3",
+      "kind": "goal",
+      "text": "Autopilot: Maintain the driver‑set cruising speed, adjusting for traffic ahead",
+      "context": ""
+    },
+    {
+      "id": "g4",
+      "kind": "goal",
+      "text": "Autopilot: Detect obstacles (vehicles, trucks, motorcyclists) ahead using camera, radar and ultrasonic sensors",
+      "context": ""
+    },
+    {
+      "id": "g5",
+      "kind": "goal",
+      "text": "Driver: Stay engaged with the driving task (hands on wheel, eyes on road)",
+      "context": ""
+    },
+    {
+      "id": "g6",
+      "kind": "goal",
+      "text": "Autopilot: Provide timely visual and audible alerts when driver engagement is low",
+      "context": ""
+    },
+    {
+      "id": "g7",
+      "kind": "goal",
+      "text": "Driver: Maintain overall control of the vehicle and be ready to intervene",
+      "context": ""
+    },
+    {
+      "id": "g8",
+      "kind": "goal",
+      "text": "Autopilot: Minimize driver workload by handling speed and lane keeping when appropriate",
+      "context": ""
+    },
+    {
+      "id": "g9",
+      "kind": "goal",
+      "text": "Driver: Ensure a comfortable ride for passengers",
+      "context": ""
+    },
+    {
+      "id": "g10",
+      "kind": "goal",
+      "text": "OtherRoadUsers: Avoid collisions with the Tesla while it is operating under Autopilot",
+      "context": ""
+    }
+  ],
+  "stages": [
+    {
+      "stage": "s1_extract",
+      "prompt": "You are a requirements engineer building a goal model in GRL (Goal-oriented Requirement Language).\n\nRead the system description below and build a GRL model in textual GRL (TGRL).\nInclude every actor, including humans affected by the system (for example operators and pedestrians).\n\nTGRL syntax example:\ngrl Example { actor Driver { goal ReachDestination; softGoal Comfort; } }\n\nReply with JSON only, in this shape:\n{\"tgrl\": \"grl ... { ... }\",\n \"goals\": [{\"id\": \"g1\", \"actor\": \"...\", \"text\": \"...\"}]}\n\nList the 10 most important goals in \"goals\", ranked from most to least important, including goals of human actors.\n\nSystem description:\n# Case: Tesla Model S with Autopilot (Williston, Florida, 2016)\n\nSource: NTSB Highway Accident Report HAR-17/02. This is a description of the system and its use before the crash. It does not include the investigation findings.\n\n## System\nA 2015 Tesla Model S has Autopilot, a SAE Level 2 partial driving automation feature. It combines Traffic-Aware Cruise Control (TACC) and Autosteer (lane keeping). The driver stays responsible for driving and monitoring the road.\n\n## Main parts\n- Sensors: a forward-facing camera, a forward-facing radar and ultrasonic sensors.\n- Vision processing: a camera-based system detects lane markings and objects ahead.\n- TACC: holds a speed set by the driver, slows down for a vehicle ahead in the same lane, and speeds up again when the lane is clear.\n- Autosteer: keeps the vehicle centered in its lane using lane markings and the vehicle ahead.\n- Forward collision warning and automatic emergency braking are available as separate features.\n- Driver monitoring: the system checks that the driver's hands are on the steering wheel by sensing steering torque, and shows visual and audible alerts if no hands are detected for a period of time.\n\n## People\n- The driver sets the cruising speed, turns Autopilot on, and is told to keep hands on the wheel and watch the road.\n- Other road users include cars, large trucks crossing or joining the road, and motorcyclists.\n\n## Operating context\nAutopilot is intended mainly for highways with limited access, in good visibility. Drivers can also turn it on for other roads, such as divided highways with cross traffic at intersections.\n\n",
+      "raw_response": "{\n  \"tgrl\": \"grl TeslaAutopilotModel {\\n    actor Driver {\\n        goal AvoidCollision;\\n        goal MaintainControl;\\n        softGoal StayEngaged;\\n        softGoal Comfort;\\n    }\\n    actor Autopilot {\\n        goal KeepInLane;\\n        goal MaintainSpeed;\\n        goal DetectObstacles;\\n        softGoal ProvideAlerts;\\n        softGoal MinimizeDriverWorkload;\\n    }\\n    actor OtherRoadUsers {\\n        goal AvoidCollisionWithTesla;\\n    }\\n    actor Pedestrians {\\n        goal AvoidCollisionWithVehicle;\\n    }\\n}\",\n  \"goals\": [\n    { \"id\": \"g1\", \"actor\": \"Driver\", \"text\": \"Avoid collisions with any road participant while driving\" },\n    { \"id\": \"g2\", \"actor\": \"Autopilot\", \"text\": \"Keep the vehicle centered within its lane using lane‑keeping assistance\" },\n    { \"id\": \"g3\", \"actor\": \"Autopilot\", \"text\": \"Maintain the driver‑set cruising speed, adjusting for traffic ahead\" },\n    { \"id\": \"g4\", \"actor\": \"Autopilot\", \"text\": \"Detect obstacles (vehicles, trucks, motorcyclists) ahead using camera, radar and ultrasonic sensors\" },\n    { \"id\": \"g5\", \"actor\": \"Driver\", \"text\": \"Stay engaged with the driving task (hands on wheel, eyes on road)\" },\n    { \"id\": \"g6\", \"actor\": \"Autopilot\", \"text\": \"Provide timely visual and audible alerts when driver engagement is low\" },\n    { \"id\": \"g7\", \"actor\": \"Driver\", \"text\": \"Maintain overall control of the vehicle and be ready to intervene\" },\n    { \"id\": \"g8\", \"actor\": \"Autopilot\", \"text\": \"Minimize driver workload by handling speed and lane keeping when appropriate\" },\n    { \"id\": \"g9\", \"actor\": \"Driver\", \"text\": \"Ensure a comfortable ride for passengers\" },\n    { \"id\": \"g10\", \"actor\": \"OtherRoadUsers\", \"text\": \"Avoid collisions with the Tesla while it is operating under Autopilot\" }\n  ]\n}",
+      "parsed": {
+        "tgrl": "grl TeslaAutopilotModel {\n    actor Driver {\n        goal AvoidCollision;\n        goal MaintainControl;\n        softGoal StayEngaged;\n        softGoal Comfort;\n    }\n    actor Autopilot {\n        goal KeepInLane;\n        goal MaintainSpeed;\n        goal DetectObstacles;\n        softGoal ProvideAlerts;\n        softGoal MinimizeDriverWorkload;\n    }\n    actor OtherRoadUsers {\n        goal AvoidCollisionWithTesla;\n    }\n    actor Pedestrians {\n        goal AvoidCollisionWithVehicle;\n    }\n}",
+        "goals": [
+          {
+            "id": "g1",
+            "actor": "Driver",
+            "text": "Avoid collisions with any road participant while driving"
+          },
+          {
+            "id": "g2",
+            "actor": "Autopilot",
+            "text": "Keep the vehicle centered within its lane using lane‑keeping assistance"
+          },
+          {
+            "id": "g3",
+            "actor": "Autopilot",
+            "text": "Maintain the driver‑set cruising speed, adjusting for traffic ahead"
+          },
+          {
+            "id": "g4",
+            "actor": "Autopilot",
+            "text": "Detect obstacles (vehicles, trucks, motorcyclists) ahead using camera, radar and ultrasonic sensors"
+          },
+          {
+            "id": "g5",
+            "actor": "Driver",
+            "text": "Stay engaged with the driving task (hands on wheel, eyes on road)"
+          },
+          {
+            "id": "g6",
+            "actor": "Autopilot",
+            "text": "Provide timely visual and audible alerts when driver engagement is low"
+          },
+          {
+            "id": "g7",
+            "actor": "Driver",
+            "text": "Maintain overall control of the vehicle and be ready to intervene"
+          },
+          {
+            "id": "g8",
+            "actor": "Autopilot",
+            "text": "Minimize driver workload by handling speed and lane keeping when appropriate"
+          },
+          {
+            "id": "g9",
+            "actor": "Driver",
+            "text": "Ensure a comfortable ride for passengers"
+          },
+          {
+            "id": "g10",
+            "actor": "OtherRoadUsers",
+            "text": "Avoid collisions with the Tesla while it is operating under Autopilot"
+          }
+        ]
+      },
+      "error": ""
+    }
+  ],
+  "tgrl": "grl TeslaAutopilotModel {\n    actor Driver {\n        goal AvoidCollision;\n        goal MaintainControl;\n        softGoal StayEngaged;\n        softGoal Comfort;\n    }\n    actor Autopilot {\n        goal KeepInLane;\n        goal MaintainSpeed;\n        goal DetectObstacles;\n        softGoal ProvideAlerts;\n        softGoal MinimizeDriverWorkload;\n    }\n    actor OtherRoadUsers {\n        goal AvoidCollisionWithTesla;\n    }\n    actor Pedestrians {\n        goal AvoidCollisionWithVehicle;\n    }\n}",
+  "tgrl_valid": true,
+  "ok": true
+}

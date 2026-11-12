@@ -1,0 +1,138 @@
+{
+  "condition": "b2",
+  "case": "williston_2016",
+  "model": "gpt-oss-120b",
+  "model_id": "openai/gpt-oss-120b",
+  "run": 1,
+  "temperature": 0.7,
+  "prompt_version": "v1",
+  "started_at": "2026-11-11T15:26:59+00:00",
+  "items": [
+    {
+      "id": "g1",
+      "kind": "goal",
+      "text": "OtherRoadUsers: Avoid collisions and ensure safety of all road users",
+      "context": ""
+    },
+    {
+      "id": "g2",
+      "kind": "goal",
+      "text": "Driver: Maintain control of the vehicle at all times",
+      "context": ""
+    },
+    {
+      "id": "g3",
+      "kind": "goal",
+      "text": "AutopilotSystem: Maintain a safe following distance from the vehicle ahead",
+      "context": ""
+    },
+    {
+      "id": "g4",
+      "kind": "goal",
+      "text": "AutopilotSystem: Provide accurate lane keeping using lane markings",
+      "context": ""
+    },
+    {
+      "id": "g5",
+      "kind": "goal",
+      "text": "Driver: Keep hands on the steering wheel and monitor the road",
+      "context": ""
+    },
+    {
+      "id": "g6",
+      "kind": "goal",
+      "text": "AutopilotSystem: Issue timely visual and audible alerts when driver attention is low",
+      "context": ""
+    },
+    {
+      "id": "g7",
+      "kind": "goal",
+      "text": "AutopilotSystem: Perform automatic emergency braking to avoid collisions",
+      "context": ""
+    },
+    {
+      "id": "g8",
+      "kind": "goal",
+      "text": "Driver: Reach the intended destination efficiently",
+      "context": ""
+    },
+    {
+      "id": "g9",
+      "kind": "goal",
+      "text": "AutopilotSystem: Operate only in intended contexts (highways, good visibility)",
+      "context": ""
+    },
+    {
+      "id": "g10",
+      "kind": "goal",
+      "text": "Driver: Maintain driver comfort and reduce fatigue during autopilot use",
+      "context": ""
+    }
+  ],
+  "stages": [
+    {
+      "stage": "s1_extract",
+      "prompt": "You are a requirements engineer building a goal model in GRL (Goal-oriented Requirement Language).\n\nRead the system description below and build a GRL model in textual GRL (TGRL).\nInclude every actor, including humans affected by the system (for example operators and pedestrians).\n\nTGRL syntax example:\ngrl Example { actor Driver { goal ReachDestination; softGoal Comfort; } }\n\nReply with JSON only, in this shape:\n{\"tgrl\": \"grl ... { ... }\",\n \"goals\": [{\"id\": \"g1\", \"actor\": \"...\", \"text\": \"...\"}]}\n\nList the 10 most important goals in \"goals\", ranked from most to least important, including goals of human actors.\n\nSystem description:\n# Case: Tesla Model S with Autopilot (Williston, Florida, 2016)\n\nSource: NTSB Highway Accident Report HAR-17/02. This is a description of the system and its use before the crash. It does not include the investigation findings.\n\n## System\nA 2015 Tesla Model S has Autopilot, a SAE Level 2 partial driving automation feature. It combines Traffic-Aware Cruise Control (TACC) and Autosteer (lane keeping). The driver stays responsible for driving and monitoring the road.\n\n## Main parts\n- Sensors: a forward-facing camera, a forward-facing radar and ultrasonic sensors.\n- Vision processing: a camera-based system detects lane markings and objects ahead.\n- TACC: holds a speed set by the driver, slows down for a vehicle ahead in the same lane, and speeds up again when the lane is clear.\n- Autosteer: keeps the vehicle centered in its lane using lane markings and the vehicle ahead.\n- Forward collision warning and automatic emergency braking are available as separate features.\n- Driver monitoring: the system checks that the driver's hands are on the steering wheel by sensing steering torque, and shows visual and audible alerts if no hands are detected for a period of time.\n\n## People\n- The driver sets the cruising speed, turns Autopilot on, and is told to keep hands on the wheel and watch the road.\n- Other road users include cars, large trucks crossing or joining the road, and motorcyclists.\n\n## Operating context\nAutopilot is intended mainly for highways with limited access, in good visibility. Drivers can also turn it on for other roads, such as divided highways with cross traffic at intersections.\n\n",
+      "raw_response": "{\n  \"tgrl\": \"grl TeslaAutopilot {\\n  actor Driver {\\n    goal MaintainControl;\\n    goal KeepHandsOnWheel;\\n    goal ReachDestination;\\n    softGoal Comfort;\\n    softGoal ReduceFatigue;\\n  }\\n  actor AutopilotSystem {\\n    goal SafeFollowingDistance;\\n    goal AccurateLaneKeeping;\\n    goal TimelyAlerts;\\n    goal EmergencyBraking;\\n    softGoal Reliability;\\n    softGoal ContextAppropriateOperation;\\n  }\\n  actor OtherRoadUsers {\\n    goal Safety;\\n  }\\n  actor Pedestrians {\\n    goal Safety;\\n  }\\n}\",\n  \"goals\": [\n    {\n      \"id\": \"g1\",\n      \"actor\": \"OtherRoadUsers\",\n      \"text\": \"Avoid collisions and ensure safety of all road users\"\n    },\n    {\n      \"id\": \"g2\",\n      \"actor\": \"Driver\",\n      \"text\": \"Maintain control of the vehicle at all times\"\n    },\n    {\n      \"id\": \"g3\",\n      \"actor\": \"AutopilotSystem\",\n      \"text\": \"Maintain a safe following distance from the vehicle ahead\"\n    },\n    {\n      \"id\": \"g4\",\n      \"actor\": \"AutopilotSystem\",\n      \"text\": \"Provide accurate lane keeping using lane markings\"\n    },\n    {\n      \"id\": \"g5\",\n      \"actor\": \"Driver\",\n      \"text\": \"Keep hands on the steering wheel and monitor the road\"\n    },\n    {\n      \"id\": \"g6\",\n      \"actor\": \"AutopilotSystem\",\n      \"text\": \"Issue timely visual and audible alerts when driver attention is low\"\n    },\n    {\n      \"id\": \"g7\",\n      \"actor\": \"AutopilotSystem\",\n      \"text\": \"Perform automatic emergency braking to avoid collisions\"\n    },\n    {\n      \"id\": \"g8\",\n      \"actor\": \"Driver\",\n      \"text\": \"Reach the intended destination efficiently\"\n    },\n    {\n      \"id\": \"g9\",\n      \"actor\": \"AutopilotSystem\",\n      \"text\": \"Operate only in intended contexts (highways, good visibility)\"\n    },\n    {\n      \"id\": \"g10\",\n      \"actor\": \"Driver\",\n      \"text\": \"Maintain driver comfort and reduce fatigue during autopilot use\"\n    }\n  ]\n}",
+      "parsed": {
+        "tgrl": "grl TeslaAutopilot {\n  actor Driver {\n    goal MaintainControl;\n    goal KeepHandsOnWheel;\n    goal ReachDestination;\n    softGoal Comfort;\n    softGoal ReduceFatigue;\n  }\n  actor AutopilotSystem {\n    goal SafeFollowingDistance;\n    goal AccurateLaneKeeping;\n    goal TimelyAlerts;\n    goal EmergencyBraking;\n    softGoal Reliability;\n    softGoal ContextAppropriateOperation;\n  }\n  actor OtherRoadUsers {\n    goal Safety;\n  }\n  actor Pedestrians {\n    goal Safety;\n  }\n}",
+        "goals": [
+          {
+            "id": "g1",
+            "actor": "OtherRoadUsers",
+            "text": "Avoid collisions and ensure safety of all road users"
+          },
+          {
+            "id": "g2",
+            "actor": "Driver",
+            "text": "Maintain control of the vehicle at all times"
+          },
+          {
+            "id": "g3",
+            "actor": "AutopilotSystem",
+            "text": "Maintain a safe following distance from the vehicle ahead"
+          },
+          {
+            "id": "g4",
+            "actor": "AutopilotSystem",
+            "text": "Provide accurate lane keeping using lane markings"
+          },
+          {
+            "id": "g5",
+            "actor": "Driver",
+            "text": "Keep hands on the steering wheel and monitor the road"
+          },
+          {
+            "id": "g6",
+            "actor": "AutopilotSystem",
+            "text": "Issue timely visual and audible alerts when driver attention is low"
+          },
+          {
+            "id": "g7",
+            "actor": "AutopilotSystem",
+            "text": "Perform automatic emergency braking to avoid collisions"
+          },
+          {
+            "id": "g8",
+            "actor": "Driver",
+            "text": "Reach the intended destination efficiently"
+          },
+          {
+            "id": "g9",
+            "actor": "AutopilotSystem",
+            "text": "Operate only in intended contexts (highways, good visibility)"
+          },
+          {
+            "id": "g10",
+            "actor": "Driver",
+            "text": "Maintain driver comfort and reduce fatigue during autopilot use"
+          }
+        ]
+      },
+      "error": ""
+    }
+  ],
+  "tgrl": "grl TeslaAutopilot {\n  actor Driver {\n    goal MaintainControl;\n    goal KeepHandsOnWheel;\n    goal ReachDestination;\n    softGoal Comfort;\n    softGoal ReduceFatigue;\n  }\n  actor AutopilotSystem {\n    goal SafeFollowingDistance;\n    goal AccurateLaneKeeping;\n    goal TimelyAlerts;\n    goal EmergencyBraking;\n    softGoal Reliability;\n    softGoal ContextAppropriateOperation;\n  }\n  actor OtherRoadUsers {\n    goal Safety;\n  }\n  actor Pedestrians {\n    goal Safety;\n  }\n}",
+  "tgrl_valid": true,
+  "ok": true
+}

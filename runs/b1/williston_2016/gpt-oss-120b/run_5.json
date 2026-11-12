@@ -1,0 +1,117 @@
+{
+  "condition": "b1",
+  "case": "williston_2016",
+  "model": "gpt-oss-120b",
+  "model_id": "openai/gpt-oss-120b",
+  "run": 5,
+  "temperature": 0.7,
+  "prompt_version": "v1",
+  "started_at": "2026-11-11T15:24:45+00:00",
+  "items": [
+    {
+      "id": "r1",
+      "kind": "requirement",
+      "text": "The system shall continuously monitor driver attentiveness using eye‑tracking or facial‑recognition and issue an immediate disengagement if the driver’s gaze is not on the forward roadway for more than 2 seconds.",
+      "context": ""
+    },
+    {
+      "id": "r2",
+      "kind": "requirement",
+      "text": "The system shall perform real‑time health checks on all sensors (camera, radar, ultrasonic) and enter a safe‑fail state with driver alert if any sensor degrades, is obstructed, or provides inconsistent data.",
+      "context": ""
+    },
+    {
+      "id": "r3",
+      "kind": "requirement",
+      "text": "The system shall detect loss or ambiguity of lane markings and automatically disengage Autosteer while providing an audible and visual warning to the driver.",
+      "context": ""
+    },
+    {
+      "id": "r4",
+      "kind": "requirement",
+      "text": "The system shall impose a maximum operating speed limit (e.g., 85 mph) when Autopilot is engaged, and reduce that limit further in adverse weather or low‑visibility conditions.",
+      "context": ""
+    },
+    {
+      "id": "r5",
+      "kind": "requirement",
+      "text": "The system shall require a confirmed driver handover within 5 seconds after any Autopilot disengagement, and if the driver does not respond, the vehicle shall execute a controlled stop.",
+      "context": ""
+    },
+    {
+      "id": "r6",
+      "kind": "requirement",
+      "text": "The system shall integrate Forward Collision Warning and Automatic Emergency Braking with Autosteer to apply braking autonomously when an imminent frontal collision is detected while the vehicle is lane‑centered.",
+      "context": ""
+    },
+    {
+      "id": "r7",
+      "kind": "requirement",
+      "text": "The system shall detect cross‑traffic and vehicles merging from side roads or intersections, and either warn the driver or disengage Autosteer if a potential conflict is identified.",
+      "context": ""
+    },
+    {
+      "id": "r8",
+      "kind": "requirement",
+      "text": "The system shall be developed and validated to meet ISO 26262 functional safety standards, achieving at least ASIL D for the steering‑control functions.",
+      "context": ""
+    },
+    {
+      "id": "r9",
+      "kind": "requirement",
+      "text": "The system shall securely log all sensor inputs, driver‑monitoring data, and control commands to non‑volatile storage for post‑incident forensic analysis.",
+      "context": ""
+    },
+    {
+      "id": "r10",
+      "kind": "requirement",
+      "text": "The system shall implement robust cybersecurity measures, including authentication of software updates and protection against remote command injection, to prevent unauthorized manipulation of Autopilot functions.",
+      "context": ""
+    }
+  ],
+  "stages": [
+    {
+      "stage": "b1",
+      "prompt": "You are a requirements engineer reviewing a safety-critical system.\n\nRead the system description below. List the 10 most important requirements that are missing from it:\nthings the system should do or guarantee for safe operation that the description does not cover.\nGive at most 10, ranked from most to least important.\n\nReply with JSON only, in this shape:\n{\"requirements\": [{\"text\": \"The system shall ...\"}]}\n\nSystem description:\n# Case: Tesla Model S with Autopilot (Williston, Florida, 2016)\n\nSource: NTSB Highway Accident Report HAR-17/02. This is a description of the system and its use before the crash. It does not include the investigation findings.\n\n## System\nA 2015 Tesla Model S has Autopilot, a SAE Level 2 partial driving automation feature. It combines Traffic-Aware Cruise Control (TACC) and Autosteer (lane keeping). The driver stays responsible for driving and monitoring the road.\n\n## Main parts\n- Sensors: a forward-facing camera, a forward-facing radar and ultrasonic sensors.\n- Vision processing: a camera-based system detects lane markings and objects ahead.\n- TACC: holds a speed set by the driver, slows down for a vehicle ahead in the same lane, and speeds up again when the lane is clear.\n- Autosteer: keeps the vehicle centered in its lane using lane markings and the vehicle ahead.\n- Forward collision warning and automatic emergency braking are available as separate features.\n- Driver monitoring: the system checks that the driver's hands are on the steering wheel by sensing steering torque, and shows visual and audible alerts if no hands are detected for a period of time.\n\n## People\n- The driver sets the cruising speed, turns Autopilot on, and is told to keep hands on the wheel and watch the road.\n- Other road users include cars, large trucks crossing or joining the road, and motorcyclists.\n\n## Operating context\nAutopilot is intended mainly for highways with limited access, in good visibility. Drivers can also turn it on for other roads, such as divided highways with cross traffic at intersections.\n\n",
+      "raw_response": "{\"requirements\":[{\"text\":\"The system shall continuously monitor driver attentiveness using eye‑tracking or facial‑recognition and issue an immediate disengagement if the driver’s gaze is not on the forward roadway for more than 2 seconds.\"},{\"text\":\"The system shall perform real‑time health checks on all sensors (camera, radar, ultrasonic) and enter a safe‑fail state with driver alert if any sensor degrades, is obstructed, or provides inconsistent data.\"},{\"text\":\"The system shall detect loss or ambiguity of lane markings and automatically disengage Autosteer while providing an audible and visual warning to the driver.\"},{\"text\":\"The system shall impose a maximum operating speed limit (e.g., 85 mph) when Autopilot is engaged, and reduce that limit further in adverse weather or low‑visibility conditions.\"},{\"text\":\"The system shall require a confirmed driver handover within 5 seconds after any Autopilot disengagement, and if the driver does not respond, the vehicle shall execute a controlled stop.\"},{\"text\":\"The system shall integrate Forward Collision Warning and Automatic Emergency Braking with Autosteer to apply braking autonomously when an imminent frontal collision is detected while the vehicle is lane‑centered.\"},{\"text\":\"The system shall detect cross‑traffic and vehicles merging from side roads or intersections, and either warn the driver or disengage Autosteer if a potential conflict is identified.\"},{\"text\":\"The system shall be developed and validated to meet ISO 26262 functional safety standards, achieving at least ASIL D for the steering‑control functions.\"},{\"text\":\"The system shall securely log all sensor inputs, driver‑monitoring data, and control commands to non‑volatile storage for post‑incident forensic analysis.\"},{\"text\":\"The system shall implement robust cybersecurity measures, including authentication of software updates and protection against remote command injection, to prevent unauthorized manipulation of Autopilot functions.\"}]}",
+      "parsed": {
+        "requirements": [
+          {
+            "text": "The system shall continuously monitor driver attentiveness using eye‑tracking or facial‑recognition and issue an immediate disengagement if the driver’s gaze is not on the forward roadway for more than 2 seconds."
+          },
+          {
+            "text": "The system shall perform real‑time health checks on all sensors (camera, radar, ultrasonic) and enter a safe‑fail state with driver alert if any sensor degrades, is obstructed, or provides inconsistent data."
+          },
+          {
+            "text": "The system shall detect loss or ambiguity of lane markings and automatically disengage Autosteer while providing an audible and visual warning to the driver."
+          },
+          {
+            "text": "The system shall impose a maximum operating speed limit (e.g., 85 mph) when Autopilot is engaged, and reduce that limit further in adverse weather or low‑visibility conditions."
+          },
+          {
+            "text": "The system shall require a confirmed driver handover within 5 seconds after any Autopilot disengagement, and if the driver does not respond, the vehicle shall execute a controlled stop."
+          },
+          {
+            "text": "The system shall integrate Forward Collision Warning and Automatic Emergency Braking with Autosteer to apply braking autonomously when an imminent frontal collision is detected while the vehicle is lane‑centered."
+          },
+          {
+            "text": "The system shall detect cross‑traffic and vehicles merging from side roads or intersections, and either warn the driver or disengage Autosteer if a potential conflict is identified."
+          },
+          {
+            "text": "The system shall be developed and validated to meet ISO 26262 functional safety standards, achieving at least ASIL D for the steering‑control functions."
+          },
+          {
+            "text": "The system shall securely log all sensor inputs, driver‑monitoring data, and control commands to non‑volatile storage for post‑incident forensic analysis."
+          },
+          {
+            "text": "The system shall implement robust cybersecurity measures, including authentication of software updates and protection against remote command injection, to prevent unauthorized manipulation of Autopilot functions."
+          }
+        ]
+      },
+      "error": ""
+    }
+  ],
+  "tgrl": "",
+  "tgrl_valid": null,
+  "ok": true
+}

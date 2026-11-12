@@ -1,0 +1,117 @@
+{
+  "condition": "b1",
+  "case": "uber_2018",
+  "model": "gpt-oss-120b",
+  "model_id": "openai/gpt-oss-120b",
+  "run": 5,
+  "temperature": 0.7,
+  "prompt_version": "v1",
+  "started_at": "2026-11-11T15:24:27+00:00",
+  "items": [
+    {
+      "id": "r1",
+      "kind": "requirement",
+      "text": "The system shall continuously monitor the operator’s attentiveness and issue an escalated takeover request if the operator fails to respond within a defined time window.",
+      "context": ""
+    },
+    {
+      "id": "r2",
+      "kind": "requirement",
+      "text": "The system shall maintain a minimum safe stopping distance from all detected objects, dynamically adjusting for vehicle speed, road surface condition, and object classification.",
+      "context": ""
+    },
+    {
+      "id": "r3",
+      "kind": "requirement",
+      "text": "The system shall provide redundant sensor modalities (e.g., multiple lidar, radar, and camera units) with independent processing paths, and shall automatically transition to a safe state if a primary sensor or processing path fails.",
+      "context": ""
+    },
+    {
+      "id": "r4",
+      "kind": "requirement",
+      "text": "The system shall detect and correctly classify vulnerable road users (pedestrians, cyclists, children) at distances sufficient to guarantee a full stop before the point of conflict under all operating speeds.",
+      "context": ""
+    },
+    {
+      "id": "r5",
+      "kind": "requirement",
+      "text": "The system shall execute a controlled, minimum‑impact emergency stop (including safe‑brake activation and steering lock) if a critical fault is detected or if the operator does not take control after a takeover request.",
+      "context": ""
+    },
+    {
+      "id": "r6",
+      "kind": "requirement",
+      "text": "The system shall validate and limit its operational design domain (ODD) in real time, disengaging if environmental conditions (e.g., rain, glare, low‑light, road markings) fall outside validated parameters.",
+      "context": ""
+    },
+    {
+      "id": "r7",
+      "kind": "requirement",
+      "text": "The system shall encrypt all internal and external communications and protect against unauthorized code injection, ensuring cybersecurity integrity of the ADS.",
+      "context": ""
+    },
+    {
+      "id": "r8",
+      "kind": "requirement",
+      "text": "The system shall log, with timestamp and sensor fidelity, all perception, prediction, planning, and control decisions, as well as operator interventions, for post‑incident analysis.",
+      "context": ""
+    },
+    {
+      "id": "r9",
+      "kind": "requirement",
+      "text": "The system shall undergo functional safety verification (e.g., ISO 26262 ASIL D) for all safety‑critical software components, with documented safety goals and validation evidence.",
+      "context": ""
+    },
+    {
+      "id": "r10",
+      "kind": "requirement",
+      "text": "The system shall provide a clear, unambiguous visual and auditory status indication to the operator about ADS mode, health, and any pending takeover request.",
+      "context": ""
+    }
+  ],
+  "stages": [
+    {
+      "stage": "b1",
+      "prompt": "You are a requirements engineer reviewing a safety-critical system.\n\nRead the system description below. List the 10 most important requirements that are missing from it:\nthings the system should do or guarantee for safe operation that the description does not cover.\nGive at most 10, ranked from most to least important.\n\nReply with JSON only, in this shape:\n{\"requirements\": [{\"text\": \"The system shall ...\"}]}\n\nSystem description:\n# Case: Uber ATG automated test vehicle (Tempe, Arizona, 2018)\n\nSource: NTSB Highway Accident Report HAR-19/03. This is a description of the system and its use before the crash. It does not include the investigation findings.\n\n## System\nA modified Volvo XC90 SUV is used by Uber Advanced Technologies Group (ATG) to test an automated driving system (ADS) on public roads. The ADS is designed to drive the vehicle without human input in defined conditions, up to about 45 mph in this test program.\n\n## Main parts\n- Sensors: roof-mounted lidar, radar units and cameras covering the area around the vehicle.\n- Perception: detects objects around the vehicle, classifies each one (for example vehicle, pedestrian, bicycle, other), and tracks it over time.\n- Prediction: estimates where each tracked object will go next, using its class and recent movement.\n- Planning and control: chooses a path and speed, and controls steering, throttle and braking.\n- Vehicle: the Volvo factory driver-assistance features (such as forward collision warning and automatic emergency braking) are part of the base vehicle.\n\n## People\n- One vehicle operator sits in the driver seat. The operator is responsible for watching the road and taking over control when needed. The operator also uses a tablet-style interface to tag events and check system status.\n- Other road users share the road: pedestrians, cyclists and other drivers. They are not aware of the test program.\n\n## Operating context\nPublic multi-lane roads in an urban area, day and night, with posted speed limits, marked crosswalks, intersections and street lighting that varies by location.\n\n",
+      "raw_response": "{\n  \"requirements\": [\n    {\n      \"text\": \"The system shall continuously monitor the operator’s attentiveness and issue an escalated takeover request if the operator fails to respond within a defined time window.\"\n    },\n    {\n      \"text\": \"The system shall maintain a minimum safe stopping distance from all detected objects, dynamically adjusting for vehicle speed, road surface condition, and object classification.\"\n    },\n    {\n      \"text\": \"The system shall provide redundant sensor modalities (e.g., multiple lidar, radar, and camera units) with independent processing paths, and shall automatically transition to a safe state if a primary sensor or processing path fails.\"\n    },\n    {\n      \"text\": \"The system shall detect and correctly classify vulnerable road users (pedestrians, cyclists, children) at distances sufficient to guarantee a full stop before the point of conflict under all operating speeds.\"\n    },\n    {\n      \"text\": \"The system shall execute a controlled, minimum‑impact emergency stop (including safe‑brake activation and steering lock) if a critical fault is detected or if the operator does not take control after a takeover request.\"\n    },\n    {\n      \"text\": \"The system shall validate and limit its operational design domain (ODD) in real time, disengaging if environmental conditions (e.g., rain, glare, low‑light, road markings) fall outside validated parameters.\"\n    },\n    {\n      \"text\": \"The system shall encrypt all internal and external communications and protect against unauthorized code injection, ensuring cybersecurity integrity of the ADS.\"\n    },\n    {\n      \"text\": \"The system shall log, with timestamp and sensor fidelity, all perception, prediction, planning, and control decisions, as well as operator interventions, for post‑incident analysis.\"\n    },\n    {\n      \"text\": \"The system shall undergo functional safety verification (e.g., ISO 26262 ASIL D) for all safety‑critical software components, with documented safety goals and validation evidence.\"\n    },\n    {\n      \"text\": \"The system shall provide a clear, unambiguous visual and auditory status indication to the operator about ADS mode, health, and any pending takeover request.\"\n    }\n  ]\n}",
+      "parsed": {
+        "requirements": [
+          {
+            "text": "The system shall continuously monitor the operator’s attentiveness and issue an escalated takeover request if the operator fails to respond within a defined time window."
+          },
+          {
+            "text": "The system shall maintain a minimum safe stopping distance from all detected objects, dynamically adjusting for vehicle speed, road surface condition, and object classification."
+          },
+          {
+            "text": "The system shall provide redundant sensor modalities (e.g., multiple lidar, radar, and camera units) with independent processing paths, and shall automatically transition to a safe state if a primary sensor or processing path fails."
+          },
+          {
+            "text": "The system shall detect and correctly classify vulnerable road users (pedestrians, cyclists, children) at distances sufficient to guarantee a full stop before the point of conflict under all operating speeds."
+          },
+          {
+            "text": "The system shall execute a controlled, minimum‑impact emergency stop (including safe‑brake activation and steering lock) if a critical fault is detected or if the operator does not take control after a takeover request."
+          },
+          {
+            "text": "The system shall validate and limit its operational design domain (ODD) in real time, disengaging if environmental conditions (e.g., rain, glare, low‑light, road markings) fall outside validated parameters."
+          },
+          {
+            "text": "The system shall encrypt all internal and external communications and protect against unauthorized code injection, ensuring cybersecurity integrity of the ADS."
+          },
+          {
+            "text": "The system shall log, with timestamp and sensor fidelity, all perception, prediction, planning, and control decisions, as well as operator interventions, for post‑incident analysis."
+          },
+          {
+            "text": "The system shall undergo functional safety verification (e.g., ISO 26262 ASIL D) for all safety‑critical software components, with documented safety goals and validation evidence."
+          },
+          {
+            "text": "The system shall provide a clear, unambiguous visual and auditory status indication to the operator about ADS mode, health, and any pending takeover request."
+          }
+        ]
+      },
+      "error": ""
+    }
+  ],
+  "tgrl": "",
+  "tgrl_valid": null,
+  "ok": true
+}

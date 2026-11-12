@@ -1,0 +1,138 @@
+{
+  "condition": "b2",
+  "case": "mountainview_2018",
+  "model": "gpt-oss-120b",
+  "model_id": "openai/gpt-oss-120b",
+  "run": 5,
+  "temperature": 0.7,
+  "prompt_version": "v1",
+  "started_at": "2026-11-11T15:28:59+00:00",
+  "items": [
+    {
+      "id": "g1",
+      "kind": "goal",
+      "text": "Driver: DrivingSafety",
+      "context": ""
+    },
+    {
+      "id": "g2",
+      "kind": "goal",
+      "text": "Driver: MonitorRoad",
+      "context": ""
+    },
+    {
+      "id": "g3",
+      "kind": "goal",
+      "text": "VehicleSystem: AccurateSensing",
+      "context": ""
+    },
+    {
+      "id": "g4",
+      "kind": "goal",
+      "text": "VehicleSystem: ReliableAutosteer",
+      "context": ""
+    },
+    {
+      "id": "g5",
+      "kind": "goal",
+      "text": "Driver: KeepHandsOnWheel",
+      "context": ""
+    },
+    {
+      "id": "g6",
+      "kind": "goal",
+      "text": "OtherRoadUsers: SafeCoexistence",
+      "context": ""
+    },
+    {
+      "id": "g7",
+      "kind": "goal",
+      "text": "RoadAgency: MaintainRoadMarkings",
+      "context": ""
+    },
+    {
+      "id": "g8",
+      "kind": "goal",
+      "text": "Driver: TrustInSystem",
+      "context": ""
+    },
+    {
+      "id": "g9",
+      "kind": "goal",
+      "text": "Driver: Comfort",
+      "context": ""
+    },
+    {
+      "id": "g10",
+      "kind": "goal",
+      "text": "VehicleSystem: MaintainLanePosition",
+      "context": ""
+    }
+  ],
+  "stages": [
+    {
+      "stage": "s1_extract",
+      "prompt": "You are a requirements engineer building a goal model in GRL (Goal-oriented Requirement Language).\n\nRead the system description below and build a GRL model in textual GRL (TGRL).\nInclude every actor, including humans affected by the system (for example operators and pedestrians).\n\nTGRL syntax example:\ngrl Example { actor Driver { goal ReachDestination; softGoal Comfort; } }\n\nReply with JSON only, in this shape:\n{\"tgrl\": \"grl ... { ... }\",\n \"goals\": [{\"id\": \"g1\", \"actor\": \"...\", \"text\": \"...\"}]}\n\nList the 10 most important goals in \"goals\", ranked from most to least important, including goals of human actors.\n\nSystem description:\n# Case: Tesla Model X with Autopilot (Mountain View, California, 2018)\n\nSource: NTSB Highway Accident Report HAR-20/01. This is a description of the system and its use before the crash. It does not include the investigation findings.\n\n## System\nA 2017 Tesla Model X has Autopilot, a SAE Level 2 partial driving automation feature. It combines Traffic-Aware Cruise Control (TACC) and Autosteer (lane keeping). The driver stays responsible for driving and monitoring the road.\n\n## Main parts\n- Sensors: a forward-facing camera, a forward-facing radar and ultrasonic sensors.\n- Vision processing: a camera-based system detects lane markings, vehicles and some objects ahead.\n- TACC: holds a speed set by the driver, follows a vehicle ahead at a chosen gap, and returns to the set speed when no vehicle is ahead.\n- Autosteer: keeps the vehicle in its lane using lane markings and the path of the vehicle ahead.\n- Forward collision warning and automatic emergency braking are available as separate features.\n- Driver monitoring: steering torque is used to check that the driver's hands are on the wheel, with visual and audible alerts if no hands are detected for a period of time.\n\n## People\n- The driver sets the cruising speed, turns Autopilot on, and is told to keep hands on the wheel and watch the road.\n- Other road users and road workers share the highway. Road agencies maintain road markings and safety hardware such as barriers and crash attenuators.\n\n## Operating context\nBusy multi-lane freeway with high-occupancy-vehicle (HOV) lanes, exits and interchanges, lane markings of different quality, and traffic that changes in speed.\n\n",
+      "raw_response": "{\n  \"tgrl\": \"grl TeslaModelX_Autopilot {\\n    actor Driver {\\n        goal SetCruisingSpeed;\\n        goal ActivateAutopilot;\\n        goal MonitorRoad;\\n        goal KeepHandsOnWheel;\\n        softGoal DrivingSafety;\\n        softGoal Comfort;\\n        softGoal TrustInSystem;\\n    }\\n    actor OtherRoadUsers {\\n        goal SafeCoexistence;\\n    }\\n    actor RoadAgency {\\n        goal MaintainRoadMarkings;\\n        goal ProvideSafetyInfrastructure;\\n    }\\n    actor VehicleSystem {\\n        goal DetectLaneMarkings;\\n        goal DetectLeadVehicle;\\n        goal ControlSpeed;\\n        goal MaintainLanePosition;\\n        softGoal AccurateSensing;\\n        softGoal ReliableAutosteer;\\n    }\\n    actor Sensors {\\n        goal CaptureForwardImage;\\n        goal EmitRadarSignal;\\n        goal MeasureProximity;\\n    }\\n    actor VisionProcessing {\\n        goal IdentifyLaneLines;\\n        goal IdentifyObstacles;\\n    }\\n    actor TACC {\\n        goal FollowLeadVehicle;\\n        goal ReturnToSetSpeed;\\n    }\\n    actor Autosteer {\\n        goal KeepVehicleInLane;\\n    }\\n    actor DriverMonitoring {\\n        goal DetectHandsOnWheel;\\n        goal IssueAlertIfNoHands;\\n    }\\n    actor ForwardCollisionWarning {\\n        goal WarnImminentCollision;\\n    }\\n    actor AutomaticEmergencyBraking {\\n        goal ApplyBrakesToAvoidCollision;\\n    }\\n}\",\n  \"goals\": [\n    {\"id\": \"g1\", \"actor\": \"Driver\", \"text\": \"DrivingSafety\"},\n    {\"id\": \"g2\", \"actor\": \"Driver\", \"text\": \"MonitorRoad\"},\n    {\"id\": \"g3\", \"actor\": \"VehicleSystem\", \"text\": \"AccurateSensing\"},\n    {\"id\": \"g4\", \"actor\": \"VehicleSystem\", \"text\": \"ReliableAutosteer\"},\n    {\"id\": \"g5\", \"actor\": \"Driver\", \"text\": \"KeepHandsOnWheel\"},\n    {\"id\": \"g6\", \"actor\": \"OtherRoadUsers\", \"text\": \"SafeCoexistence\"},\n    {\"id\": \"g7\", \"actor\": \"RoadAgency\", \"text\": \"MaintainRoadMarkings\"},\n    {\"id\": \"g8\", \"actor\": \"Driver\", \"text\": \"TrustInSystem\"},\n    {\"id\": \"g9\", \"actor\": \"Driver\", \"text\": \"Comfort\"},\n    {\"id\": \"g10\", \"actor\": \"VehicleSystem\", \"text\": \"MaintainLanePosition\"}\n  ]\n}",
+      "parsed": {
+        "tgrl": "grl TeslaModelX_Autopilot {\n    actor Driver {\n        goal SetCruisingSpeed;\n        goal ActivateAutopilot;\n        goal MonitorRoad;\n        goal KeepHandsOnWheel;\n        softGoal DrivingSafety;\n        softGoal Comfort;\n        softGoal TrustInSystem;\n    }\n    actor OtherRoadUsers {\n        goal SafeCoexistence;\n    }\n    actor RoadAgency {\n        goal MaintainRoadMarkings;\n        goal ProvideSafetyInfrastructure;\n    }\n    actor VehicleSystem {\n        goal DetectLaneMarkings;\n        goal DetectLeadVehicle;\n        goal ControlSpeed;\n        goal MaintainLanePosition;\n        softGoal AccurateSensing;\n        softGoal ReliableAutosteer;\n    }\n    actor Sensors {\n        goal CaptureForwardImage;\n        goal EmitRadarSignal;\n        goal MeasureProximity;\n    }\n    actor VisionProcessing {\n        goal IdentifyLaneLines;\n        goal IdentifyObstacles;\n    }\n    actor TACC {\n        goal FollowLeadVehicle;\n        goal ReturnToSetSpeed;\n    }\n    actor Autosteer {\n        goal KeepVehicleInLane;\n    }\n    actor DriverMonitoring {\n        goal DetectHandsOnWheel;\n        goal IssueAlertIfNoHands;\n    }\n    actor ForwardCollisionWarning {\n        goal WarnImminentCollision;\n    }\n    actor AutomaticEmergencyBraking {\n        goal ApplyBrakesToAvoidCollision;\n    }\n}",
+        "goals": [
+          {
+            "id": "g1",
+            "actor": "Driver",
+            "text": "DrivingSafety"
+          },
+          {
+            "id": "g2",
+            "actor": "Driver",
+            "text": "MonitorRoad"
+          },
+          {
+            "id": "g3",
+            "actor": "VehicleSystem",
+            "text": "AccurateSensing"
+          },
+          {
+            "id": "g4",
+            "actor": "VehicleSystem",
+            "text": "ReliableAutosteer"
+          },
+          {
+            "id": "g5",
+            "actor": "Driver",
+            "text": "KeepHandsOnWheel"
+          },
+          {
+            "id": "g6",
+            "actor": "OtherRoadUsers",
+            "text": "SafeCoexistence"
+          },
+          {
+            "id": "g7",
+            "actor": "RoadAgency",
+            "text": "MaintainRoadMarkings"
+          },
+          {
+            "id": "g8",
+            "actor": "Driver",
+            "text": "TrustInSystem"
+          },
+          {
+            "id": "g9",
+            "actor": "Driver",
+            "text": "Comfort"
+          },
+          {
+            "id": "g10",
+            "actor": "VehicleSystem",
+            "text": "MaintainLanePosition"
+          }
+        ]
+      },
+      "error": ""
+    }
+  ],
+  "tgrl": "grl TeslaModelX_Autopilot {\n    actor Driver {\n        goal SetCruisingSpeed;\n        goal ActivateAutopilot;\n        goal MonitorRoad;\n        goal KeepHandsOnWheel;\n        softGoal DrivingSafety;\n        softGoal Comfort;\n        softGoal TrustInSystem;\n    }\n    actor OtherRoadUsers {\n        goal SafeCoexistence;\n    }\n    actor RoadAgency {\n        goal MaintainRoadMarkings;\n        goal ProvideSafetyInfrastructure;\n    }\n    actor VehicleSystem {\n        goal DetectLaneMarkings;\n        goal DetectLeadVehicle;\n        goal ControlSpeed;\n        goal MaintainLanePosition;\n        softGoal AccurateSensing;\n        softGoal ReliableAutosteer;\n    }\n    actor Sensors {\n        goal CaptureForwardImage;\n        goal EmitRadarSignal;\n        goal MeasureProximity;\n    }\n    actor VisionProcessing {\n        goal IdentifyLaneLines;\n        goal IdentifyObstacles;\n    }\n    actor TACC {\n        goal FollowLeadVehicle;\n        goal ReturnToSetSpeed;\n    }\n    actor Autosteer {\n        goal KeepVehicleInLane;\n    }\n    actor DriverMonitoring {\n        goal DetectHandsOnWheel;\n        goal IssueAlertIfNoHands;\n    }\n    actor ForwardCollisionWarning {\n        goal WarnImminentCollision;\n    }\n    actor AutomaticEmergencyBraking {\n        goal ApplyBrakesToAvoidCollision;\n    }\n}",
+  "tgrl_valid": true,
+  "ok": true
+}

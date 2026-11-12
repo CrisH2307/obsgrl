@@ -1,0 +1,117 @@
+{
+  "condition": "b1",
+  "case": "uber_2018",
+  "model": "gpt-6-luna",
+  "model_id": "openai/gpt-6-luna",
+  "run": 2,
+  "temperature": null,
+  "prompt_version": "v1",
+  "started_at": "2026-11-11T15:39:09+00:00",
+  "items": [
+    {
+      "id": "r1",
+      "kind": "requirement",
+      "text": "The ADS shall maintain a collision-avoiding trajectory for all detected road users, including pedestrians and cyclists, and shall reduce speed or stop to minimize harm when a collision cannot be avoided.",
+      "context": ""
+    },
+    {
+      "id": "r2",
+      "kind": "requirement",
+      "text": "The ADS shall operate only within a defined and validated operational design domain, and shall detect when road, weather, visibility, lighting, localization, or other conditions fall outside it.",
+      "context": ""
+    },
+    {
+      "id": "r3",
+      "kind": "requirement",
+      "text": "When the ADS detects a fault, loss of required capability, or operation outside its design domain, it shall transition to a safe fallback, such as reaching a minimal-risk stop, without depending on an immediate human takeover.",
+      "context": ""
+    },
+    {
+      "id": "r4",
+      "kind": "requirement",
+      "text": "The perception system shall detect, track, and represent uncertainty for road users, including partially occluded or atypically moving pedestrians and cyclists, and shall not treat missing or uncertain detections as evidence that the path is clear.",
+      "context": ""
+    },
+    {
+      "id": "r5",
+      "kind": "requirement",
+      "text": "The ADS shall adapt speed to visibility, road conditions, hazards, and available stopping distance; posted speed limits shall be treated as maximums, not necessarily safe target speeds.",
+      "context": ""
+    },
+    {
+      "id": "r6",
+      "kind": "requirement",
+      "text": "The ADS shall provide the operator with clear, timely takeover warnings and shall confirm that the operator is attentive and able to take control; if takeover is not confirmed in time, the ADS shall perform its safe fallback.",
+      "context": ""
+    },
+    {
+      "id": "r7",
+      "kind": "requirement",
+      "text": "The ADS shall monitor sensor, computing, communication, localization, and vehicle-control health, detect failures or degraded performance, and prevent continued operation when required safety capability is unavailable.",
+      "context": ""
+    },
+    {
+      "id": "r8",
+      "kind": "requirement",
+      "text": "The ADS shall obey applicable traffic controls and yield appropriately at crosswalks, intersections, and other conflict points, including when another road user's intent is uncertain.",
+      "context": ""
+    },
+    {
+      "id": "r9",
+      "kind": "requirement",
+      "text": "The ADS shall verify that steering, braking, and throttle commands are executed as intended, and shall have a tested means to brake safely if normal control or braking functions fail.",
+      "context": ""
+    },
+    {
+      "id": "r10",
+      "kind": "requirement",
+      "text": "The ADS shall be safety-validated across representative operating conditions and foreseeable hazards, including night operation, occlusion, unusual road-user behavior, and system faults, before use on public roads.",
+      "context": ""
+    }
+  ],
+  "stages": [
+    {
+      "stage": "b1",
+      "prompt": "You are a requirements engineer reviewing a safety-critical system.\n\nRead the system description below. List the 10 most important requirements that are missing from it:\nthings the system should do or guarantee for safe operation that the description does not cover.\nGive at most 10, ranked from most to least important.\n\nReply with JSON only, in this shape:\n{\"requirements\": [{\"text\": \"The system shall ...\"}]}\n\nSystem description:\n# Case: Uber ATG automated test vehicle (Tempe, Arizona, 2018)\n\nSource: NTSB Highway Accident Report HAR-19/03. This is a description of the system and its use before the crash. It does not include the investigation findings.\n\n## System\nA modified Volvo XC90 SUV is used by Uber Advanced Technologies Group (ATG) to test an automated driving system (ADS) on public roads. The ADS is designed to drive the vehicle without human input in defined conditions, up to about 45 mph in this test program.\n\n## Main parts\n- Sensors: roof-mounted lidar, radar units and cameras covering the area around the vehicle.\n- Perception: detects objects around the vehicle, classifies each one (for example vehicle, pedestrian, bicycle, other), and tracks it over time.\n- Prediction: estimates where each tracked object will go next, using its class and recent movement.\n- Planning and control: chooses a path and speed, and controls steering, throttle and braking.\n- Vehicle: the Volvo factory driver-assistance features (such as forward collision warning and automatic emergency braking) are part of the base vehicle.\n\n## People\n- One vehicle operator sits in the driver seat. The operator is responsible for watching the road and taking over control when needed. The operator also uses a tablet-style interface to tag events and check system status.\n- Other road users share the road: pedestrians, cyclists and other drivers. They are not aware of the test program.\n\n## Operating context\nPublic multi-lane roads in an urban area, day and night, with posted speed limits, marked crosswalks, intersections and street lighting that varies by location.\n\n",
+      "raw_response": "{\"requirements\":[{\"text\":\"The ADS shall maintain a collision-avoiding trajectory for all detected road users, including pedestrians and cyclists, and shall reduce speed or stop to minimize harm when a collision cannot be avoided.\"},{\"text\":\"The ADS shall operate only within a defined and validated operational design domain, and shall detect when road, weather, visibility, lighting, localization, or other conditions fall outside it.\"},{\"text\":\"When the ADS detects a fault, loss of required capability, or operation outside its design domain, it shall transition to a safe fallback, such as reaching a minimal-risk stop, without depending on an immediate human takeover.\"},{\"text\":\"The perception system shall detect, track, and represent uncertainty for road users, including partially occluded or atypically moving pedestrians and cyclists, and shall not treat missing or uncertain detections as evidence that the path is clear.\"},{\"text\":\"The ADS shall adapt speed to visibility, road conditions, hazards, and available stopping distance; posted speed limits shall be treated as maximums, not necessarily safe target speeds.\"},{\"text\":\"The ADS shall provide the operator with clear, timely takeover warnings and shall confirm that the operator is attentive and able to take control; if takeover is not confirmed in time, the ADS shall perform its safe fallback.\"},{\"text\":\"The ADS shall monitor sensor, computing, communication, localization, and vehicle-control health, detect failures or degraded performance, and prevent continued operation when required safety capability is unavailable.\"},{\"text\":\"The ADS shall obey applicable traffic controls and yield appropriately at crosswalks, intersections, and other conflict points, including when another road user's intent is uncertain.\"},{\"text\":\"The ADS shall verify that steering, braking, and throttle commands are executed as intended, and shall have a tested means to brake safely if normal control or braking functions fail.\"},{\"text\":\"The ADS shall be safety-validated across representative operating conditions and foreseeable hazards, including night operation, occlusion, unusual road-user behavior, and system faults, before use on public roads.\"}]}",
+      "parsed": {
+        "requirements": [
+          {
+            "text": "The ADS shall maintain a collision-avoiding trajectory for all detected road users, including pedestrians and cyclists, and shall reduce speed or stop to minimize harm when a collision cannot be avoided."
+          },
+          {
+            "text": "The ADS shall operate only within a defined and validated operational design domain, and shall detect when road, weather, visibility, lighting, localization, or other conditions fall outside it."
+          },
+          {
+            "text": "When the ADS detects a fault, loss of required capability, or operation outside its design domain, it shall transition to a safe fallback, such as reaching a minimal-risk stop, without depending on an immediate human takeover."
+          },
+          {
+            "text": "The perception system shall detect, track, and represent uncertainty for road users, including partially occluded or atypically moving pedestrians and cyclists, and shall not treat missing or uncertain detections as evidence that the path is clear."
+          },
+          {
+            "text": "The ADS shall adapt speed to visibility, road conditions, hazards, and available stopping distance; posted speed limits shall be treated as maximums, not necessarily safe target speeds."
+          },
+          {
+            "text": "The ADS shall provide the operator with clear, timely takeover warnings and shall confirm that the operator is attentive and able to take control; if takeover is not confirmed in time, the ADS shall perform its safe fallback."
+          },
+          {
+            "text": "The ADS shall monitor sensor, computing, communication, localization, and vehicle-control health, detect failures or degraded performance, and prevent continued operation when required safety capability is unavailable."
+          },
+          {
+            "text": "The ADS shall obey applicable traffic controls and yield appropriately at crosswalks, intersections, and other conflict points, including when another road user's intent is uncertain."
+          },
+          {
+            "text": "The ADS shall verify that steering, braking, and throttle commands are executed as intended, and shall have a tested means to brake safely if normal control or braking functions fail."
+          },
+          {
+            "text": "The ADS shall be safety-validated across representative operating conditions and foreseeable hazards, including night operation, occlusion, unusual road-user behavior, and system faults, before use on public roads."
+          }
+        ]
+      },
+      "error": ""
+    }
+  ],
+  "tgrl": "",
+  "tgrl_valid": null,
+  "ok": true
+}

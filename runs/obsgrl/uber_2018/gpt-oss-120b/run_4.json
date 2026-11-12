@@ -1,0 +1,283 @@
+{
+  "condition": "obsgrl",
+  "case": "uber_2018",
+  "model": "gpt-oss-120b",
+  "model_id": "openai/gpt-oss-120b",
+  "run": 4,
+  "temperature": 0.7,
+  "prompt_version": "v1",
+  "started_at": "2026-11-11T15:31:05+00:00",
+  "items": [
+    {
+      "id": "r1",
+      "kind": "requirement",
+      "text": "The ADS shall detect pedestrians using at least two independent sensor modalities (e.g., lidar, radar, camera) and shall generate a pedestrian detection alert if any modality reports a pedestrian within the vehicle's path, even when another modality provides no return.",
+      "context": "Obstacle: The lidar fails to return a return for the pedestrian because the pedestrian’s reflective clothing absorbs the laser, so the ADS does not detect the pedestrian at all. | Premise: All road users will be detected by at least one sensor under all lighting conditions."
+    },
+    {
+      "id": "r2",
+      "kind": "requirement",
+      "text": "The perception module shall assign a confidence score to each object classification and shall treat any object with a confidence lower than 0.9 for a non‑pedestrian class as a potential pedestrian in collision‑avoidance calculations.",
+      "context": "Obstacle: The perception module mistakenly classifies a pedestrian as a static object (e.g., a pole) and therefore does not consider it in the collision avoidance logic. | Premise: Object classification is always correct for safety‑critical objects."
+    },
+    {
+      "id": "r3",
+      "kind": "requirement",
+      "text": "The tracking subsystem shall maintain continuity of a pedestrian track for up to 2 seconds of sensor occlusion using predictive filtering and re‑association, and shall not drop the track if the pedestrian re‑appears within the predicted region.",
+      "context": "Obstacle: The tracking algorithm drops the pedestrian’s track shortly before the crossing because of a brief occlusion, so the ADS loses the object just as it enters the vehicle’s path. | Premise: Tracked objects remain tracked continuously through brief occlusions."
+    },
+    {
+      "id": "r4",
+      "kind": "requirement",
+      "text": "The trajectory prediction component shall update its motion‑model parameters at least every 5 seconds with the most recent 10 seconds of observed behavior for each road‑user class and shall use the refreshed model for all subsequent predictions.",
+      "context": "Obstacle: The trajectory predictor uses outdated motion model parameters, predicting the pedestrian will continue straight while the pedestrian actually intends to cross the street. | Premise: Prediction models are always up‑to‑date with current behavior patterns of road users."
+    },
+    {
+      "id": "r5",
+      "kind": "requirement",
+      "text": "The operator‑monitoring system shall detect when the operator’s gaze is away from the forward roadway for more than 2 seconds and shall issue an audible and visual takeover alert if a safety‑critical event (e.g., a pedestrian entering a crosswalk) is detected during that period.",
+      "context": "Obstacle: The operator looks away from the road to tag a previous event and fails to notice the pedestrian entering the crosswalk, thus does not take over control. | Premise: The operator will keep visual attention on the road unless a takeover is already in progress."
+    },
+    {
+      "id": "r6",
+      "kind": "requirement",
+      "text": "The vehicle status interface shall display the current ADS operational mode (Normal, Degraded, or Manual) within 0.5 seconds of any mode transition and shall provide a distinct audible alert whenever the system enters a degraded mode.",
+      "context": "Obstacle: The vehicle’s status display does not show that the ADS has entered a degraded mode, so the operator assumes full automation is active and does not monitor closely. | Premise: The operator always receives accurate and timely information about the ADS operational mode."
+    },
+    {
+      "id": "r7",
+      "kind": "requirement",
+      "text": "The control arbitration layer shall enforce mutual exclusivity of longitudinal commands such that a braking request always supersedes any concurrent throttle command, rejecting conflicting commands within 10 ms of detection.",
+      "context": "Obstacle: The control module applies a throttle increase while the ADS is still processing a braking request, causing the vehicle to accelerate instead of decelerate. | Premise: Control commands are mutually exclusive and correctly prioritized."
+    },
+    {
+      "id": "r8",
+      "kind": "requirement",
+      "text": "Before each test drive, the system shall perform a self‑check that verifies all factory driver‑assistance features, including automatic emergency braking, are enabled and functional; the test shall be aborted if any required feature is not active.",
+      "context": "Obstacle: The factory automatic emergency braking system is disabled due to a software configuration error, removing a safety backup layer. | Premise: Factory driver‑assistance features are always enabled and functional during testing."
+    },
+    {
+      "id": "r9",
+      "kind": "requirement",
+      "text": "The planning and perception modules shall treat any crosswalk area as a potential collision zone and shall be prepared to stop for an unexpected pedestrian intrusion, maintaining a minimum safety buffer of 2 m from the curb when a pedestrian is detected within 5 m of the crosswalk, regardless of traffic‑signal compliance.",
+      "context": "Obstacle: The pedestrian deliberately steps into the crosswalk against the traffic signal, assuming the ADS will stop for any pedestrian. | Premise: Pedestrians will obey traffic signals and not enter the roadway unexpectedly."
+    },
+    {
+      "id": "r10",
+      "kind": "requirement",
+      "text": "The motion planner shall not issue acceleration commands until the perception system has confirmed that the planned path ahead for at least 10 m is free of pedestrians, cyclists, or other dynamic obstacles, and shall wait for a positive clearance signal before increasing speed.",
+      "context": "Obstacle: The planner decides to accelerate before the ADS has confirmed that the crossing area is clear, reducing the reaction time for a sudden pedestrian appearance. | Premise: Path and speed planning only proceeds after all relevant perception data are confirmed."
+    }
+  ],
+  "stages": [
+    {
+      "stage": "s1_extract",
+      "prompt": "You are a requirements engineer building a goal model in GRL (Goal-oriented Requirement Language).\n\nRead the system description below and build a GRL model in textual GRL (TGRL).\nInclude every actor, including humans affected by the system (for example operators and pedestrians).\n\nTGRL syntax example:\ngrl Example { actor Driver { goal ReachDestination; softGoal Comfort; } }\n\nReply with JSON only, in this shape:\n{\"tgrl\": \"grl ... { ... }\",\n \"goals\": [{\"id\": \"g1\", \"actor\": \"...\", \"text\": \"...\"}]}\n\nList every goal in \"goals\", including goals of human actors.\n\nSystem description:\n# Case: Uber ATG automated test vehicle (Tempe, Arizona, 2018)\n\nSource: NTSB Highway Accident Report HAR-19/03. This is a description of the system and its use before the crash. It does not include the investigation findings.\n\n## System\nA modified Volvo XC90 SUV is used by Uber Advanced Technologies Group (ATG) to test an automated driving system (ADS) on public roads. The ADS is designed to drive the vehicle without human input in defined conditions, up to about 45 mph in this test program.\n\n## Main parts\n- Sensors: roof-mounted lidar, radar units and cameras covering the area around the vehicle.\n- Perception: detects objects around the vehicle, classifies each one (for example vehicle, pedestrian, bicycle, other), and tracks it over time.\n- Prediction: estimates where each tracked object will go next, using its class and recent movement.\n- Planning and control: chooses a path and speed, and controls steering, throttle and braking.\n- Vehicle: the Volvo factory driver-assistance features (such as forward collision warning and automatic emergency braking) are part of the base vehicle.\n\n## People\n- One vehicle operator sits in the driver seat. The operator is responsible for watching the road and taking over control when needed. The operator also uses a tablet-style interface to tag events and check system status.\n- Other road users share the road: pedestrians, cyclists and other drivers. They are not aware of the test program.\n\n## Operating context\nPublic multi-lane roads in an urban area, day and night, with posted speed limits, marked crosswalks, intersections and street lighting that varies by location.\n\n",
+      "raw_response": "{\n  \"tgrl\": \"grl UberATG {\\n  actor Operator {\\n    goal MonitorRoad;\\n    goal TakeOverControlWhenNeeded;\\n    goal TagEventsAndCheckStatus;\\n    softGoal OperatorSafety;\\n    softGoal OperatorWorkload;\\n  }\\n  actor Pedestrian {\\n    goal ReachDestinationSafely;\\n    softGoal PersonalSafety;\\n  }\\n  actor Cyclist {\\n    goal ReachDestinationSafely;\\n    softGoal PersonalSafety;\\n  }\\n  actor OtherDriver {\\n    goal ReachDestinationSafely;\\n    softGoal PersonalSafety;\\n  }\\n  actor ADS {\\n    goal DetectObjects;\\n    goal ClassifyObjects;\\n    goal TrackObjects;\\n    goal PredictTrajectories;\\n    goal PlanPathAndSpeed;\\n    goal ControlVehicle;\\n    softGoal SystemReliability;\\n    softGoal ComplianceWithSpeedLimits;\\n    softGoal SafeInteractionWithRoadUsers;\\n  }\\n  actor Vehicle {\\n    goal ProvideFactoryDriverAssistanceFeatures;\\n    softGoal VehicleIntegrity;\\n  }\\n}\",\n  \"goals\": [\n    {\"id\": \"g1\", \"actor\": \"Operator\", \"text\": \"MonitorRoad\"},\n    {\"id\": \"g2\", \"actor\": \"Operator\", \"text\": \"TakeOverControlWhenNeeded\"},\n    {\"id\": \"g3\", \"actor\": \"Operator\", \"text\": \"TagEventsAndCheckStatus\"},\n    {\"id\": \"g4\", \"actor\": \"Pedestrian\", \"text\": \"ReachDestinationSafely\"},\n    {\"id\": \"g5\", \"actor\": \"Cyclist\", \"text\": \"ReachDestinationSafely\"},\n    {\"id\": \"g6\", \"actor\": \"OtherDriver\", \"text\": \"ReachDestinationSafely\"},\n    {\"id\": \"g7\", \"actor\": \"ADS\", \"text\": \"DetectObjects\"},\n    {\"id\": \"g8\", \"actor\": \"ADS\", \"text\": \"ClassifyObjects\"},\n    {\"id\": \"g9\", \"actor\": \"ADS\", \"text\": \"TrackObjects\"},\n    {\"id\": \"g10\", \"actor\": \"ADS\", \"text\": \"PredictTrajectories\"},\n    {\"id\": \"g11\", \"actor\": \"ADS\", \"text\": \"PlanPathAndSpeed\"},\n    {\"id\": \"g12\", \"actor\": \"ADS\", \"text\": \"ControlVehicle\"},\n    {\"id\": \"g13\", \"actor\": \"Vehicle\", \"text\": \"ProvideFactoryDriverAssistanceFeatures\"}\n  ]\n}",
+      "parsed": {
+        "tgrl": "grl UberATG {\n  actor Operator {\n    goal MonitorRoad;\n    goal TakeOverControlWhenNeeded;\n    goal TagEventsAndCheckStatus;\n    softGoal OperatorSafety;\n    softGoal OperatorWorkload;\n  }\n  actor Pedestrian {\n    goal ReachDestinationSafely;\n    softGoal PersonalSafety;\n  }\n  actor Cyclist {\n    goal ReachDestinationSafely;\n    softGoal PersonalSafety;\n  }\n  actor OtherDriver {\n    goal ReachDestinationSafely;\n    softGoal PersonalSafety;\n  }\n  actor ADS {\n    goal DetectObjects;\n    goal ClassifyObjects;\n    goal TrackObjects;\n    goal PredictTrajectories;\n    goal PlanPathAndSpeed;\n    goal ControlVehicle;\n    softGoal SystemReliability;\n    softGoal ComplianceWithSpeedLimits;\n    softGoal SafeInteractionWithRoadUsers;\n  }\n  actor Vehicle {\n    goal ProvideFactoryDriverAssistanceFeatures;\n    softGoal VehicleIntegrity;\n  }\n}",
+        "goals": [
+          {
+            "id": "g1",
+            "actor": "Operator",
+            "text": "MonitorRoad"
+          },
+          {
+            "id": "g2",
+            "actor": "Operator",
+            "text": "TakeOverControlWhenNeeded"
+          },
+          {
+            "id": "g3",
+            "actor": "Operator",
+            "text": "TagEventsAndCheckStatus"
+          },
+          {
+            "id": "g4",
+            "actor": "Pedestrian",
+            "text": "ReachDestinationSafely"
+          },
+          {
+            "id": "g5",
+            "actor": "Cyclist",
+            "text": "ReachDestinationSafely"
+          },
+          {
+            "id": "g6",
+            "actor": "OtherDriver",
+            "text": "ReachDestinationSafely"
+          },
+          {
+            "id": "g7",
+            "actor": "ADS",
+            "text": "DetectObjects"
+          },
+          {
+            "id": "g8",
+            "actor": "ADS",
+            "text": "ClassifyObjects"
+          },
+          {
+            "id": "g9",
+            "actor": "ADS",
+            "text": "TrackObjects"
+          },
+          {
+            "id": "g10",
+            "actor": "ADS",
+            "text": "PredictTrajectories"
+          },
+          {
+            "id": "g11",
+            "actor": "ADS",
+            "text": "PlanPathAndSpeed"
+          },
+          {
+            "id": "g12",
+            "actor": "ADS",
+            "text": "ControlVehicle"
+          },
+          {
+            "id": "g13",
+            "actor": "Vehicle",
+            "text": "ProvideFactoryDriverAssistanceFeatures"
+          }
+        ]
+      },
+      "error": ""
+    },
+    {
+      "stage": "s2_obstacles",
+      "prompt": "You are a safety analyst doing obstacle analysis on a goal model.\n\nAn obstacle is a condition that prevents a goal from being satisfied.\nFor EACH goal below, propose obstacles. Use these guide words to search:\n- omission: the system or an actor does not do something it should\n- commission: it does something it should not\n- too early / too late: it acts at the wrong time\n\nAlso check these obstacle types:\n- non-information: an actor never gets information it needs\n- wrong belief: an actor assumes something about the world that can be false\n- inaccuracy: information is imprecise, unstable or out of date\n- unavailability: a needed agent or resource is missing or switched off\n\nDo not only think about sensor or hardware faults. Also think about what people and other road users\nactually do (for example a pedestrian in an unexpected place, an operator who looks away or relies too\nmuch on the system), how the system classifies and tracks objects, and what it does with uncertain\ndetections (for example ignoring or suppressing them).\n\nFor every obstacle, name the hidden premise it violates: the assumption that someone\nthought was too obvious to write down.\n\nReturn at most 10 obstacles in total, ranked from most to least important for safety.\n\nReply with JSON only, in this shape:\n{\"obstacles\": [{\"id\": \"o1\", \"goal_id\": \"g1\", \"guide_word\": \"omission\",\n                \"text\": \"...\", \"violated_premise\": \"...\"}]}\n\nSystem description:\n# Case: Uber ATG automated test vehicle (Tempe, Arizona, 2018)\n\nSource: NTSB Highway Accident Report HAR-19/03. This is a description of the system and its use before the crash. It does not include the investigation findings.\n\n## System\nA modified Volvo XC90 SUV is used by Uber Advanced Technologies Group (ATG) to test an automated driving system (ADS) on public roads. The ADS is designed to drive the vehicle without human input in defined conditions, up to about 45 mph in this test program.\n\n## Main parts\n- Sensors: roof-mounted lidar, radar units and cameras covering the area around the vehicle.\n- Perception: detects objects around the vehicle, classifies each one (for example vehicle, pedestrian, bicycle, other), and tracks it over time.\n- Prediction: estimates where each tracked object will go next, using its class and recent movement.\n- Planning and control: chooses a path and speed, and controls steering, throttle and braking.\n- Vehicle: the Volvo factory driver-assistance features (such as forward collision warning and automatic emergency braking) are part of the base vehicle.\n\n## People\n- One vehicle operator sits in the driver seat. The operator is responsible for watching the road and taking over control when needed. The operator also uses a tablet-style interface to tag events and check system status.\n- Other road users share the road: pedestrians, cyclists and other drivers. They are not aware of the test program.\n\n## Operating context\nPublic multi-lane roads in an urban area, day and night, with posted speed limits, marked crosswalks, intersections and street lighting that varies by location.\n\n\nGoals:\n[\n  {\n    \"id\": \"g1\",\n    \"actor\": \"Operator\",\n    \"text\": \"MonitorRoad\"\n  },\n  {\n    \"id\": \"g2\",\n    \"actor\": \"Operator\",\n    \"text\": \"TakeOverControlWhenNeeded\"\n  },\n  {\n    \"id\": \"g3\",\n    \"actor\": \"Operator\",\n    \"text\": \"TagEventsAndCheckStatus\"\n  },\n  {\n    \"id\": \"g4\",\n    \"actor\": \"Pedestrian\",\n    \"text\": \"ReachDestinationSafely\"\n  },\n  {\n    \"id\": \"g5\",\n    \"actor\": \"Cyclist\",\n    \"text\": \"ReachDestinationSafely\"\n  },\n  {\n    \"id\": \"g6\",\n    \"actor\": \"OtherDriver\",\n    \"text\": \"ReachDestinationSafely\"\n  },\n  {\n    \"id\": \"g7\",\n    \"actor\": \"ADS\",\n    \"text\": \"DetectObjects\"\n  },\n  {\n    \"id\": \"g8\",\n    \"actor\": \"ADS\",\n    \"text\": \"ClassifyObjects\"\n  },\n  {\n    \"id\": \"g9\",\n    \"actor\": \"ADS\",\n    \"text\": \"TrackObjects\"\n  },\n  {\n    \"id\": \"g10\",\n    \"actor\": \"ADS\",\n    \"text\": \"PredictTrajectories\"\n  },\n  {\n    \"id\": \"g11\",\n    \"actor\": \"ADS\",\n    \"text\": \"PlanPathAndSpeed\"\n  },\n  {\n    \"id\": \"g12\",\n    \"actor\": \"ADS\",\n    \"text\": \"ControlVehicle\"\n  },\n  {\n    \"id\": \"g13\",\n    \"actor\": \"Vehicle\",\n    \"text\": \"ProvideFactoryDriverAssistanceFeatures\"\n  }\n]\n",
+      "raw_response": "{\n  \"obstacles\": [\n    {\n      \"id\": \"o1\",\n      \"goal_id\": \"g7\",\n      \"guide_word\": \"omission\",\n      \"text\": \"The lidar fails to return a return for the pedestrian because the pedestrian’s reflective clothing absorbs the laser, so the ADS does not detect the pedestrian at all.\",\n      \"violated_premise\": \"All road users will be detected by at least one sensor under all lighting conditions.\"\n    },\n    {\n      \"id\": \"o2\",\n      \"goal_id\": \"g8\",\n      \"guide_word\": \"commission\",\n      \"text\": \"The perception module mistakenly classifies a pedestrian as a static object (e.g., a pole) and therefore does not consider it in the collision avoidance logic.\",\n      \"violated_premise\": \"Object classification is always correct for safety‑critical objects.\"\n    },\n    {\n      \"id\": \"o3\",\n      \"goal_id\": \"g9\",\n      \"guide_word\": \"too late\",\n      \"text\": \"The tracking algorithm drops the pedestrian’s track shortly before the crossing because of a brief occlusion, so the ADS loses the object just as it enters the vehicle’s path.\",\n      \"violated_premise\": \"Tracked objects remain tracked continuously through brief occlusions.\"\n    },\n    {\n      \"id\": \"o4\",\n      \"goal_id\": \"g10\",\n      \"guide_word\": \"inaccuracy\",\n      \"text\": \"The trajectory predictor uses outdated motion model parameters, predicting the pedestrian will continue straight while the pedestrian actually intends to cross the street.\",\n      \"violated_premise\": \"Prediction models are always up‑to‑date with current behavior patterns of road users.\"\n    },\n    {\n      \"id\": \"o5\",\n      \"goal_id\": \"g2\",\n      \"guide_word\": \"omission\",\n      \"text\": \"The operator looks away from the road to tag a previous event and fails to notice the pedestrian entering the crosswalk, thus does not take over control.\",\n      \"violated_premise\": \"The operator will keep visual attention on the road unless a takeover is already in progress.\"\n    },\n    {\n      \"id\": \"o6\",\n      \"goal_id\": \"g1\",\n      \"guide_word\": \"non-information\",\n      \"text\": \"The vehicle’s status display does not show that the ADS has entered a degraded mode, so the operator assumes full automation is active and does not monitor closely.\",\n      \"violated_premise\": \"The operator always receives accurate and timely information about the ADS operational mode.\"\n    },\n    {\n      \"id\": \"o7\",\n      \"goal_id\": \"g12\",\n      \"guide_word\": \"commission\",\n      \"text\": \"The control module applies a throttle increase while the ADS is still processing a braking request, causing the vehicle to accelerate instead of decelerate.\",\n      \"violated_premise\": \"Control commands are mutually exclusive and correctly prioritized.\"\n    },\n    {\n      \"id\": \"o8\",\n      \"goal_id\": \"g13\",\n      \"guide_word\": \"unavailability\",\n      \"text\": \"The factory automatic emergency braking system is disabled due to a software configuration error, removing a safety backup layer.\",\n      \"violated_premise\": \"Factory driver‑assistance features are always enabled and functional during testing.\"\n    },\n    {\n      \"id\": \"o9\",\n      \"goal_id\": \"g4\",\n      \"guide_word\": \"commission\",\n      \"text\": \"The pedestrian deliberately steps into the crosswalk against the traffic signal, assuming the ADS will stop for any pedestrian.\",\n      \"violated_premise\": \"Pedestrians will obey traffic signals and not enter the roadway unexpectedly.\"\n    },\n    {\n      \"id\": \"o10\",\n      \"goal_id\": \"g11\",\n      \"guide_word\": \"too early\",\n      \"text\": \"The planner decides to accelerate before the ADS has confirmed that the crossing area is clear, reducing the reaction time for a sudden pedestrian appearance.\",\n      \"violated_premise\": \"Path and speed planning only proceeds after all relevant perception data are confirmed.\"\n    }\n  ]\n}",
+      "parsed": {
+        "obstacles": [
+          {
+            "id": "o1",
+            "goal_id": "g7",
+            "guide_word": "omission",
+            "text": "The lidar fails to return a return for the pedestrian because the pedestrian’s reflective clothing absorbs the laser, so the ADS does not detect the pedestrian at all.",
+            "violated_premise": "All road users will be detected by at least one sensor under all lighting conditions."
+          },
+          {
+            "id": "o2",
+            "goal_id": "g8",
+            "guide_word": "commission",
+            "text": "The perception module mistakenly classifies a pedestrian as a static object (e.g., a pole) and therefore does not consider it in the collision avoidance logic.",
+            "violated_premise": "Object classification is always correct for safety‑critical objects."
+          },
+          {
+            "id": "o3",
+            "goal_id": "g9",
+            "guide_word": "too late",
+            "text": "The tracking algorithm drops the pedestrian’s track shortly before the crossing because of a brief occlusion, so the ADS loses the object just as it enters the vehicle’s path.",
+            "violated_premise": "Tracked objects remain tracked continuously through brief occlusions."
+          },
+          {
+            "id": "o4",
+            "goal_id": "g10",
+            "guide_word": "inaccuracy",
+            "text": "The trajectory predictor uses outdated motion model parameters, predicting the pedestrian will continue straight while the pedestrian actually intends to cross the street.",
+            "violated_premise": "Prediction models are always up‑to‑date with current behavior patterns of road users."
+          },
+          {
+            "id": "o5",
+            "goal_id": "g2",
+            "guide_word": "omission",
+            "text": "The operator looks away from the road to tag a previous event and fails to notice the pedestrian entering the crosswalk, thus does not take over control.",
+            "violated_premise": "The operator will keep visual attention on the road unless a takeover is already in progress."
+          },
+          {
+            "id": "o6",
+            "goal_id": "g1",
+            "guide_word": "non-information",
+            "text": "The vehicle’s status display does not show that the ADS has entered a degraded mode, so the operator assumes full automation is active and does not monitor closely.",
+            "violated_premise": "The operator always receives accurate and timely information about the ADS operational mode."
+          },
+          {
+            "id": "o7",
+            "goal_id": "g12",
+            "guide_word": "commission",
+            "text": "The control module applies a throttle increase while the ADS is still processing a braking request, causing the vehicle to accelerate instead of decelerate.",
+            "violated_premise": "Control commands are mutually exclusive and correctly prioritized."
+          },
+          {
+            "id": "o8",
+            "goal_id": "g13",
+            "guide_word": "unavailability",
+            "text": "The factory automatic emergency braking system is disabled due to a software configuration error, removing a safety backup layer.",
+            "violated_premise": "Factory driver‑assistance features are always enabled and functional during testing."
+          },
+          {
+            "id": "o9",
+            "goal_id": "g4",
+            "guide_word": "commission",
+            "text": "The pedestrian deliberately steps into the crosswalk against the traffic signal, assuming the ADS will stop for any pedestrian.",
+            "violated_premise": "Pedestrians will obey traffic signals and not enter the roadway unexpectedly."
+          },
+          {
+            "id": "o10",
+            "goal_id": "g11",
+            "guide_word": "too early",
+            "text": "The planner decides to accelerate before the ADS has confirmed that the crossing area is clear, reducing the reaction time for a sudden pedestrian appearance.",
+            "violated_premise": "Path and speed planning only proceeds after all relevant perception data are confirmed."
+          }
+        ]
+      },
+      "error": ""
+    },
+    {
+      "stage": "s3_resolve",
+      "prompt": "You are a requirements engineer. Each obstacle below shows a hidden premise in the system.\n\nFor each obstacle, write ONE new requirement that makes the premise explicit and testable,\nso the system handles the case instead of assuming it away.\n\nWrite one requirement for each obstacle, no more than 10 in total.\n\nReply with JSON only, in this shape:\n{\"requirements\": [{\"obstacle_id\": \"o1\", \"text\": \"The system shall ...\"}]}\n\nSystem description:\n# Case: Uber ATG automated test vehicle (Tempe, Arizona, 2018)\n\nSource: NTSB Highway Accident Report HAR-19/03. This is a description of the system and its use before the crash. It does not include the investigation findings.\n\n## System\nA modified Volvo XC90 SUV is used by Uber Advanced Technologies Group (ATG) to test an automated driving system (ADS) on public roads. The ADS is designed to drive the vehicle without human input in defined conditions, up to about 45 mph in this test program.\n\n## Main parts\n- Sensors: roof-mounted lidar, radar units and cameras covering the area around the vehicle.\n- Perception: detects objects around the vehicle, classifies each one (for example vehicle, pedestrian, bicycle, other), and tracks it over time.\n- Prediction: estimates where each tracked object will go next, using its class and recent movement.\n- Planning and control: chooses a path and speed, and controls steering, throttle and braking.\n- Vehicle: the Volvo factory driver-assistance features (such as forward collision warning and automatic emergency braking) are part of the base vehicle.\n\n## People\n- One vehicle operator sits in the driver seat. The operator is responsible for watching the road and taking over control when needed. The operator also uses a tablet-style interface to tag events and check system status.\n- Other road users share the road: pedestrians, cyclists and other drivers. They are not aware of the test program.\n\n## Operating context\nPublic multi-lane roads in an urban area, day and night, with posted speed limits, marked crosswalks, intersections and street lighting that varies by location.\n\n\nObstacles:\n[\n  {\n    \"id\": \"o1\",\n    \"goal_id\": \"g7\",\n    \"guide_word\": \"omission\",\n    \"text\": \"The lidar fails to return a return for the pedestrian because the pedestrian\\u2019s reflective clothing absorbs the laser, so the ADS does not detect the pedestrian at all.\",\n    \"violated_premise\": \"All road users will be detected by at least one sensor under all lighting conditions.\"\n  },\n  {\n    \"id\": \"o2\",\n    \"goal_id\": \"g8\",\n    \"guide_word\": \"commission\",\n    \"text\": \"The perception module mistakenly classifies a pedestrian as a static object (e.g., a pole) and therefore does not consider it in the collision avoidance logic.\",\n    \"violated_premise\": \"Object classification is always correct for safety\\u2011critical objects.\"\n  },\n  {\n    \"id\": \"o3\",\n    \"goal_id\": \"g9\",\n    \"guide_word\": \"too late\",\n    \"text\": \"The tracking algorithm drops the pedestrian\\u2019s track shortly before the crossing because of a brief occlusion, so the ADS loses the object just as it enters the vehicle\\u2019s path.\",\n    \"violated_premise\": \"Tracked objects remain tracked continuously through brief occlusions.\"\n  },\n  {\n    \"id\": \"o4\",\n    \"goal_id\": \"g10\",\n    \"guide_word\": \"inaccuracy\",\n    \"text\": \"The trajectory predictor uses outdated motion model parameters, predicting the pedestrian will continue straight while the pedestrian actually intends to cross the street.\",\n    \"violated_premise\": \"Prediction models are always up\\u2011to\\u2011date with current behavior patterns of road users.\"\n  },\n  {\n    \"id\": \"o5\",\n    \"goal_id\": \"g2\",\n    \"guide_word\": \"omission\",\n    \"text\": \"The operator looks away from the road to tag a previous event and fails to notice the pedestrian entering the crosswalk, thus does not take over control.\",\n    \"violated_premise\": \"The operator will keep visual attention on the road unless a takeover is already in progress.\"\n  },\n  {\n    \"id\": \"o6\",\n    \"goal_id\": \"g1\",\n    \"guide_word\": \"non-information\",\n    \"text\": \"The vehicle\\u2019s status display does not show that the ADS has entered a degraded mode, so the operator assumes full automation is active and does not monitor closely.\",\n    \"violated_premise\": \"The operator always receives accurate and timely information about the ADS operational mode.\"\n  },\n  {\n    \"id\": \"o7\",\n    \"goal_id\": \"g12\",\n    \"guide_word\": \"commission\",\n    \"text\": \"The control module applies a throttle increase while the ADS is still processing a braking request, causing the vehicle to accelerate instead of decelerate.\",\n    \"violated_premise\": \"Control commands are mutually exclusive and correctly prioritized.\"\n  },\n  {\n    \"id\": \"o8\",\n    \"goal_id\": \"g13\",\n    \"guide_word\": \"unavailability\",\n    \"text\": \"The factory automatic emergency braking system is disabled due to a software configuration error, removing a safety backup layer.\",\n    \"violated_premise\": \"Factory driver\\u2011assistance features are always enabled and functional during testing.\"\n  },\n  {\n    \"id\": \"o9\",\n    \"goal_id\": \"g4\",\n    \"guide_word\": \"commission\",\n    \"text\": \"The pedestrian deliberately steps into the crosswalk against the traffic signal, assuming the ADS will stop for any pedestrian.\",\n    \"violated_premise\": \"Pedestrians will obey traffic signals and not enter the roadway unexpectedly.\"\n  },\n  {\n    \"id\": \"o10\",\n    \"goal_id\": \"g11\",\n    \"guide_word\": \"too early\",\n    \"text\": \"The planner decides to accelerate before the ADS has confirmed that the crossing area is clear, reducing the reaction time for a sudden pedestrian appearance.\",\n    \"violated_premise\": \"Path and speed planning only proceeds after all relevant perception data are confirmed.\"\n  }\n]\n",
+      "raw_response": "{\n  \"requirements\": [\n    {\n      \"obstacle_id\": \"o1\",\n      \"text\": \"The ADS shall detect pedestrians using at least two independent sensor modalities (e.g., lidar, radar, camera) and shall generate a pedestrian detection alert if any modality reports a pedestrian within the vehicle's path, even when another modality provides no return.\"\n    },\n    {\n      \"obstacle_id\": \"o2\",\n      \"text\": \"The perception module shall assign a confidence score to each object classification and shall treat any object with a confidence lower than 0.9 for a non‑pedestrian class as a potential pedestrian in collision‑avoidance calculations.\"\n    },\n    {\n      \"obstacle_id\": \"o3\",\n      \"text\": \"The tracking subsystem shall maintain continuity of a pedestrian track for up to 2 seconds of sensor occlusion using predictive filtering and re‑association, and shall not drop the track if the pedestrian re‑appears within the predicted region.\"\n    },\n    {\n      \"obstacle_id\": \"o4\",\n      \"text\": \"The trajectory prediction component shall update its motion‑model parameters at least every 5 seconds with the most recent 10 seconds of observed behavior for each road‑user class and shall use the refreshed model for all subsequent predictions.\"\n    },\n    {\n      \"obstacle_id\": \"o5\",\n      \"text\": \"The operator‑monitoring system shall detect when the operator’s gaze is away from the forward roadway for more than 2 seconds and shall issue an audible and visual takeover alert if a safety‑critical event (e.g., a pedestrian entering a crosswalk) is detected during that period.\"\n    },\n    {\n      \"obstacle_id\": \"o6\",\n      \"text\": \"The vehicle status interface shall display the current ADS operational mode (Normal, Degraded, or Manual) within 0.5 seconds of any mode transition and shall provide a distinct audible alert whenever the system enters a degraded mode.\"\n    },\n    {\n      \"obstacle_id\": \"o7\",\n      \"text\": \"The control arbitration layer shall enforce mutual exclusivity of longitudinal commands such that a braking request always supersedes any concurrent throttle command, rejecting conflicting commands within 10 ms of detection.\"\n    },\n    {\n      \"obstacle_id\": \"o8\",\n      \"text\": \"Before each test drive, the system shall perform a self‑check that verifies all factory driver‑assistance features, including automatic emergency braking, are enabled and functional; the test shall be aborted if any required feature is not active.\"\n    },\n    {\n      \"obstacle_id\": \"o9\",\n      \"text\": \"The planning and perception modules shall treat any crosswalk area as a potential collision zone and shall be prepared to stop for an unexpected pedestrian intrusion, maintaining a minimum safety buffer of 2 m from the curb when a pedestrian is detected within 5 m of the crosswalk, regardless of traffic‑signal compliance.\"\n    },\n    {\n      \"obstacle_id\": \"o10\",\n      \"text\": \"The motion planner shall not issue acceleration commands until the perception system has confirmed that the planned path ahead for at least 10 m is free of pedestrians, cyclists, or other dynamic obstacles, and shall wait for a positive clearance signal before increasing speed.\"\n    }\n  ]\n}",
+      "parsed": {
+        "requirements": [
+          {
+            "obstacle_id": "o1",
+            "text": "The ADS shall detect pedestrians using at least two independent sensor modalities (e.g., lidar, radar, camera) and shall generate a pedestrian detection alert if any modality reports a pedestrian within the vehicle's path, even when another modality provides no return."
+          },
+          {
+            "obstacle_id": "o2",
+            "text": "The perception module shall assign a confidence score to each object classification and shall treat any object with a confidence lower than 0.9 for a non‑pedestrian class as a potential pedestrian in collision‑avoidance calculations."
+          },
+          {
+            "obstacle_id": "o3",
+            "text": "The tracking subsystem shall maintain continuity of a pedestrian track for up to 2 seconds of sensor occlusion using predictive filtering and re‑association, and shall not drop the track if the pedestrian re‑appears within the predicted region."
+          },
+          {
+            "obstacle_id": "o4",
+            "text": "The trajectory prediction component shall update its motion‑model parameters at least every 5 seconds with the most recent 10 seconds of observed behavior for each road‑user class and shall use the refreshed model for all subsequent predictions."
+          },
+          {
+            "obstacle_id": "o5",
+            "text": "The operator‑monitoring system shall detect when the operator’s gaze is away from the forward roadway for more than 2 seconds and shall issue an audible and visual takeover alert if a safety‑critical event (e.g., a pedestrian entering a crosswalk) is detected during that period."
+          },
+          {
+            "obstacle_id": "o6",
+            "text": "The vehicle status interface shall display the current ADS operational mode (Normal, Degraded, or Manual) within 0.5 seconds of any mode transition and shall provide a distinct audible alert whenever the system enters a degraded mode."
+          },
+          {
+            "obstacle_id": "o7",
+            "text": "The control arbitration layer shall enforce mutual exclusivity of longitudinal commands such that a braking request always supersedes any concurrent throttle command, rejecting conflicting commands within 10 ms of detection."
+          },
+          {
+            "obstacle_id": "o8",
+            "text": "Before each test drive, the system shall perform a self‑check that verifies all factory driver‑assistance features, including automatic emergency braking, are enabled and functional; the test shall be aborted if any required feature is not active."
+          },
+          {
+            "obstacle_id": "o9",
+            "text": "The planning and perception modules shall treat any crosswalk area as a potential collision zone and shall be prepared to stop for an unexpected pedestrian intrusion, maintaining a minimum safety buffer of 2 m from the curb when a pedestrian is detected within 5 m of the crosswalk, regardless of traffic‑signal compliance."
+          },
+          {
+            "obstacle_id": "o10",
+            "text": "The motion planner shall not issue acceleration commands until the perception system has confirmed that the planned path ahead for at least 10 m is free of pedestrians, cyclists, or other dynamic obstacles, and shall wait for a positive clearance signal before increasing speed."
+          }
+        ]
+      },
+      "error": ""
+    }
+  ],
+  "tgrl": "grl UberATG {\n  actor Operator {\n    goal MonitorRoad;\n    goal TakeOverControlWhenNeeded;\n    goal TagEventsAndCheckStatus;\n    softGoal OperatorSafety;\n    softGoal OperatorWorkload;\n  }\n  actor Pedestrian {\n    goal ReachDestinationSafely;\n    softGoal PersonalSafety;\n  }\n  actor Cyclist {\n    goal ReachDestinationSafely;\n    softGoal PersonalSafety;\n  }\n  actor OtherDriver {\n    goal ReachDestinationSafely;\n    softGoal PersonalSafety;\n  }\n  actor ADS {\n    goal DetectObjects;\n    goal ClassifyObjects;\n    goal TrackObjects;\n    goal PredictTrajectories;\n    goal PlanPathAndSpeed;\n    goal ControlVehicle;\n    softGoal SystemReliability;\n    softGoal ComplianceWithSpeedLimits;\n    softGoal SafeInteractionWithRoadUsers;\n  }\n  actor Vehicle {\n    goal ProvideFactoryDriverAssistanceFeatures;\n    softGoal VehicleIntegrity;\n  }\n}",
+  "tgrl_valid": true,
+  "ok": true
+}
